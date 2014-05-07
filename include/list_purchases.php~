@@ -36,10 +36,11 @@ if ( $stmt = $mysqli->prepare( $query ) )
 {
 	unset( $results );
 
-	$word = '%' . $_POST['query'] . '%';
-
-	if ( $_POST['query'] != "_all" )		
+	if ( $_POST['query'] != "_all" )
+	{
+		$word = '%' . $_POST['query'] . '%';
 		$stmt->bind_param( "sss", $word, $word, $word );
+	}
 
  	$stmt->execute();
 	$stmt->store_result();

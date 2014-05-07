@@ -74,7 +74,7 @@ if ( $stmt = $mysqli->prepare( $query ) )
 
 		// Query equipment for current software
 
-		if ( $stmt2 = $mysqli->prepare( $get_computers_from_software_id ) )
+		if ( $stmt2 = $mysqli->prepare( $get_equipment_from_software_id ) )
 		{
 			$stmt2->bind_param( "s", $software_id );
 			$stmt2->execute();

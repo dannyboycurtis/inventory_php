@@ -35,7 +35,7 @@ function list_equipment( query )
 
 			$('#processingModal').modal('toggle');	
 		
-			$('#search_panel:visible').collapse('hide');
+			$('#search_panel:visible #report_panel:visible').collapse('hide');
 			$('#table_panel').collapse('show');
 		}
 	});
@@ -69,6 +69,9 @@ function list_users( query )
 			setupTablesorter( role );
 
 			$('#processingModal').modal('toggle');
+		
+			$('#search_panel:visible #report_panel:visible').collapse('hide');
+			$('#table_panel').collapse('show');
 		}
 	});
 }
@@ -100,6 +103,9 @@ function list_purchases( query )
 			setupTablesorter( role );
 
 			$('#processingModal').modal('toggle');
+		
+			$('#search_panel:visible #report_panel:visible').collapse('hide');
+			$('#table_panel').collapse('show');
 		}
 	});
 }
@@ -131,6 +137,9 @@ function list_software( query )
 			setupTablesorter( role );
 
 			$('#processingModal').modal('toggle');
+		
+			$('#search_panel:visible #report_panel:visible').collapse('hide');
+			$('#table_panel').collapse('show');
 		}
 	});
 }
@@ -261,7 +270,7 @@ function createHeaders( role, headers )
 		.html( "<i class='fa fa-cog'></i>" ) );
 	}
 
-	if ( role > 2 )
+	if ( role > 2 && headers[0] != "Purchase Order" )
 	{
 	headerRow.push( $( "<th>" )
 		.attr({ "id" : "trash_selected",
@@ -291,8 +300,8 @@ function populateTable_equipment( results )
 
 	$.each( results, function(){
 		row = "";
-		row += "<tr class='parent_row' title='" + this.tag + "'>";
-		row += "<td class='select' rowspan='2'>";
+		row += "<tr class='parent_row'>";
+		row += "<td class='select' rowspan='2'><span style='display:none'>" + this.tag + "</span>";
 		row += "<i class='fa fa-square-o'></i></td>";
 	
 		if ( role > 1 )
@@ -325,7 +334,7 @@ function populateTable_equipment( results )
 
 		row += '<b>Purchase Order:&nbsp;&nbsp;</b>';
 		if ( this.purchase_order )
-			row += "<div class='view_purchase' style='cursor: pointer' title='View this purchase order'>" + this.purchase_order + "</div>";
+			row += "<span class='view_purchase' style='cursor: pointer' title='View this purchase order'>" + this.purchase_order + "</span>";
 
 		row += '<br><b>Purchased By:&nbsp;&nbsp;</b>';
 		if ( this.purchased_by )
@@ -372,9 +381,7 @@ function populateTable_equipment( results )
 		if ( this.software )
 		{
 			$.each( this.software, function( i ){
-				row += this.software_name;
-				if ( this.count >= i )
-					row += "<br>";
+				row += this.name + "<br>";
 			});
 		}
 
@@ -392,7 +399,7 @@ function populateTable_equipment( results )
 	$( '#results_table>tbody' ).html( tableRows.join( "" ) );
 
 	$( '.edit>i').on( 'click', function(){
-		var tag = $(this).closest( '.parent_row' ).attr( "title" );
+		var tag = $(this).parents().siblings( '.select' ).children( 'span' ).html();
 		/*******************************************************
 		 Gather attributes, call edit_computer modal
 		*******************************************************/
@@ -400,7 +407,7 @@ function populateTable_equipment( results )
 	});
 
 	$( '.trash>i').on( 'click', function(){
-		var tag = $(this).closest( '.parent_row' ).attr( "title" );
+		var tag = $(this).parents().siblings( '.select' ).children( 'span' ).html();
 		/*******************************************************
 		 Gather attributes, call delete_computer modal
 		*******************************************************/
@@ -424,8 +431,8 @@ function populateTable_users( results )
 
 	$.each( results, function(){
 		row = "";
-		row += "<tr class='parent_row' title='" + this.userid + "'>";
-		row += "<td class='select' rowspan='2'>";
+		row += "<tr class='parent_row'>";
+		row += "<td class='select' rowspan='2'><span style='display:none'>" + this.userid + "</span>";
 		row += "<i class='fa fa-square-o'></i></td>";
 	
 		if ( role > 1 )
@@ -451,7 +458,7 @@ function populateTable_users( results )
 			$.each( this.equipment, function( i ){
 				row += "<div class='panel panel-default' style='padding: 5px'>";
 				row += "&nbsp;&nbsp;&nbsp;<b>Tag: </b>";
-				row += "<span class='view_equipment' style='cursor: pointer'>" + this.tag;
+				row += "<span class='view_equipment' style='cursor: pointer' title='View this equipment record'>" + this.tag;
 				row += "</span><b> / Serial: </b>" + this.serial;
 				row += "<b> / Make & Model: </b>" + this.makemodel;
 				row += "<b> / Location: </b>" + this.location;
@@ -471,7 +478,7 @@ function populateTable_users( results )
 	$( '#results_table>tbody' ).html( tableRows.join( "" ) );
 
 	$( '.edit>i').on( 'click', function(){
-		var tag = $(this).closest( '.parent_row' ).attr( "title" );
+		var tag = $(this).parents().siblings( '.select' ).children( 'span' ).html();
 		/*******************************************************
 		 Gather attributes, call edit_user modal
 		*******************************************************/
@@ -479,7 +486,7 @@ function populateTable_users( results )
 	});
 
 	$( '.trash>i').on( 'click', function(){
-		var tag = $(this).closest( '.parent_row' ).attr( "title" );
+		var tag = $(this).parents().siblings( '.select' ).children( 'span' ).html();
 		/*******************************************************
 		 Gather attributes, call delete_user modal
 		*******************************************************/
@@ -503,15 +510,12 @@ function populateTable_purchases( results )
 
 	$.each( results, function(){
 		row = "";
-		row += "<tr class='parent_row' title='" + this.purchaseid + "'>";
-		row += "<td class='select' rowspan='2'>";
+		row += "<tr class='parent_row'>";
+		row += "<td class='select' rowspan='2'><span style='display:none'>" + this.purchaseid + "</span>";
 		row += "<i class='fa fa-square-o'></i></td>";
 	
 		if ( role > 1 )
 			row += "<td class='edit' rowspan='2'><i class='fa fa-cog'></i></td>";
-
-		if ( role > 2 )
-			row += "<td class='trash' rowspan='2'><i class='fa fa-trash-o'></i></td>";
 
 		if ( !this.purchaseorder )
 			this.purchaseorder = "N/A";
@@ -527,7 +531,7 @@ function populateTable_purchases( results )
 			$.each( this.equipment, function( i ){
 				row += "<div class='panel panel-default' style='padding: 5px'>";
 				row += "&nbsp;&nbsp;&nbsp;<b>Tag: </b>";
-				row += "<span class='view_equipment' style='cursor: pointer'>" + this.tag;
+				row += "<span class='view_equipment' style='cursor: pointer' title='View this equipment record'>" + this.tag;
 				row += "</span><b> / Serial: </b>" + this.serial;
 				row += "<b> / Make & Model: </b>" + this.makemodel;
 				row += "<b> / Location: </b>" + this.location;
@@ -559,19 +563,11 @@ function populateTable_purchases( results )
 	$( '#results_table>tbody' ).html( tableRows.join( "" ) );
 
 	$( '.edit>i').on( 'click', function(){
-		var tag = $(this).closest( '.parent_row' ).attr( "title" );
+		var tag = $(this).parents().siblings( '.select' ).children( 'span' ).html();
 		/*******************************************************
 		 Gather attributes, call edit_purchase modal
 		*******************************************************/
 		alert( "Edit " + tag );
-	});
-
-	$( '.trash>i').on( 'click', function(){
-		var tag = $(this).closest( '.parent_row' ).attr( "title" );
-		/*******************************************************
-		 Gather attributes, call delete_purchase modal
-		*******************************************************/
-		alert( "Delete " + tag );
 	});
 
 	$( '.view_equipment' ).on( 'click', function(){
@@ -591,8 +587,8 @@ function populateTable_software( results )
 
 	$.each( results, function(){
 		row = "";
-		row += "<tr class='parent_row' title='" + this.softwareid + "'>";
-		row += "<td class='select' rowspan='2'>";
+		row += "<tr class='parent_row'>";
+		row += "<td class='select' rowspan='2'><span style='display:none'>" + this.softwareid + "</span>";
 		row += "<i class='fa fa-square-o'></i></td>";
 	
 		if ( role > 1 )
@@ -615,7 +611,7 @@ function populateTable_software( results )
 			$.each( this.equipment, function( i ){
 				row += "<div class='panel panel-default' style='padding: 5px'>";
 				row += "&nbsp;&nbsp;&nbsp;<b>Tag: </b>";
-				row += "<span class='view_equipment' style='cursor: pointer'>" + this.tag;
+				row += "<span class='view_equipment' style='cursor: pointer' title='View this equipment record'>" + this.tag;
 				row += "</span><b> / Serial: </b>" + this.serial;
 				row += "<b> / Make & Model: </b>" + this.makemodel;
 				row += "<b> / Location: </b>" + this.location;
@@ -625,7 +621,7 @@ function populateTable_software( results )
 					row += "<br>";
 			});
 		}		
-		
+
 		row += '</div></td></tr>';
 
 		tableRows.push( row );		
@@ -635,7 +631,7 @@ function populateTable_software( results )
 	$( '#results_table>tbody' ).html( tableRows.join( "" ) );
 
 	$( '.edit>i').on( 'click', function(){
-		var tag = $(this).closest( '.parent_row' ).attr( "title" );
+		var tag = $(this).parents().siblings( '.select' ).children( 'span' ).html();
 		/*******************************************************
 		 Gather attributes, call edit_software modal
 		*******************************************************/
@@ -643,7 +639,7 @@ function populateTable_software( results )
 	});
 
 	$( '.trash>i').on( 'click', function(){
-		var tag = $(this).closest( '.parent_row' ).attr( "title" );
+		var tag = $(this).parents().siblings( '.select' ).children( 'span' ).html();
 		/*******************************************************
 		 Gather attributes, call delete_software modal
 		*******************************************************/

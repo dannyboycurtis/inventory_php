@@ -44,10 +44,10 @@ FROM equipment e
 		LEFT OUTER JOIN eq_network n ON e.tag_num = n.tag_num
 		LEFT OUTER JOIN eq_description eqd ON e.tag_num = eqd.tag_num
 		LEFT OUTER JOIN eq_notes eqn ON e.tag_num = eqn.tag_num
-		LEFT OUTER JOIN eq_printer eqp ON e.tag_num = eqp.tag_num ";
+		LEFT OUTER JOIN eq_printer eqp ON e.tag_num = eqp.tag_num";
 
 if ( $_POST['query'] == '_computers' )
-	$query_stmt .= "JOIN uses us ON e.tag_num = us.tag_num 
+	$query_stmt .= " JOIN uses us ON e.tag_num = us.tag_num 
 					JOIN user u ON us.user_id = u.user_id 
 					WHERE u.l_name IS NOT NULL 
 					GROUP BY e.tag_num 
@@ -58,7 +58,7 @@ else if ( $_POST['query'] == '_labs' )
 					JOIN user u ON us.user_id = u.user_id
 					WHERE u.l_name IS NULL
 					GROUP BY e.tag_num 
-					ORDER BY p.purchase_date DESC";
+					ORDER BY e.tag_num DESC";
 
 else if ( $_POST['query'] == '_printers' )
 	$query_stmt .= "WHERE pr.printer_tag IS NOT NULL
@@ -184,3 +184,4 @@ if ( $stmt = $mysqli->prepare( $query_stmt ) )
 echo json_encode( $results );
 
 ?>
+
