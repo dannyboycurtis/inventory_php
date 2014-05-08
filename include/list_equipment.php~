@@ -184,4 +184,3 @@ if ( $stmt = $mysqli->prepare( $query_stmt ) )
 echo json_encode( $results );
 
 ?>
-

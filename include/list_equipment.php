@@ -1,6 +1,5 @@
 <?php
 include_once 'common.php';
-include_once 'query_index.php';
 
 $mysqli = login_db_connect();
 

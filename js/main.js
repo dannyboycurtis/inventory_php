@@ -7,6 +7,24 @@ function checkRole()
     }).responseText;
 }
 
+function delete_record( record_id, type, record_row )
+{
+		x = confirm( "This will permanently delete the record.\nClick OK to proceed." );
+		if ( x == true )
+		{
+			$.ajax({
+				type: "POST",
+				url: "include/delete_record.php",
+				data: { record_id : record_id, type : type },
+				success: function( result ) {
+					$( record_row ).next( '.tablesorter-childRow' ).addBack().remove();
+					$( '#results_table' ).trigger( 'update' );
+				}
+			});
+		}
+
+}
+
 function list_equipment( query )
 {
 	headers = [ "Property Tag", "Serial Number", "Make & Model", "Purchase Date", "Location", "Department", "Users" ];
@@ -246,6 +264,23 @@ function setupTablesorter( role )
 		$( '#report_panel:visible' ).collapse( 'hide' );
 	});
 
+	// Deletes record from database
+	$( '.trash>i').on( 'click', function(){
+		var record_row = $( this ).closest( '.parent_row');
+		var record_id = $( this ).parents().siblings( '.select' ).children( 'span' ).html();
+
+		delete_record( record_id, 'equipment', record_row );
+	});
+
+	
+	$( '.view_equipment' ).on( 'click', function(){
+		list_equipment( $( this ).html() );
+	});
+
+	$( '.view_purchase' ).on( 'click', function(){
+		list_purchases( $( this ).html() );
+	});
+
 }
 
 
@@ -399,24 +434,13 @@ function populateTable_equipment( results )
 	$( '#results_table>tbody' ).html( tableRows.join( "" ) );
 
 	$( '.edit>i').on( 'click', function(){
-		var tag = $(this).parents().siblings( '.select' ).children( 'span' ).html();
+		var tag = $( this ).parents().siblings( '.select' ).children( 'span' ).html();
 		/*******************************************************
 		 Gather attributes, call edit_computer modal
 		*******************************************************/
-		alert( tag );
+
 	});
 
-	$( '.trash>i').on( 'click', function(){
-		var tag = $(this).parents().siblings( '.select' ).children( 'span' ).html();
-		/*******************************************************
-		 Gather attributes, call delete_computer modal
-		*******************************************************/
-		alert( "Delete " + tag );
-	});
-
-	$( '.view_purchase' ).on( 'click', function(){
-		list_purchases( $( this ).html() );
-	});
 
 }
 
@@ -483,18 +507,6 @@ function populateTable_users( results )
 		 Gather attributes, call edit_user modal
 		*******************************************************/
 		alert( "Edit " + tag );
-	});
-
-	$( '.trash>i').on( 'click', function(){
-		var tag = $(this).parents().siblings( '.select' ).children( 'span' ).html();
-		/*******************************************************
-		 Gather attributes, call delete_user modal
-		*******************************************************/
-		alert( "Delete " + tag );
-	});
-
-	$( '.view_equipment' ).on( 'click', function(){
-		list_equipment( $( this ).html() );
 	});
 }
 
@@ -569,10 +581,6 @@ function populateTable_purchases( results )
 		*******************************************************/
 		alert( "Edit " + tag );
 	});
-
-	$( '.view_equipment' ).on( 'click', function(){
-		list_equipment( $( this ).html() );
-	});
 }
 
 
@@ -631,7 +639,7 @@ function populateTable_software( results )
 	$( '#results_table>tbody' ).html( tableRows.join( "" ) );
 
 	$( '.edit>i').on( 'click', function(){
-		var tag = $(this).parents().siblings( '.select' ).children( 'span' ).html();
+		var tag = $( this ).parents().siblings( '.select' ).children( 'span' ).html();
 		/*******************************************************
 		 Gather attributes, call edit_software modal
 		*******************************************************/
@@ -639,15 +647,11 @@ function populateTable_software( results )
 	});
 
 	$( '.trash>i').on( 'click', function(){
-		var tag = $(this).parents().siblings( '.select' ).children( 'span' ).html();
+		var record_id = $( this ).parents().siblings( '.select' ).children( 'span' ).html();
 		/*******************************************************
 		 Gather attributes, call delete_software modal
 		*******************************************************/
-		alert( "Delete " + tag );
-	});
-
-	$( '.view_equipment' ).on( 'click', function(){
-		list_equipment( $( this ).html() );
+		delete_record( record_id, 'software' );
 	});
 }
 
