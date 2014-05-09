@@ -154,10 +154,29 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
   <ul id="usermenu" class="dropdown-menu" role="menu" style="height:auto;max-height: 200px;overflow-x:hidden">
   </ul>
 </div>
+      <input type="text" class="form-control typeahead_users" data-provide="typeahead">
+
+ 
+
 
 <div id="test"></div>
 
 <script>
+    $('.typeahead_users').typeahead({
+		hint: true,
+	    source: function(typeahead, query) {
+			$.ajax({
+				url: 'include/typeahead_users.php',
+				type: 'POST',
+				data: { query: query },
+				datatype: 'JSON',
+				async: false,
+				success: function(data) {
+					typeahead.process(JSON.parse(data));
+				}
+			});
+		}
+    });
 
 // users dropdown
 	$.ajax({

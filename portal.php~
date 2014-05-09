@@ -66,30 +66,17 @@ if ( !( $logged ) )
   </div>
 </div>
 
-<!-- Edit Equipment Modal -->
-<div class="modal" id="editEquipmentModal" style="padding-top:40px" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-		  <div class="modal-header">
-				Edit Equipment Record
-		  </div>
-      <div class="modal-body">
-        
-      </div>
-
-    </div>
-  </div>
-</div>
-
 <!-- Add Equipment Modal -->
 <div class="modal" id="addEquipmentModal" style="padding-top:40px" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
 		  <div class="modal-header">
-				<h3>Edit Equipment Record</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 class="modal-title">Edit Equipment Record</h3>
+
 		  </div>
-      <div class="modal-body">
-        
+      <div class="modal-body text-center">
+       
       </div>
 
     </div>
