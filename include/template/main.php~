@@ -171,7 +171,7 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 			});
 
 			$("#usermenu>li>a").on( 'click', function(){
-	  		$( '#test').append( $( this ).text() );
+	  		$( '#test').html( $( this ).text() );
 			});
 		}
 	});

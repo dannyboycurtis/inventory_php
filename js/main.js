@@ -646,13 +646,6 @@ function populateTable_software( results )
 		alert( "Edit " + tag );
 	});
 
-	$( '.trash>i').on( 'click', function(){
-		var record_id = $( this ).parents().siblings( '.select' ).children( 'span' ).html();
-		/*******************************************************
-		 Gather attributes, call delete_software modal
-		*******************************************************/
-		delete_record( record_id, 'software' );
-	});
 }
 
 

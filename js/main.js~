@@ -264,11 +264,21 @@ function setupTablesorter( role )
 		$( '#report_panel:visible' ).collapse( 'hide' );
 	});
 
+	// Deletes record from database
 	$( '.trash>i').on( 'click', function(){
 		var record_row = $( this ).closest( '.parent_row');
 		var record_id = $( this ).parents().siblings( '.select' ).children( 'span' ).html();
 
 		delete_record( record_id, 'equipment', record_row );
+	});
+
+	
+	$( '.view_equipment' ).on( 'click', function(){
+		list_equipment( $( this ).html() );
+	});
+
+	$( '.view_purchase' ).on( 'click', function(){
+		list_purchases( $( this ).html() );
 	});
 
 }
@@ -432,10 +442,6 @@ function populateTable_equipment( results )
 	});
 
 
-	$( '.view_purchase' ).on( 'click', function(){
-		list_purchases( $( this ).html() );
-	});
-
 }
 
 function populateTable_users( results )
@@ -501,12 +507,6 @@ function populateTable_users( results )
 		 Gather attributes, call edit_user modal
 		*******************************************************/
 		alert( "Edit " + tag );
-	});
-
-
-
-	$( '.view_equipment' ).on( 'click', function(){
-		list_equipment( $( this ).html() );
 	});
 }
 
@@ -581,10 +581,6 @@ function populateTable_purchases( results )
 		*******************************************************/
 		alert( "Edit " + tag );
 	});
-
-	$( '.view_equipment' ).on( 'click', function(){
-		list_equipment( $( this ).html() );
-	});
 }
 
 
@@ -656,10 +652,6 @@ function populateTable_software( results )
 		 Gather attributes, call delete_software modal
 		*******************************************************/
 		delete_record( record_id, 'software' );
-	});
-
-	$( '.view_equipment' ).on( 'click', function(){
-		list_equipment( $( this ).html() );
 	});
 }
 

@@ -36,6 +36,7 @@ if ( !( $logged ) )
   <script type="text/javascript" src="js/bootstrap-typeahead.js"></script> 
   <script type="text/JavaScript" src="js/sha512.js"></script> 
   <script type="text/JavaScript" src="js/main.js"></script>
+  <script type="text/JavaScript" src="js/table.js"></script>
 
 </head>
 <body style="padding-top: 60px; padding-bottom: 20px;">
@@ -65,25 +66,30 @@ if ( !( $logged ) )
   </div>
 </div>
 
+<!-- Edit Equipment Modal -->
+<div class="modal" id="editEquipmentModal" style="padding-top:40px" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+		  <div class="modal-header">
+				Edit Equipment Record
+		  </div>
+      <div class="modal-body">
+        
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <!-- Add Equipment Modal -->
 <div class="modal" id="addEquipmentModal" style="padding-top:40px" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
 		  <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3 class="modal-title"><b>Choose Type &rsaquo;&rsaquo;&nbsp;</b><span>
-				<button class="btn btn-primary" type="button" id="addComputer">Computer/Tablet</button>
-				<button class="btn btn-primary" type="button" id="addPrinter">Network Printer</button>
-				<button class="btn btn-primary" type="button" id="addOther">Other Equipment</button></span></h3>
-<script>$("#addComputer").on( "click", function(){
-	$( this ).parent().hide();
-	$( '.modal-title' ).html( "<b>Add Computer or Tablet:</b>" );
-
-
-});</script>
+				<h3>Edit Equipment Record</h3>
 		  </div>
-      <div class="modal-body text-center">
-        Add New Equipment
+      <div class="modal-body">
+        
       </div>
 
     </div>

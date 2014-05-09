@@ -72,19 +72,11 @@ if ( !( $logged ) )
     <div class="modal-content">
 		  <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3 class="modal-title"><b>Choose Type &rsaquo;&rsaquo;&nbsp;</b><span>
-				<button class="btn btn-primary" type="button" id="addComputer">Computer/Tablet</button>
-				<button class="btn btn-primary" type="button" id="addPrinter">Network Printer</button>
-				<button class="btn btn-primary" type="button" id="addOther">Other Equipment</button></span></h3>
-<script>$("#addComputer").on( "click", function(){
-	$( this ).parent().hide();
-	$( '.modal-title' ).html( "<b>Add Computer or Tablet:</b>" );
+        <h3 class="modal-title">Edit Equipment Record</h3>
 
-
-});</script>
 		  </div>
       <div class="modal-body text-center">
-        Add New Equipment
+       
       </div>
 
     </div>
