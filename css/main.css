@@ -45,5 +45,6 @@ html
 {
        overflow-y: scroll;
 }
+li a { text-align:left; }
 
 

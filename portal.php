@@ -30,7 +30,7 @@ if ( !( $logged ) )
   <!-- Javascript -->
   <script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
   <script type="text/javascript" src="js/bootstrap.js"></script>
-  <script type="text/javascript" src="js/bootstrap-typeahead.js"></script> 
+  <script type="text/javascript" src="js/typeahead-bundle.js"></script> 
   <script type="text/javascript" src="js/jquery.tablesorter.js"></script>
   <script type="text/javascript" src="js/jquery.tablesorter.pager.js"></script>
   <script type="text/javascript" src="js/jquery.tablesorter.widgets.js"></script>
@@ -41,59 +41,7 @@ if ( !( $logged ) )
 </head>
 <body style="padding-top: 60px; padding-bottom: 20px;">
 
-<!-- Processing Modal -->
-<div class="modal" id="processingModal" style="padding-top:200px" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-body text-center">
-        <i class="fa fa-clock-o"></i> Processing...
-      </div>
-
-    </div>
-  </div>
-</div>
-
-
-<!-- Search Modal -->
-<div class="modal" id="searchModal" style="padding-top:40px" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-body text-center">
-        Search
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<!-- Add Equipment Modal -->
-<div class="modal" id="addEquipmentModal" style="padding-top:40px" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-		  <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3 class="modal-title">Edit Equipment Record</h3>
-
-		  </div>
-      <div class="modal-body text-center">
-       
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<!-- Add Software Modal -->
-<div class="modal" id="addSoftwareModal" style="padding-top:40px" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-body text-center">
-        Add New Software
-      </div>
-
-    </div>
-  </div>
-</div>
+<?php include_once "include/template/modals.php"; ?>
 
 <!-- Top panel-->
 <div class="container" id="navbar">
@@ -106,7 +54,7 @@ if ( !( $logged ) )
   <div class="row">
 	<!-- Main Section -->
     <div id="main_content">
-		<?php include "include/template/main.php" ?>
+		<?php include "include/template/main.php"; ?>
     </div><!-- end main section -->
 
   </div><!-- end row -->
