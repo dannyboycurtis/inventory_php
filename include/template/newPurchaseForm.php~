@@ -113,7 +113,6 @@ $( '#newPurchaser' ).hide();
 					$( '#purchasertype' ).html( "Choose Purchaser " )
 										 .parents( 'button' ).attr( 'data-toggle', 'dropdown')
 															 .removeClass( 'active' );
-					$( '#newPurchaser' ).hide();
 				}
 	  			else
 				{

@@ -51,16 +51,18 @@
     <div class="form-group">
       <label class="col-xs-2 control-label text-right">Type of Equipment</label>
       <div class="col-xs-3">
-        <select class="form-control" id="eq_type" value="Select Equipment Type">
-          <option value="default" disabled selected>Select Equipment Type...
-          </option>
-          <option value="computer">Computer or Tablet
-          </option>
-          <option value="printer">Network Printer
-          </option>
-          <option value="other">Other Equipment
-          </option>
-        </select>
+
+			<div class="btn-group">
+  				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+    				<span id="eqtype">Choose Type </span><span class="caret"></span>
+  				</button>
+  				<ul id="eqtypemenu" class="dropdown-menu" role="menu" style="height:auto;max-height: 200px;overflow-x:hidden">
+    				<li><a href="#">Computer or Tablet </a></li>
+    				<li><a href="#">Network Printer </a></li>
+    				<li><a href="#">Other Equipment </a></li>
+  				</ul>
+			</div>
+
       </div>
     </div>
 
@@ -96,42 +98,35 @@
 </div>
 <script>
   	// initially hides certain input boxes
-  	$('#description_input').hide();
-  	$('#hostname_input').hide();
-  	$('#os_input').hide();
-	$( '#newMake, #newModel' ).hide();
+	$( '#newMake, #newModel, #description_input, #hostname_input, #os_input' ).hide();
 
-  // this brings up text boxes based on equipment type
-  $('#eq_type').change(function(){
-     if ($('#eq_type').val() == "other")
+   // this brings up text boxes based on equipment type
+  $('#eqtypemenu>li>a').on( 'click', function(){
+     if ( $( this ).text() == "Other Equipment ")
      {
        $('#description_input').show();
-       $('#hostname_input').hide();
-       $('#os_input').hide();
-       $('#printer_input').hide();
+       $('#hostname_input, #os_input, #printer_input').hide();
+
      } 
-     else if ($('#eq_type').val() == "computer")
+     else if ( $( this ).text() == "Computer or Tablet ")
      {
-       $('#hostname_input').show();
-       $('#os_input').show();
-       $('#printer_input').show();
+       $('#hostname_input, #os_input, #printer_input').show();
        $('#description_input').hide();
      }
-     else if ($('#eq_type').val() == "printer")
+     else if ( $( this ).text() == "Network Printer ")
      {
        $('#hostname_input').show();
-       $('#os_input').hide();
-       $('#description_input').hide();
-       $('#printer_input').hide();
+       $('#os_input, #description_input, #printer_input').hide();
      }
      else
-     {
-       $('#hostname_input').hide();
-       $('#os_input').hide();
-       $('#description_input').hide();
-       $('#printer_input').hide();
-     }
+       $('#hostname_input, #os_input, #description_input, #printer_input').hide();
+
+		$( '#eqtype' ).html( $( this ).text() ); 
    });
+
+
+
+
 
 // make and model dropdowns
 	$.ajax({

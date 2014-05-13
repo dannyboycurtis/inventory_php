@@ -58,7 +58,7 @@ else if ( isset( $_POST['make'] ) and $_POST['query'] == 'model_from_make' )
 
 else if ( $_POST['query'] == 'department' )
 {
-	$query_stmt = "SELECT DISTINCT department FROM equipment WHERE department IS NOT NULL ORDER AND department != '' BY department ASC";
+	$query_stmt = "SELECT DISTINCT department FROM equipment WHERE department IS NOT NULL AND department != '' ORDER BY department ASC";
 
 	if ( $stmt = $mysqli->prepare( $query_stmt ) )
 	{

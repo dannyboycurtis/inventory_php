@@ -123,17 +123,6 @@ $(document).ready(function() {
 
    });
 
-  // this brings up text boxes based on location
-  $('#purchased_by').change(function(){
-     if ($('#purchased_by').val() == "other")
-     {
-       $('#purchased_by_input').show();
-     } 
-     else
-     {
-       $('#purchased_by_input').hide();
-     }
-   });
 
   // this resets form data in the modal on closing
   $('.modal').on('hidden.bs.modal', function(){
@@ -150,6 +139,8 @@ $(document).ready(function() {
 	$( '#newMake, #newModel' ).hide();
 	$( '#maketype' ).text( "Choose Make " );
 	$( '#modeltype' ).text( "Choose Model " );
+	$( '#eqtype' ).text( "Choose Type " );
+	$( '#departmenttype' ).text( "Choose Department " ); 
   });
 </script>
 </body>

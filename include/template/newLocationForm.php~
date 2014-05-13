@@ -75,7 +75,7 @@
 			$('#departmentmenu').append( "<li><a href='#'>Other </a></li>" );
 
 			$("#departmentmenu>li>a").on( 'click', function(){
-	  			$( '#departmenttype').html( $( this ).text() );
+	  		$( '#departmenttype').html( $( this ).text() );
 			});
 		}
 	});

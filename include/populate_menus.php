@@ -92,7 +92,7 @@ else if ( $_POST['query'] == 'users' )
 
 else if ( $_POST['query'] == 'purchase_order' )
 {
-	$query_stmt = "SELECT purchase_id, purchase_order FROM purchase WHERE purchase_order IS NOT NULL";
+	$query_stmt = "SELECT purchase_id, purchase_order, purchase_date, purchased_by FROM purchase WHERE purchase_order IS NOT NULL";
 
 	if ( $stmt = $mysqli->prepare( $query_stmt ) )
 	{
@@ -100,10 +100,13 @@ else if ( $_POST['query'] == 'purchase_order' )
 
  		$stmt->execute();
 		$stmt->store_result();
-		$stmt->bind_result( $purchase_id, $purchase_order );
+		$stmt->bind_result( $purchase_id, $purchase_order, $purchase_date, $purchased_by );
 
 		while ( $stmt->fetch() )
-			$results[] = array( "purchaseid" => $purchase_id, "purchaseorder" => $purchase_order );
+			$results[] = array( "purchaseid" => $purchase_id,
+								"purchaseorder" => $purchase_order,
+								"purchasedate" => $purchase_date,
+								"purchasedby" => $purchased_by );
 	}	
 }
 

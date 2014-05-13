@@ -97,59 +97,32 @@ $(document).ready(function() {
      {
        $('#description_input').show();
        $('#hostname_input, #os_input, #printer_input').hide();
-      // $('#os_input').hide();
-     //  $('#printer_input').hide();
+
      } 
      else if ($('#eq_type').val() == "computer")
      {
-       $('#hostname_input').show();
-       $('#os_input').show();
-       $('#printer_input').show();
+       $('#hostname_input, #os_input, #printer_input').show();
        $('#description_input').hide();
      }
      else if ($('#eq_type').val() == "printer")
      {
        $('#hostname_input').show();
-       $('#os_input').hide();
-       $('#description_input').hide();
-       $('#printer_input').hide();
+       $('#os_input, #description_input, #printer_input').hide();
      }
      else
-     {
-       $('#hostname_input').hide();
-       $('#os_input').hide();
-       $('#description_input').hide();
-       $('#printer_input').hide();
-     }
+       $('#hostname_input, #os_input, #description_input, #printer_input').hide();
    });
 
   // this brings up text boxes based on purchased_by
   $('#location').change(function(){
      if ($('#location').val() == "oncampus")
-     {
-        $('#building_input').show();
-        $('#room_num_input').show();
-        $('#phone_input').show();
-     } 
+        $('#building_input, #room_num_input').show();
+
      else
-     {
-        $('#building_input').hide();
-        $('#room_num_input').hide();
-        $('#phone_input').hide();
-     }
+        $('#building_input, #room_num_input').hide();
+
    });
 
-  // this brings up text boxes based on location
-  $('#purchased_by').change(function(){
-     if ($('#purchased_by').val() == "other")
-     {
-       $('#purchased_by_input').show();
-     } 
-     else
-     {
-       $('#purchased_by_input').hide();
-     }
-   });
 
   // this resets form data in the modal on closing
   $('.modal').on('hidden.bs.modal', function(){
@@ -160,17 +133,14 @@ $(document).ready(function() {
     $(this).find('#newNetworkForm')[0].reset();
     $(this).find('#newOtherForm')[0].reset();
     $('#addRecordTab a:first').tab('show');
-    $('#description_input').hide();
-    $('#hostname_input').hide();
-    $('#os_input').hide(); 
-    $('#building_input').hide();
-    $('#room_num_input').hide();
-    $('#phone_input').hide();
+    $('#description_input, #hostname_input, #os_input, #printer_input').hide();
+    $('#building_input, #room_num_input').hide();
     $('#purchased_by_input').hide();
-    $('#printer_input').hide();
 	$( '#newMake, #newModel' ).hide();
 	$( '#maketype' ).text( "Choose Make " );
 	$( '#modeltype' ).text( "Choose Model " );
+	$( '#eqtype' ).text( "Choose Type " );
+	$( '#departmenttype' ).text( "Choose Department " ); 
   });
 </script>
 </body>
