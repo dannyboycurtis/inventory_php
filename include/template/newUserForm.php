@@ -1,8 +1,7 @@
 <div class="container">
   <form class="form-horizontal" role="form" id="userForm" action="" method="post">
-    <h4>User Information: <small>(Items with * are optional)</small></h4>
 
-    <div class="form-group" id="selectusertype">
+    <div  id="selectusertype_input" class="form-group">
       <label class="col-xs-2 control-label text-right">Type of User</label>
       <div class="col-xs-3">
 
@@ -18,7 +17,7 @@
       </div>
     </div>
 
-    <div class="form-group" id='selectusers'>
+    <div id='selectusers_input' class="form-group">
       <label class="col-xs-2 control-label text-right">Users</label>
       <div class="col-xs-3">
         <div class="btn-group">
@@ -27,11 +26,11 @@
   			</button>
   			<ul id="usermenu" class="dropdown-menu" role="menu" style="height:auto;max-height: 200px;overflow-x:hidden"></ul>
 		</div>
-<ul id='userlist' class='list-unstyled' style='margin-top:10px'></ul>
+		<ul id='userlist' class='list-unstyled' style='margin-top:10px'></ul>
       </div>
     </div>
 
-	<div class="form-group" id='newuser'>
+	<div  id='newuser_input' class="form-group">
 		<label class="col-xs-2 control-label text-right">Add New User</label>
 		<div class="col-xs-3">
 			<div class='btn-group'>
@@ -51,15 +50,15 @@
 </div>
 <script>
   	// initially hides certain input boxes
-	$( '#selectusers, #newuser, #selectusertype' ).hide();
+	$( '#selectusers_input, #newuser_input, #selectusertype_input' ).hide();
 
    // this brings up text boxes based on equipment type
   $('#usertypemenu>li>a').on( 'click', function(){
      if ( $( this ).text() == "Faculty/Staff ")
-       $('#selectusers').show();
+       $('#selectusers_input').show();
 
      else
-       $('#selectusers, #newuser').hide();
+       $('#selectusers_input, #newuser_input').hide();
 
 	$( '#usertype' ).html( $( this ).text() ); 
    });
@@ -78,10 +77,10 @@
 
 			$("#usermenu>li>a").on( 'click', function(){
 				if ( $( this ).text() == 'Add New User' )
-					$( '#newuser' ).show();
+					$( '#newuser_input' ).show();
 				else
 				{
-					$( '#newuser' ).hide();
+					$( '#newuser_input' ).hide();
 	  				$( '#userlist').append( "<li><i class='fa fa-minus-square' style='cursor:pointer'></i> " + $(this).text() + "</li>");
 						$( '#userlist>li>i').on( 'click', function(){
 							$( this ).parents( 'li' ).remove();

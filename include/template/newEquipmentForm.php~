@@ -1,23 +1,31 @@
 <div class="container">
 
   <form class="form-horizontal" role="form" id="equipmentForm" action="">
-    <h4>Equipment Information: <small>(Items with * are optional)</small></h4>
 
-    <div class="form-group">
+    <div id="tag_input" class="form-group">
       <label class="col-xs-2 control-label text-right">Tag Number</label>
       <div class="col-xs-1">
         <input type="text" class="form-control" id="tag_num" maxlength="5">
-      </div>      
+      </div>
     </div>
 
-    <div class="form-group">
+	<div id="tag_error" class="input_error form-group" style="margin-bottom:20px;color:red">
+		<div class="col-xs-offset-2 col-xs-4"></div>
+	</div>
+
+    <div id="serial_input" class="form-group">
 		<label class="col-xs-2 control-label text-right">Serial Number</label>
 		<div class="col-xs-3">
-			<input type="text" class="form-control" id="serial" maxlength="30"> 
+			<input type="text" class="form-control" id="serial" maxlength="30">
+			<span id="serial_error" class="help-block"></span>
 		</div>
 	</div>
 
-	<div class="form-group">
+	<div id="serial_error" class="input_error form-group" style="margin-bottom:20px;color:red">
+		<div class="col-xs-offset-2 col-xs-4"></div>
+	</div>
+
+	<div id="makemodel_input" class="form-group">
 		<label class="col-xs-2 control-label text-right">Make & Model</label>
 		<div class="col-xs-3">
 			<div class="btn-group">
@@ -44,10 +52,13 @@
       </div>
     </div>
 
-    <div class="form-group">
+	<div id="makemodel_error" class="input_error form-group" style="margin-bottom:20px;color:red">
+		<div class="col-xs-offset-2 col-xs-4"></div>
+	</div>
+
+    <div id="eqtype_input" class="form-group">
       <label class="col-xs-2 control-label text-right">Type of Equipment</label>
       <div class="col-xs-3">
-
 			<div class="btn-group">
   				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
     				<span id="eqtype">Choose Type </span><span class="caret"></span>
@@ -61,21 +72,33 @@
       </div>
     </div>
 
-    <div class="form-group" id="description_input">
+	<div id="eqtype_error" class="input_error form-group" style="margin-bottom:20px;color:red">
+		<div class="col-xs-offset-2 col-xs-4"></div>
+	</div>
+
+    <div id="description_input" class="form-group">
       <label class="col-xs-2 control-label text-right">Description</label>
       <div class="col-xs-3">
         <input type="text" class="form-control" id="description" maxlength="100">
       </div>
     </div>
 
-    <div class="form-group" id="hostname_input">
+	<div id="description_error" class="input_error form-group" style="margin-bottom:20px;color:red">
+		<div class="col-xs-offset-2 col-xs-4"></div>
+	</div>
+
+    <div id="hostname_input" class="form-group">
       <label class="col-xs-2 control-label text-right">Hostname</label>
       <div class="col-xs-3">
         <input type="text" class="form-control" id="hostname" maxlength="30">
       </div>
     </div>
 
-    <div class="form-group" id="os_input">
+	<div id="hostname_error" class="input_error form-group" style="margin-bottom:20px;color:red">
+		<div class="col-xs-offset-2 col-xs-4"></div>
+	</div>
+
+    <div id="os_input" class="form-group">
       <label class="col-xs-2 control-label text-right">Operating System</label>
       <div class="col-xs-3">
 		<div class="btn-group">
@@ -90,26 +113,38 @@
       </div>
     </div>
 
-    <div class="form-group" id="otheros">
+	<div id="os_error" class="input_error form-group" style="margin-bottom:20px;color:red">
+		<div class="col-xs-offset-2 col-xs-4"></div>
+	</div>
+
+    <div id="otheros_input" class="form-group">
       <label class="col-xs-2 control-label text-right">New OS Name</label>
       <div class="col-xs-3">
-        <input type="text" class="form-control" id="otheros_input" maxlength="30">
+        <input type="text" class="form-control" id="otheros" maxlength="30">
       </div>
     </div>
 
+	<div id="otheros_error" class="input_error form-group" style="margin-bottom:20px;color:red">
+		<div class="col-xs-offset-2 col-xs-4"></div>
+	</div>
 
-    <div class="form-group" id="printer_input">
+    <div id="printer_input" class="form-group">
       <label class="col-xs-2 control-label text-right">Printer*</label>
       <div class="col-xs-3">
         <input type="text" class="form-control" id="eq_printer">
       </div>
     </div>
 
+	<div id="printer_error" class="input_error form-group" style="margin-bottom:20px;color:red">
+		<div class="col-xs-offset-2 col-xs-4"></div>
+	</div>
+
   </form>
 </div>
 <script>
   	// initially hides certain input boxes
-	$( '#newMake, #newModel, #description_input, #hostname_input, #os_input, #otheros, #printer_input' ).hide();
+	$( '#newMake, #newModel, #description_input, #hostname_input, #os_input, #otheros_input, #printer_input' ).hide();
+	$( '.input_error' ).hide();
 
    // this brings up text boxes based on equipment type
   $('#eqtypemenu>li>a').on( 'click', function(){
@@ -118,7 +153,7 @@
        $('#description_input, #softwarenotavailable, #usersnotavailable').show();
        $('#hostname_input, #os_input, #printer_input').hide();
 		// these are in user/software tabs!
-		$( '#selectsoftware, #selectusertype, #selectusers, #newuser' ).hide();
+		$( '#selectsoftware_input, #selectusertype_input, #selectusers_input, #newuser_input' ).hide();
 
      } 
      else if ( $( this ).text() == "Computer or Tablet ")
@@ -127,7 +162,7 @@
        $('#description_input').hide();
 
 		// note: this is in the software/user tabs
-		$( '#selectsoftware, #selectusertype' ).show();
+		$( '#selectsoftware_input, #selectusertype_input' ).show();
 		$( '#softwarenotavailable, #usersnotavailable' ).hide();
      }
      else if ( $( this ).text() == "Network Printer ")
@@ -135,11 +170,11 @@
        $('#hostname_input, #softwarenotavailable, #usersnotavailable').show();
        $('#os_input, #description_input, #printer_input').hide();
 		// these are in user/software tabs!
-		$( '#selectsoftware, #selectusertype, #selectusers, #newuser' ).hide();
+		$( '#selectsoftware_input, #selectusertype_input, #selectusers_input, #newuser_input' ).hide();
      }
      else
 	{
-       $('#hostname_input, #os_input, #description_input, #printer_input, #selectsoftware, #selectusertype').hide();
+       $('#hostname_input, #os_input, #description_input, #printer_input, #selectsoftware_input, #selectusertype_input').hide();
 		$( '#softwarenotavailable, #usersnotavailable' ).show();
 	}
 		$( '#eqtype' ).html( $( this ).text() ); 
@@ -152,7 +187,7 @@
 // make and model dropdowns
 	$.ajax({
 		type: "POST",
-		url: "../populate_menus.php",
+		url: "include/populate_menus.php",
 		data: { query : "make" },
 		success: function( result ) {
 			results = $.parseJSON( result );
@@ -177,7 +212,7 @@
 
 					$.ajax({
 						type: "POST",
-						url: "../populate_menus.php",
+						url: "include/populate_menus.php",
 						data: { query : "model_from_make", make : $('#maketype').html() },
 						success: function( result ) {
 							results = $.parseJSON( result );
@@ -207,7 +242,7 @@
 // OS dropdown
 	$.ajax({
 		type: "POST",
-		url: "../populate_menus.php",
+		url: "include/populate_menus.php",
 		data: { query : "os" },
 		success: function( result ){
 			results = $.parseJSON( result );
@@ -216,17 +251,41 @@
 			});
 
 			$("#osmenu>li>a").on( 'click', function(){
-				if ( $( this ).text() == "Other " )
-					$( '#otheros' ).show();
+				if ( $( this ).text() == "New Operating System " )
+					$( '#otheros_input' ).show();
 
 				else
-					$( '#otheros' ).hide();
+					$( '#otheros_input' ).hide();
 
 	  			$( '#ostype').html( $( this ).text() );
 			});
 		}
 	});
 
+// Numeric only control handler
+jQuery.fn.ForceNumericOnly =
+function()
+{
+    return this.each(function()
+    {
+        $(this).keydown(function(e)
+        {
+            var key = e.charCode || e.keyCode || 0;
+            // allow backspace, tab, delete, arrows, numbers and keypad numbers ONLY
+            // home, end, period, and numpad decimal
+            return (
+                key == 8 || 
+                key == 9 ||
+                key == 46 ||
+                key == 110 ||
+                key == 190 ||
+                (key >= 35 && key <= 40) ||
+                (key >= 48 && key <= 57) ||
+                (key >= 96 && key <= 105));
+        });
+    });
+};
 
+$( "#tag_num" ).ForceNumericOnly();
 
 </script>

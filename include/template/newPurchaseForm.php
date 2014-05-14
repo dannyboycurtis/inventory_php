@@ -1,6 +1,5 @@
 <div class="container">
   <form class="form-horizontal" role="form" id="purchaseForm" action="" method="post">
-    <h4>Purchase Information: <small>(Items with * are optional)</small></h4>
 
 	<div class="form-group">
 		<label class="col-xs-2 control-label text-right">Purchase Order</label>
@@ -18,16 +17,22 @@
       </div>
     </div>
 
+	<div id="purchaseorder_error" class="input_error form-group" style="margin-bottom:20px;color:red">
+		<div class="col-xs-offset-2 col-xs-4"></div>
+	</div>
 
-    <div class="form-group">
+    <div id="purchasedate_input" class="form-group">
       <label class="col-xs-2 control-label text-right">Purchase Date</label>
       <div class="col-xs-3">
         <input type="text" class="form-control" id="purchasedate" placeholder="YYYY-MM-DD">
       </div>
     </div>
 
+	<div id="purchasedate_error" class="input_error form-group" style="margin-bottom:20px;color:red">
+		<div class="col-xs-offset-2 col-xs-4"></div>
+	</div>
 
-	<div class="form-group">
+	<div id="purchasedby_input" class="form-group">
 		<label class="col-xs-2 control-label text-right">Purchased By</label>
 		<div class="col-xs-3">
 			<div class="btn-group">
@@ -41,28 +46,19 @@
 			</div>
 		<input id='newPurchaser' class='form-control' placeholder='Create New Purchaser' style='margin-top:10px'>
       </div>
-
-    </div>
-   
-
-
-    <div class="form-group" id="purchased_by_input">
-      <label class="col-xs-2 control-label text-right">Name of Purchaser</label>
-      <div class="col-xs-3">
-        <input type="text" class="form-control" id="purchased_by_other"> 
-      </div>   
     </div>
 
-
-
+	<div id="purchasedby_error" class="input_error form-group" style="margin-bottom:20px;color:red">
+		<div class="col-xs-offset-2 col-xs-4"></div>
+	</div>
 
   </form>
 </div>
 
 <script>
+$( '.input_error' ).hide();
 
-$( '#newPurchase' ).hide();
-$( '#newPurchaser' ).hide();
+$( '#newPurchase, #newPurchaser' ).hide();
 
 // purchased by dropdown
 	$.ajax({

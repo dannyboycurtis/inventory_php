@@ -1,7 +1,5 @@
 <div class="container">
-  <form class="form-horizontal" role="form" id="newOtherForm" action="" method="post">
-    <h4>Other Information: <small>(Items with * are optional)</small></h4>
-
+  <form class="form-horizontal" role="form" id="otherForm" action="" method="post">
     <div class="form-group">
       <label class="col-xs-2 col-md-1 control-label text-right">Notes*</label>
       <div class="col-xs-5">

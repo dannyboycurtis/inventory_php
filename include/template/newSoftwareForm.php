@@ -1,8 +1,7 @@
 <div class="container">
   <form class="form-horizontal" role="form" id="softwareForm" action="" method="post">
-    <h4>Software Information: <small>(Items with * are optional)</small></h4>
 
-    <div class="form-group" id='selectsoftware'>
+    <div id="selectsoftware_input" class="form-group">
       <label class="col-xs-2 control-label text-right">Software</label>
       <div class="col-xs-3">
         <div class="btn-group">
@@ -11,9 +10,13 @@
   			</button>
   			<ul id="softwaremenu" class="dropdown-menu" role="menu" style="height:auto;max-height: 200px;overflow-x:hidden"></ul>
 		</div>
-		<ul id='softwarelist' class='list-unstyled' style='margin-top:10px'></ul>
+		<ul id="softwarelist" class="list-unstyled" style="margin-top:10px"></ul>
       </div>
     </div>
+
+	<div id="selectsoftware_error" class="input_error form-group" style="margin-bottom:20px;color:red">
+		<div class="col-xs-offset-2 col-xs-4"></div>
+	</div>
 
     <div class="form-group" id='softwarenotavailable'>
 &nbsp;&nbsp;&nbsp;&nbsp; Please Note: software is not available for this equipment type!
@@ -22,8 +25,10 @@
   </form>
 </div>
 <script>
+	$( '.input_error' ).hide();
+
   	// initially hides certain input boxes
-	$( '#selectsoftware' ).hide();
+	$( '#selectsoftware_input' ).hide();
 
 	$( '#softwarenotavailable' ).show();
    // this brings up text boxes based on equipment type

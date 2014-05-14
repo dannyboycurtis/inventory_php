@@ -26,12 +26,16 @@
 <!-- Add Equipment Modal -->
 <div class="modal" id="addEquipmentModal"  style="padding-top:40px" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
+
+
     <div class="modal-content">
-
-
+	<div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h4 class="modal-title">Add Equipment Record <small>(Items with * are optional)</small>
+	</div>
       <div class="modal-body">
-        <ul class="nav nav-tabs" id="addRecordTab">
-          <li class="active"><a href="#equipmentInfo" data-toggle="tab">Equipment </a></li>
+        <ul class="nav nav-pills" id="addRecordTab">
+          <li class="active"><a href="#equipmentInfo" data-toggle="pill">Equipment </a></li>
 		  <li><a href="#purchaseInfo" data-toggle="tab">Purchase </a></li>
 		  <li><a href="#locationInfo" data-toggle="tab">Location </a></li>
           <li><a href="#netInfo" data-toggle="tab">Network </a></li>
@@ -90,7 +94,7 @@
     $('#building_input, #room_num_input, #otherbuilding, #otherdepartment').hide();
     $('#purchased_by_input').hide();
 	$( '#newMake, #newModel' ).hide();
-	$( '#selectusertype, #selectusers, #newuser, #selectsoftware' ).hide();
+	$( '#selectusertype_input, #selectusers, #newuser_input, #selectsoftware_input' ).hide();
 	$( '#usersnotavailable, #softwarenotavailable' ).show();
 	$( '#userlist, #softwarelist' ).empty();
 	$( '#maketype' ).text( "Choose Make " );
