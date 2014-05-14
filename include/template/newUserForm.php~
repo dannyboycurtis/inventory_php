@@ -67,7 +67,7 @@
 // users dropdown
 	$.ajax({
 		type: "POST",
-		url: "include/populate_menus.php",
+		url: "../populate_menus.php",
 		data: { query : "users" },
 		success: function( result ){
 			results = $.parseJSON( result );

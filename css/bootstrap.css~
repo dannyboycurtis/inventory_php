@@ -2368,7 +2368,7 @@ input[type="button"].btn-block {
 .collapsing {
   position: relative;
   height: 0;
-  overflow: visible;
+  overflow: hidden;
   -webkit-transition: height 0.35s ease;
   transition: height 0.35s ease;
 }
@@ -5189,7 +5189,7 @@ button.close {
 }
 @media (min-width: 992px) {
   .modal-lg {
-    width: 900px;
+    width: 700px;
   }
 }
 .tooltip {

@@ -1,5 +1,6 @@
 <div class="container">
-  <form class="form-horizontal" role="form" id="newEquipmentForm" action="">
+
+  <form class="form-horizontal" role="form" id="equipmentForm" action="">
     <h4>Equipment Information: <small>(Items with * are optional)</small></h4>
 
     <div class="form-group">
@@ -17,7 +18,7 @@
 	</div>
 
 	<div class="form-group">
-		<label class="col-xs-2 control-label text-right">Make</label>
+		<label class="col-xs-2 control-label text-right">Make & Model</label>
 		<div class="col-xs-3">
 			<div class="btn-group">
   				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -28,13 +29,7 @@
    					<li class="divider"></li>
   				</ul>
 			</div>
-		<input id='newMake' class='form-control' placeholder='Create New Make' style='margin-top:10px'>
-      </div>
-    </div>
-   
-	<div class="form-group">
-    	<label class="col-xs-2 control-label text-right">Model</label>
-    	<div class="col-xs-3">
+
 			<div class="btn-group">
   				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
     				<span id="modeltype">Choose Model </span><span class="caret"></span>
@@ -44,6 +39,7 @@
     				<li class="divider"></li>
   				</ul>
 			</div>
+		<input id='newMake' class='form-control' placeholder='Create New Make' style='margin-top:10px'>
 		<input id='newModel' class='form-control' placeholder='Create New Model' style='margin-top:10px'>
       </div>
     </div>
@@ -62,7 +58,6 @@
     				<li><a href="#">Other Equipment </a></li>
   				</ul>
 			</div>
-
       </div>
     </div>
 
@@ -83,9 +78,25 @@
     <div class="form-group" id="os_input">
       <label class="col-xs-2 control-label text-right">Operating System</label>
       <div class="col-xs-3">
-        <input type="text" class="form-control" id="os" maxlength="30">
+		<div class="btn-group">
+			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+    			<span id="ostype">Choose OS </span><span class="caret"></span>
+			</button>
+			<ul id="osmenu" class="dropdown-menu" role="menu" style="height:auto;max-height: 200px;overflow-x:hidden">
+				<li><a href='#'>New Operating System </a></li>
+				<li class="divider"></li>
+			</ul>
+		</div>
       </div>
     </div>
+
+    <div class="form-group" id="otheros">
+      <label class="col-xs-2 control-label text-right">New OS Name</label>
+      <div class="col-xs-3">
+        <input type="text" class="form-control" id="otheros_input" maxlength="30">
+      </div>
+    </div>
+
 
     <div class="form-group" id="printer_input">
       <label class="col-xs-2 control-label text-right">Printer*</label>
@@ -98,29 +109,39 @@
 </div>
 <script>
   	// initially hides certain input boxes
-	$( '#newMake, #newModel, #description_input, #hostname_input, #os_input' ).hide();
+	$( '#newMake, #newModel, #description_input, #hostname_input, #os_input, #otheros, #printer_input' ).hide();
 
    // this brings up text boxes based on equipment type
   $('#eqtypemenu>li>a').on( 'click', function(){
      if ( $( this ).text() == "Other Equipment ")
      {
-       $('#description_input').show();
+       $('#description_input, #softwarenotavailable, #usersnotavailable').show();
        $('#hostname_input, #os_input, #printer_input').hide();
+		// these are in user/software tabs!
+		$( '#selectsoftware, #selectusertype, #selectusers, #newuser' ).hide();
 
      } 
      else if ( $( this ).text() == "Computer or Tablet ")
      {
        $('#hostname_input, #os_input, #printer_input').show();
        $('#description_input').hide();
+
+		// note: this is in the software/user tabs
+		$( '#selectsoftware, #selectusertype' ).show();
+		$( '#softwarenotavailable, #usersnotavailable' ).hide();
      }
      else if ( $( this ).text() == "Network Printer ")
      {
-       $('#hostname_input').show();
+       $('#hostname_input, #softwarenotavailable, #usersnotavailable').show();
        $('#os_input, #description_input, #printer_input').hide();
+		// these are in user/software tabs!
+		$( '#selectsoftware, #selectusertype, #selectusers, #newuser' ).hide();
      }
      else
-       $('#hostname_input, #os_input, #description_input, #printer_input').hide();
-
+	{
+       $('#hostname_input, #os_input, #description_input, #printer_input, #selectsoftware, #selectusertype').hide();
+		$( '#softwarenotavailable, #usersnotavailable' ).show();
+	}
 		$( '#eqtype' ).html( $( this ).text() ); 
    });
 
@@ -131,7 +152,7 @@
 // make and model dropdowns
 	$.ajax({
 		type: "POST",
-		url: "../populate_menus.php",
+		url: "include/populate_menus.php",
 		data: { query : "make" },
 		success: function( result ) {
 			results = $.parseJSON( result );
@@ -156,7 +177,7 @@
 
 					$.ajax({
 						type: "POST",
-						url: "../populate_menus.php",
+						url: "include/populate_menus.php",
 						data: { query : "model_from_make", make : $('#maketype').html() },
 						success: function( result ) {
 							results = $.parseJSON( result );
@@ -182,4 +203,30 @@
 			});
 		}
 	});
+
+// OS dropdown
+	$.ajax({
+		type: "POST",
+		url: "include/populate_menus.php",
+		data: { query : "os" },
+		success: function( result ){
+			results = $.parseJSON( result );
+			$.each( results, function( i ){
+				$('#osmenu').append( "<li><a href='#'>" + results[i] + " </a></li>" );
+			});
+
+			$("#osmenu>li>a").on( 'click', function(){
+				if ( $( this ).text() == "Other " )
+					$( '#otheros' ).show();
+
+				else
+					$( '#otheros' ).hide();
+
+	  			$( '#ostype').html( $( this ).text() );
+			});
+		}
+	});
+
+
+
 </script>

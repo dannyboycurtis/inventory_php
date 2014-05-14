@@ -126,9 +126,15 @@ else if ( $_POST['query'] == 'purchased_by' )
 			$results[] = $purchased_by;
 	}	
 }
+
 else if ( $_POST['query'] == 'os' )
 {
-	$query_stmt = "SELECT DISTINCT os FROM computer WHERE os IS NOT NULL ORDER BY os ASC";
+	$query_stmt = "SELECT DISTINCT c.os 
+					FROM computer c 
+					INNER JOIN ( SELECT os, COUNT(*) total
+								 FROM computer
+								 GROUP BY os ) c2 ON c.os = c2.os
+					WHERE c.os IS NOT NULL ORDER BY c.os DESC";
 
 	if ( $stmt = $mysqli->prepare( $query_stmt ) )
 	{
@@ -142,6 +148,28 @@ else if ( $_POST['query'] == 'os' )
 			$results[] = $os;
 	}	
 }
+
+
+else if ( $_POST['query'] == 'building' )
+{
+	$query_stmt = "SELECT DISTINCT building FROM equipment WHERE building IS NOT NULL";
+
+	if ( $stmt = $mysqli->prepare( $query_stmt ) )
+	{
+		unset( $results );
+
+ 		$stmt->execute();
+		$stmt->store_result();
+		$stmt->bind_result( $building);
+
+		while ( $stmt->fetch() )
+			$results[] = $building;
+	}	
+}
+
+
+
+
 
 else if ( $_POST['query' ] == 'software' )
 {

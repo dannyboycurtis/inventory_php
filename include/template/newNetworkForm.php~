@@ -1,5 +1,5 @@
 <div class="container">
-  <form class="form-horizontal" role="form" id="networkForm" action="" method="post">
+  <form class="form-horizontal" role="form" id="newNetworkForm" action="" method="post">
     <h4>Network Information: <small>(Items with * are optional)</small></h4>
 
     <div class="form-group">

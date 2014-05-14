@@ -1,5 +1,5 @@
 <div class="container">
-  <form class="form-horizontal" role="form" id="newPurchaseForm" action="" method="post">
+  <form class="form-horizontal" role="form" id="purchaseForm" action="" method="post">
     <h4>Purchase Information: <small>(Items with * are optional)</small></h4>
 
 	<div class="form-group">
@@ -67,7 +67,7 @@ $( '#newPurchaser' ).hide();
 // purchased by dropdown
 	$.ajax({
 		type: "POST",
-		url: "../populate_menus.php",
+		url: "include/populate_menus.php",
 		data: { query : "purchased_by" },
 		success: function( result ){
 			results = $.parseJSON( result );
@@ -91,7 +91,7 @@ $( '#newPurchaser' ).hide();
 // purchase order dropdown
 	$.ajax({
 		type: "POST",
-		url: "../populate_menus.php",
+		url: "include/populate_menus.php",
 		data: { query : "purchase_order" },
 		success: function( result ){
 			results = $.parseJSON( result );

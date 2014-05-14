@@ -1,5 +1,5 @@
 <div class="container">
-  <form class="form-horizontal" role="form" id="otherForm" action="" method="post">
+  <form class="form-horizontal" role="form" id="newOtherForm" action="" method="post">
     <h4>Other Information: <small>(Items with * are optional)</small></h4>
 
     <div class="form-group">
