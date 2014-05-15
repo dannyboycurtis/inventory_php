@@ -80,7 +80,7 @@
 
 <script>
   // this resets form data in the modal on closing
-  $('.modal').on('hidden.bs.modal', function(){
+  $('#addEquipmentModal').on('hidden.bs.modal', function(){
     $(this).find('#equipmentForm')[0].reset();
     $(this).find('#purchaseForm')[0].reset();
 	$(this).find('#locationForm')[0].reset();
@@ -234,7 +234,6 @@ $( '#submitequipment' ).on( 'click', function() {
 			$( '#os_input, #otheros_input' ).removeClass( 'has-error' );
 			$( '#osbutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
 		}
-
 	}
 
 	else if ( $( '#eqtype' ).text() == "Network Printer " )
@@ -277,7 +276,6 @@ $( '#submitequipment' ).on( 'click', function() {
 			$( '#description_input' ).removeClass( 'has-error' );
 			$( '#eqtypebutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
 		}
-
 	}
 
 	else
@@ -427,70 +425,65 @@ $( '#submitequipment' ).on( 'click', function() {
 
 // users/software tabs
 
-if ( $( '#eqtype' ).text() == "Computer or Tablet " )
-{
-	// User type
-	if ( $( '#usertype' ).text() == "Choose Type " )
+	if ( $( '#eqtype' ).text() == "Computer or Tablet " )
 	{
-		$( '#selectusertype_error' ).show().children().html( "User type required!" );
-		$( '#selectusertype_input' ).addClass( 'has-error' );
-		$( '#usertypebutton' ).addClass( 'btn-danger' ).removeClass( 'btn-default' );
-	}
+		// User type
+		if ( $( '#usertype' ).text() == "Choose Type " )
+		{
+			$( '#selectusertype_error' ).show().children().html( "User type required!" );
+			$( '#selectusertype_input' ).addClass( 'has-error' );
+			$( '#usertypebutton' ).addClass( 'btn-danger' ).removeClass( 'btn-default' );
+		}
 
 		else if ( $( '#usertype' ).text() == "Faculty/Staff " )
-	{
-		$( '#selectusertype_error' ).hide();
-		$( '#selectusertype_input' ).removeClass( 'has-error' );
-		$( '#usertypebutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
-
-		if ( $( '#newuserfname:visible' ).val() == "" && $( '#newuserlname:visible' ).val() == "" )
 		{
-			$( '#newuser_error' ).show().children().html( "First and last name required!" );
-			$( '#newuser_input' ).addClass( 'has-error' );
-		}
+			$( '#selectusertype_error' ).hide();
+			$( '#selectusertype_input' ).removeClass( 'has-error' );
+			$( '#usertypebutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
+
+			if ( $( '#newuserfname:visible' ).val() == "" && $( '#newuserlname:visible' ).val() == "" )
+			{
+				$( '#newuser_error' ).show().children().html( "First and last name required!" );
+				$( '#newuser_input' ).addClass( 'has-error' );
+			}
 			
-		else if ( $( '#newuserfname:visible' ).val() == "" )
-		{
-			$( '#newuser_error' ).show().children().html( "First name required!" );
-			$( '#newuser_input' ).addClass( 'has-error' );
-		}
+			else if ( $( '#newuserfname:visible' ).val() == "" )
+			{
+				$( '#newuser_error' ).show().children().html( "First name required!" );
+				$( '#newuser_input' ).addClass( 'has-error' );
+			}
 
-		else if ( $( '#newuserlname:visible' ).val() == "" )
-		{
-			$( '#newuser_error' ).show().children().html( "Last name required!" );
-			$( '#newuser_input' ).addClass( 'has-error' );
+			else if ( $( '#newuserlname:visible' ).val() == "" )
+			{
+				$( '#newuser_error' ).show().children().html( "Last name required!" );
+				$( '#newuser_input' ).addClass( 'has-error' );
+			}
+
+			else
+			{
+				$( '#newuser_error' ).hide();
+				$( '#newuser_input' ).removeClass( 'has-error' );
+			}
 		}
 
 		else
 		{
-			$( '#newuser_error' ).hide();
-			$( '#newuser_input' ).removeClass( 'has-error' );
+			$( '#selectusertype_error' ).hide();
+			$( '#selectusertype_input' ).removeClass( 'has-error' );
+			$( '#usertypebutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
 		}
 	}
 
 	else
 	{
-		$( '#selectusertype_error' ).hide();
-		$( '#selectusertype_input' ).removeClass( 'has-error' );
+		$( '#selectusertyper_error, #newuser_error' ).hide();
+		$( '#selectusertype_input, #newuser_input' ).removeClass( 'has-error' );
 		$( '#usertypebutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
 	}
 
-	/********************************************
-		SOFTWARE VALIDATION HERE!
-	**********************************************/
 
-}
 
-else
-{
-	$( '#selectusertyper_error, #newuser_error' ).hide();
-	$( '#selectusertype_input, #newuser_input' ).removeClass( 'has-error' );
-	$( '#usertypebutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
-	/**************************************
-		SOFTWARE ERROR RESETS HERE!
-	****************************************/
-}
-				
+
 
 });
 
