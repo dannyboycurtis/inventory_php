@@ -5,7 +5,7 @@
       <label class="col-xs-2 control-label text-right">Department</label>
       <div class="col-xs-3">
 		<div class="btn-group">
-			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+			<button id="departmentbutton" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
     			<span id="departmenttype">Choose Department </span><span class="caret"></span>
 			</button>
 			<ul id="departmentmenu" class="dropdown-menu" role="menu" style="height:auto;max-height: 200px;overflow-x:hidden">
@@ -33,7 +33,7 @@
       <label class="col-xs-2 control-label text-right">Location</label>
       <div class="col-xs-3">
 		<div class="btn-group">
-			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+			<button id="locationbutton" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
     			<span id="locationtype">Choose Location </span><span class="caret"></span>
 			</button>
 			<ul id="locationmenu" class="dropdown-menu" role="menu" style="height:auto;max-height: 200px;overflow-x:hidden">
@@ -52,7 +52,7 @@
       <label class="col-xs-2 control-label text-right">Building</label>
       <div class="col-xs-3">
 		<div class="btn-group">
-			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+			<button id="buildingbutton" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
     			<span id="buildingtype">Choose Building </span><span class="caret"></span>
 			</button>
 			<ul id="buildingmenu" class="dropdown-menu" role="menu" style="height:auto;max-height: 200px;overflow-x:hidden">

@@ -28,7 +28,7 @@
 		<label class="col-xs-2 control-label text-right">Make & Model</label>
 		<div class="col-xs-3">
 			<div class="btn-group">
-  				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+  				<button id="makebutton" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
     				<span id="maketype">Choose Make </span><span class="caret"></span>
   				</button>
   				<ul id="makemenu" class="dropdown-menu" role="menu" style="height:auto;max-height: 200px;overflow-x:hidden">
@@ -38,7 +38,7 @@
 			</div>
 
 			<div class="btn-group">
-  				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+  				<button id="modelbutton" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
     				<span id="modeltype">Choose Model </span><span class="caret"></span>
   				</button>
   				<ul id="modelmenu" class="dropdown-menu" role="menu" style="height:auto;max-height: 200px;overflow-x:hidden">
@@ -59,7 +59,7 @@
       <label class="col-xs-2 control-label text-right">Type of Equipment</label>
       <div class="col-xs-3">
 			<div class="btn-group">
-  				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+  				<button id="eqtypebutton" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
     				<span id="eqtype">Choose Type </span><span class="caret"></span>
   				</button>
   				<ul id="eqtypemenu" class="dropdown-menu" role="menu" style="height:auto;max-height: 200px;overflow-x:hidden">
@@ -101,7 +101,7 @@
       <label class="col-xs-2 control-label text-right">Operating System</label>
       <div class="col-xs-3">
 		<div class="btn-group">
-			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+			<button id="osbutton" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
     			<span id="ostype">Choose OS </span><span class="caret"></span>
 			</button>
 			<ul id="osmenu" class="dropdown-menu" role="menu" style="height:auto;max-height: 200px;overflow-x:hidden">
@@ -112,10 +112,6 @@
       </div>
     </div>
 
-	<div id="os_error" class="input_error form-group" style="margin-bottom:20px;color:red">
-		<div class="col-xs-offset-2 col-xs-4"></div>
-	</div>
-
     <div id="otheros_input" class="form-group">
       <label class="col-xs-2 control-label text-right">New OS Name</label>
       <div class="col-xs-3">
@@ -123,14 +119,14 @@
       </div>
     </div>
 
-	<div id="otheros_error" class="input_error form-group" style="margin-bottom:20px;color:red">
+	<div id="os_error" class="input_error form-group" style="margin-bottom:20px;color:red">
 		<div class="col-xs-offset-2 col-xs-4"></div>
 	</div>
 
     <div id="printer_input" class="form-group">
       <label class="col-xs-2 control-label text-right">Printer*</label>
       <div class="col-xs-3">
-        <input type="text" class="form-control" id="eq_printer">
+        <input type="text" class="form-control" id="eq_printer" maxlength="30">
       </div>
     </div>
 
@@ -141,16 +137,18 @@
   </form>
 </div>
 <script>
+	$( '#tag_num' ).mask( '99999', {placeholder: " "} );
+
   	// initially hides certain input boxes
 	$( '#newMake, #newModel, #description_input, #hostname_input, #os_input, #otheros_input, #printer_input' ).hide();
 	$( '.input_error' ).hide();
 
    // this brings up text boxes based on equipment type
   $('#eqtypemenu>li>a').on( 'click', function(){
-     if ( $( this ).text() == "Other Equipment ")
+     if ( $( this ).text() == "Other Equipment " )
      {
        $('#description_input, #softwarenotavailable, #usersnotavailable').show();
-       $('#hostname_input, #os_input, #printer_input').hide();
+       $('#hostname_input, #hostname_error, #os_input, #os_error, #printer_input').hide();
 		// these are in user/software tabs!
 		$( '#selectsoftware_input, #selectusertype_input, #selectusers_input, #newuser_input' ).hide();
 
@@ -158,7 +156,7 @@
      else if ( $( this ).text() == "Computer or Tablet ")
      {
        $('#hostname_input, #os_input, #printer_input').show();
-       $('#description_input').hide();
+       $('#description_input, #description_error').hide();
 
 		// note: this is in the software/user tabs
 		$( '#selectsoftware_input, #selectusertype_input' ).show();
@@ -167,20 +165,25 @@
      else if ( $( this ).text() == "Network Printer ")
      {
        $('#hostname_input, #softwarenotavailable, #usersnotavailable').show();
-       $('#os_input, #description_input, #printer_input').hide();
+       $('#os_input, #os_error, #description_input, #description_error, #printer_input').hide();
 		// these are in user/software tabs!
 		$( '#selectsoftware_input, #selectusertype_input, #selectusers_input, #newuser_input' ).hide();
      }
      else
 	{
-       $('#hostname_input, #os_input, #description_input, #printer_input, #selectsoftware_input, #selectusertype_input').hide();
+       $('#hostname_input, #hostname_error, #os_input, #os_error, #description_input, #description_error, #printer_input, #selectsoftware_input, #selectusertype_input').hide();
 		$( '#softwarenotavailable, #usersnotavailable' ).show();
 	}
+
+		
+		if ( $( '#hostname_input:visible' ).hasClass( 'has-error' ) )
+			$( '#hostname_error' ).show();
+
+		if ( $( '#os_input:visible' ).hasClass( 'has-error' ) )
+			$( '#os_error' ).show();
+
 		$( '#eqtype' ).html( $( this ).text() ); 
    });
-
-
-
 
 
 // make and model dropdowns
@@ -260,31 +263,4 @@
 			});
 		}
 	});
-
-// Numeric only control handler
-jQuery.fn.ForceNumericOnly =
-function()
-{
-    return this.each(function()
-    {
-        $(this).keydown(function(e)
-        {
-            var key = e.charCode || e.keyCode || 0;
-            // allow backspace, tab, delete, arrows, numbers and keypad numbers ONLY
-            // home, end, period, and numpad decimal
-            return (
-                key == 8 || 
-                key == 9 ||
-                key == 46 ||
-                key == 110 ||
-                key == 190 ||
-                (key >= 35 && key <= 40) ||
-                (key >= 48 && key <= 57) ||
-                (key >= 96 && key <= 105));
-        });
-    });
-};
-
-$( "#tag_num" ).ForceNumericOnly();
-
 </script>

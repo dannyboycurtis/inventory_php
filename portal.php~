@@ -41,7 +41,7 @@ if ( !( $logged ) )
 </head>
 <body style="padding-top: 60px; padding-bottom: 20px;">
 
-
+<?php include_once "include/template/modals.php"; ?>
 
 <!-- Top panel-->
 <div class="container" id="navbar">

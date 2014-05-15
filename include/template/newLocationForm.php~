@@ -5,7 +5,7 @@
       <label class="col-xs-2 control-label text-right">Department</label>
       <div class="col-xs-3">
 		<div class="btn-group">
-			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+			<button id="departmentbutton" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
     			<span id="departmenttype">Choose Department </span><span class="caret"></span>
 			</button>
 			<ul id="departmentmenu" class="dropdown-menu" role="menu" style="height:auto;max-height: 200px;overflow-x:hidden">
@@ -91,6 +91,7 @@
 </div>
 
 <script>
+$( '.input_error' ).hide();
 // initially hide otherdepartment input
 $( '#otherdepartment_input, #room_num_input, #otherbuilding_input, #building_input' ).hide();
 

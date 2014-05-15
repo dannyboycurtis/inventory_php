@@ -8,7 +8,7 @@
       </div>
     </div>
 
-	<div id="mac_error" class="form-group" style="margin-bottom:20px;color:red">
+	<div id="mac_error" class="input_error form-group" style="margin-bottom:20px;color:red">
 		<div class="col-xs-offset-2 col-xs-4"></div>
 	</div>
 
@@ -19,24 +19,27 @@
       </div>
     </div>
 
-	<div id="ip_error" class="form-group" style="margin-bottom:20px;color:red">
+	<div id="ip_error" class="input_error form-group" style="margin-bottom:20px;color:red">
 		<div class="col-xs-offset-2 col-xs-4"></div>
 	</div>
    
     <div id="wmac_input" class="form-group">
       <label class="col-xs-2 control-label text-right">Wireless MAC*</label>
       <div class="col-xs-3">
-        <input type="text" class="form-control" id="mac" maxlength="17"> 
+        <input type="text" class="form-control" id="wmac" maxlength="17"> 
       </div>
     </div>
 
-	<div id="wmac_error" class="form-group" style="margin-bottom:20px;color:red">
+	<div id="wmac_error" class="input_error form-group" style="margin-bottom:20px;color:red">
 		<div class="col-xs-offset-2 col-xs-4"></div>
 	</div>
 
   </form>
 </div>
 <script>
-$( '#mac_error, #ip_error, #wmac_error' ).hide();
+$( '#mac, #wmac' ).mask( "**:**:**:**:**:**", {placeholder:" "} );
+
+$( '.input_error' ).hide();
+
 
 </script>

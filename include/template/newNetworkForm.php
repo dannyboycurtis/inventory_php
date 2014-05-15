@@ -26,7 +26,7 @@
     <div id="wmac_input" class="form-group">
       <label class="col-xs-2 control-label text-right">Wireless MAC*</label>
       <div class="col-xs-3">
-        <input type="text" class="form-control" id="mac" maxlength="17"> 
+        <input type="text" class="form-control" id="wmac" maxlength="17"> 
       </div>
     </div>
 
@@ -37,6 +37,10 @@
   </form>
 </div>
 <script>
+$( '#mac, #wmac' ).mask( "**:**:**:**:**:**", {placeholder:" "} );
+$( '#ip' ).mask( "999.999.999.999", {placeholder:" "} );
+
 $( '.input_error' ).hide();
+
 
 </script>

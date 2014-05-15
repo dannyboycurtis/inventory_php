@@ -4,9 +4,8 @@
     <div  id="selectusertype_input" class="form-group">
       <label class="col-xs-2 control-label text-right">Type of User</label>
       <div class="col-xs-3">
-
 			<div class="btn-group">
-  				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+  				<button id="usertypebutton" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
     				<span id="usertype">Choose Type </span><span class="caret"></span>
   				</button>
   				<ul id="usertypemenu" class="dropdown-menu" role="menu" style="height:auto;max-height: 200px;overflow-x:hidden">
@@ -16,6 +15,10 @@
 			</div>
       </div>
     </div>
+
+	<div id="selectusertype_error" class="input_error form-group" style="margin-bottom:20px;color:red">
+		<div class="col-xs-offset-2 col-xs-4"></div>
+	</div>
 
     <div id='selectusers_input' class="form-group">
       <label class="col-xs-2 control-label text-right">Users</label>
@@ -40,6 +43,10 @@
 				<input class='form-control' id='newuserphone' placeholder='Phone Number*' style='margin-top:10px'>
 			</div>
 		</div>
+	</div>
+
+	<div id="newuser_error" class="input_error form-group" style="margin-bottom:20px;color:red">
+		<div class="col-xs-offset-2 col-xs-4"></div>
 	</div>
 
     <div class="form-group" id='usersnotavailable'>

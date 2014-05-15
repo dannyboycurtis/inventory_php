@@ -787,3 +787,9 @@ function pwdformhash( form, password, conf )
     form.submit();
     return true;
 }
+
+
+
+
+
+

@@ -71,7 +71,7 @@
 
       <div class="modal-footer"> 
         <button type="button" class="btn btn-default" data-dismiss="modal" >Cancel</button>
-        <button type="button" class="btn btn-primary disabled">Submit</button>
+        <button id="submitequipment" type="button" class="btn btn-primary">Submit</button>
       </div>
     </div>
   </div>
@@ -94,7 +94,7 @@
     $('#building_input, #room_num_input, #otherbuilding, #otherdepartment').hide();
     $('#purchased_by_input').hide();
 	$( '#newMake, #newModel' ).hide();
-	$( '#selectusertype_input, #selectusers, #newuser, #selectsoftware_input' ).hide();
+	$( '#selectusertype_input, #selectusers, #newuser_input, #selectsoftware_input' ).hide();
 	$( '#usersnotavailable, #softwarenotavailable' ).show();
 	$( '#userlist, #softwarelist' ).empty();
 	$( '#maketype' ).text( "Choose Make " );
@@ -110,4 +110,388 @@
 	$( '#buildingtype' ).text( "Choose Building " );
 	$( '#softwaretype' ).text( "Choose Software " );
   });
+
+$( '#submitequipment' ).on( 'click', function() {
+
+// prepare inputs from menus
+
+// equipment tab
+
+	// tag num
+	if ( $( '#tag_num' ).val() == "" )
+	{
+		$( '#tag_error' ).show().children().html( "Property tag number is required!" );
+		$( '#tag_input' ).addClass( 'has-error' );
+	}
+
+	else
+	{
+		$( '#tag_error' ).hide();
+		$( '#tag_input' ).removeClass( 'has-error' );
+	}
+
+	// serial
+	if ( $( '#serial' ).val() == "" )
+	{
+		$( '#serial_error' ).show().children().html( "Serial number is required!" );
+		$( '#serial_input' ).addClass( 'has-error' );
+	}
+
+	else
+	{
+		$( '#serial_error' ).hide();
+		$( '#serial_input' ).removeClass( 'has-error' );
+	}
+
+	// make and model
+	if ( $( '#maketype' ).text() == "Choose Make " && $( '#modeltype' ).text() == "Choose Model " )
+	{
+		$( '#makemodel_error' ).show().children().html( "Make and model are required!" );
+		$( '#makemodel_input' ).addClass( 'has-error' );
+		$( '#makebutton, #modelbutton' ).addClass( 'btn-danger' ).removeClass( 'btn-default' );
+	}
+
+	else if ( $( '#modeltype' ).text() == "Choose Model " )
+	{
+		$( '#makemodel_error' ).show().children().html( "Model is required!" );
+		$( '#makemodel_input' ).addClass( 'has-error' );
+		$( '#makebutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
+		$( '#modelbutton' ).addClass( 'btn-danger' ).removeClass( 'btn-default' );
+	}
+
+	else if ( ( $( '#maketype' ).text() == "Other " && $( '#newMake' ).val() == "" )
+				&& ( $( '#modeltype' ).text() == "Other " && $( '#newModel' ).val() == "" ) )
+	{
+		$( '#makemodel_error' ).show().children().html( "Make and model are required!" );
+		$( '#makemodel_input' ).addClass( 'has-error' );
+		$( '#makebutton, #modelbutton' ).addClass( 'btn-danger' ).removeClass( 'btn-default' );
+	}
+
+	else if ( $( '#maketype' ).text() == "Other " && $( '#newMake' ).val() == "" )
+	{
+		$( '#makemodel_error' ).show().children().html( "Make is required!" );
+		$( '#makemodel_input' ).addClass( 'has-error' );
+		$( '#makebutton' ).addClass( 'btn-danger' ).removeClass( 'btn-default' );
+	}
+
+	else if ( $( '#modeltype' ).text() == "Other " && $( '#newModel' ).val() == "" )
+	{
+		$( '#makemodel_error' ).show().children().html( "Model is required!" );	
+		$( '#makemodel_input' ).addClass( 'has-error' );
+		$( '#modelbutton' ).addClass( 'btn-danger' ).removeClass( 'btn-default' );
+	}
+
+	else
+	{
+		$( '#makemodel_error' ).hide();
+		$( '#makemodel_input' ).removeClass( 'has-error' );
+		$( '#makebutton, #modelbutton' ).removeClass( 'btn-danger' ).addClass( 'btn-default' );
+	}
+
+	// eq type
+	if ( $( '#eqtype' ).text() == "Choose Type " )
+	{
+		$( '#eqtype_error' ).show().children().html( "Equipment type is required!" );
+		$( 'eqtype_input' ).addClass( 'has-error' );
+		$( '#eqtypebutton' ).addClass( 'btn-danger' ).removeClass( 'btn-default' );
+	}
+
+	else if ( $( '#eqtype' ).text() == "Computer or Tablet " )
+	{
+		$( '#eqtype_error, #description_error' ).hide();
+		$( '#eqtype_input' ).removeClass( 'has-error' );
+		$( '#eqtypebutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
+
+		// hostname
+		if ( $( '#hostname' ).val() == "" )
+		{
+			$( '#hostname_error' ).show().children().html( "Hostname is required!" );
+			$( '#hostname_input' ).addClass( 'has-error' );
+		}
+
+		else
+		{
+			$( '#hostname_error' ).hide();
+			$( '#hostname_input' ).removeClass( 'has-error' );
+		}
+
+		// os
+		if ( $( '#ostype' ).text() == "Choose OS " )
+		{
+			$( '#os_error' ).show().children().html( "OS is required!" );
+			$( '#os_input' ).addClass( 'has-error' );
+			$( '#osbutton' ).addClass( 'btn-danger' ).removeClass( 'btn-default' );
+		}
+
+		else if ( $( '#ostype' ).text() == "Other " && $( '#otheros' ).val() == "" )
+		{
+			$( '#os_error' ).show().children().html( "OS is required!" );
+			$( '#otheros_input' ).addClass( 'has-error' );
+		}
+
+		else
+		{
+			$( '#os_input, #otheros_input' ).removeClass( 'has-error' );
+			$( '#osbutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
+		}
+
+	}
+
+	else if ( $( '#eqtype' ).text() == "Network Printer " )
+	{
+		$( '#eqtype_error, #description_error, #os_error' ).hide();
+		$( '#eqtype_input' ).removeClass( 'has-error' );
+		$( '#eqtypebutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
+
+		// hostname
+		if ( $( '#hostname' ).val() == "" )
+		{
+			$( '#hostname_error' ).show().children().html( "Hostname is required!" );
+			$( '#hostname_input' ).addClass( 'has-error' );
+		}
+
+		else
+		{
+			$( '#hostname_error' ).hide();
+			$( '#hostname_input' ).removeClass( 'has-error' );
+		}
+
+	}
+
+	else if ( $( '#eqtype' ).text() == "Other Equipment " )
+	{
+		$( '#eqtype_error, #hostname_error, #os_error' ).hide();
+		$( '#eqtype_input' ).removeClass( 'has-error' );
+		$( '#eqtypebutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
+
+		// description
+		if ( $( '#description' ).val() == "" )
+		{
+			$( '#description_error' ).show().children().html( "Description is required!" );
+			$( '#description_input' ).addClass( 'has-error' );
+		}
+
+		else
+		{
+			$( '#description_error' ).hide();
+			$( '#description_input' ).removeClass( 'has-error' );
+			$( '#eqtypebutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
+		}
+
+	}
+
+	else
+	{
+		$( '#eqtype_error, #description_error, #hostname_error, #os_error' ).hide();
+		$( '#eqtype_input' ).removeClass( 'has-error' );
+	}
+
+// purchase tab
+
+	// purchase date
+	if ( $( '#purchasedate' ).text() == "" )
+	{
+		$( '#purchasedate_error' ).show().children().html( "Purchase date is required!" );
+		$( '#purchasedate_input' ).addClass( 'has-error' );
+	}
+
+	else
+	{
+		$( '#purchasedate_error' ).hide();
+		$( '#purchasedate_input' ).removeClass( 'has-error' );
+	}
+
+	// purchased by
+	if ( $( '#purchasertype' ).text() == "Choose Purchaser" )
+	{
+		$( '#purchasedby_error' ).show().children().html( "Purchaser is required!" );
+		$( '#purchasedby_input' ).addClass( 'has-error' );
+		$( '#purchaserbutton' ).addClass( 'btn-danger' ).removeClass( 'btn-default' );
+	}
+
+	else if ( $( '#purchasertype' ).text() == "Other " )
+	{
+		$( '#purchaserbutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
+
+		if ( $( '#newPurchaser' ).val() == "" )
+		{
+			$( '#purchasedby_error' ).show().children().html( "Purchaser is required!" );
+		}
+
+		else
+		{
+			$( '#purchasedby_error' ).hide();
+			$( 'purchasedby_input' ).removeClass( 'has-error' );
+		}
+	}
+
+	else
+	{
+		$( '#purchasedby_error' ).hide();
+		$( '#purchasedby_input' ).removeClass( 'has-error' );
+		$( '#purchaserbutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
+	}
+			
+// location tab
+
+	// department
+	if ( $( '#departmenttype' ).text() == "Choose Department " )
+	{
+		$( '#department_error' ).show().children().html( "Department is required!" );
+		$( '#department_input' ).addClass( 'has-error' );
+		$( '#departmentbutton' ).addClass( 'btn-danger' ).removeClass( 'btn-default' );
+	}
+
+	else if ( $( '#departmenttype' ).text() == "Other " )
+	{
+		$( '#department_error' ).hide();
+		$( '#department_input' ).removeClass( 'has-error' );
+		$( '#departmentbutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
+
+		if ( $( '#otherdepartment' ).val() == "" )
+		{
+			$( '#otherdepartment_error' ).show().children().html( "Department is required!" );
+			$( '#otherdepartment_input' ).addClass( 'has-error' );
+		}
+
+		else
+		{
+			$( '#otherdepartment_error' ).hide();
+			$( '#otherdepartment_input' ).removeClass( 'has-error' );
+		}
+	}
+
+	else
+	{
+		$( '#department_error, #otherdepartment_error' ).hide();
+		$( '#department_input, #otherdepartment_input' ).removeClass( 'has-error' );
+		$( '#departmentbutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
+	}
+
+	// location
+	if ( $( '#locationtype' ).text() == "Choose Location " )
+	{
+		$( '#location_error' ).show().children().html( "Location is required!" );
+		$( '#location_input' ).addClass( 'has-error' );
+		$( '#locationbutton' ).addClass( 'btn-danger' ).removeClass( 'btn-default' );
+	}
+
+	else if ( $( '#locationtype' ).text() == "On Campus " )
+	{
+		$( '#location_error' ).hide();
+		$( '#location_input' ).removeClass( 'has-error' );
+		$( '#locationbutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
+
+		if ( $( '#buildingtype' ).text() == "Choose Building " )
+		{
+			$( '#building_error' ).show().children().html( "Building is required!" );
+			$( '#building_input' ).addClass( 'has-error' );
+			$( '#buildingbutton' ).addClass( 'btn-danger' ).removeClass( 'btn-default' );
+		}
+
+		else if ( $( '#buildingtype' ).text() == "Other " && $( '#otherbuilding' ).val() == "" )
+		{
+			$( '#building_error' ).hide();
+			$( '#building_input' ).removeClass( 'has-error' );
+			$( '#buildingbutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
+			$( '#otherbuilding_error' ).show().children().html( "Building is required!" );
+			$( '#otherbuilding_input' ).addClass( 'has-error' );
+		}
+
+		else
+		{
+			$( '#building_error, #otherbuilding_error' ).hide();
+			$( '#building_input, #otherbuilding_input' ).removeClass( 'has-error' );
+			$( '#buildingbutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
+		}
+
+		if ( $( '#room_num' ).val() == "" )
+		{
+			$( '#room_num_error' ).show().children().html( "Room number is required!" );
+			$( '#room_num_input' ).addClass( 'has-error' );
+		}
+
+		else
+		{
+			$( '#room_num_error' ).hide();
+			$( '#room_num_input' ).removeClass( 'has-error' );
+		}
+	}
+
+	else
+	{
+		$( '#location_error, #building_error, #otherbuilding_error, #room_num_error' ).hide();
+		$( '#location_input, #building_input, #otherbuilding_input, #room_num_input' ).removeClass( 'has-error' );
+		$( '#locationbutton, #buildingbutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
+	}
+
+// users/software tabs
+
+if ( $( '#eqtype' ).text() == "Computer or Tablet " )
+{
+	// User type
+	if ( $( '#usertype' ).text() == "Choose Type " )
+	{
+		$( '#selectusertype_error' ).show().children().html( "User type required!" );
+		$( '#selectusertype_input' ).addClass( 'has-error' );
+		$( '#usertypebutton' ).addClass( 'btn-danger' ).removeClass( 'btn-default' );
+	}
+
+		else if ( $( '#usertype' ).text() == "Faculty/Staff " )
+	{
+		$( '#selectusertype_error' ).hide();
+		$( '#selectusertype_input' ).removeClass( 'has-error' );
+		$( '#usertypebutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
+
+		if ( $( '#newuserfname:visible' ).val() == "" && $( '#newuserlname:visible' ).val() == "" )
+		{
+			$( '#newuser_error' ).show().children().html( "First and last name required!" );
+			$( '#newuser_input' ).addClass( 'has-error' );
+		}
+			
+		else if ( $( '#newuserfname:visible' ).val() == "" )
+		{
+			$( '#newuser_error' ).show().children().html( "First name required!" );
+			$( '#newuser_input' ).addClass( 'has-error' );
+		}
+
+		else if ( $( '#newuserlname:visible' ).val() == "" )
+		{
+			$( '#newuser_error' ).show().children().html( "Last name required!" );
+			$( '#newuser_input' ).addClass( 'has-error' );
+		}
+
+		else
+		{
+			$( '#newuser_error' ).hide();
+			$( '#newuser_input' ).removeClass( 'has-error' );
+		}
+	}
+
+	else
+	{
+		$( '#selectusertype_error' ).hide();
+		$( '#selectusertype_input' ).removeClass( 'has-error' );
+		$( '#usertypebutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
+	}
+
+	/********************************************
+		SOFTWARE VALIDATION HERE!
+	**********************************************/
+
+}
+
+else
+{
+	$( '#selectusertyper_error, #newuser_error' ).hide();
+	$( '#selectusertype_input, #newuser_input' ).removeClass( 'has-error' );
+	$( '#usertypebutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
+	/**************************************
+		SOFTWARE ERROR RESETS HERE!
+	****************************************/
+}
+				
+
+});
+
 </script>

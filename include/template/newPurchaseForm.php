@@ -1,8 +1,8 @@
 <div class="container">
   <form class="form-horizontal" role="form" id="purchaseForm" action="" method="post">
 
-	<div class="form-group">
-		<label class="col-xs-2 control-label text-right">Purchase Order</label>
+	<div id="purchaseorder_input" class="form-group">
+		<label class="col-xs-2 control-label text-right">Purchase Order*</label>
 		<div class="col-xs-3">
 			<div class="btn-group">
   				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -10,10 +10,11 @@
   				</button>
   				<ul id="purchasemenu" class="dropdown-menu" role="menu" style="height:auto;max-height: 200px;overflow-x:hidden">
 					<li><a href="#">New Purchase Order </a></li>
+					<li><a href="#">Not Available </a></li>
    					<li class="divider"></li>
   				</ul>
 			</div>
-		<input id='newPurchase' class='form-control' placeholder='Create New Purchase Order' style='margin-top:10px'>
+		<input id='newPurchase' class='form-control' placeholder='Create New Purchase Order' style='margin-top:10px' maxlength="30">
       </div>
     </div>
 
@@ -24,7 +25,7 @@
     <div id="purchasedate_input" class="form-group">
       <label class="col-xs-2 control-label text-right">Purchase Date</label>
       <div class="col-xs-3">
-        <input type="text" class="form-control" id="purchasedate" placeholder="YYYY-MM-DD">
+        <input type="text" class="form-control" id="purchasedate" placeholder="YYYY-MM-DD" maxlength="10">
       </div>
     </div>
 
@@ -36,7 +37,7 @@
 		<label class="col-xs-2 control-label text-right">Purchased By</label>
 		<div class="col-xs-3">
 			<div class="btn-group">
-  				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+  				<button id="purchaserbutton" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
     				<span id="purchasertype">Choose Purchaser</span> <span class="caret"></span>
   				</button>
   				<ul id="purchasermenu" class="dropdown-menu" role="menu" style="height:auto;max-height: 200px;overflow-x:hidden">
@@ -56,6 +57,8 @@
 </div>
 
 <script>
+$( '#purchasedate' ).mask( "9999-99-99", {placeholder:" "});
+
 $( '.input_error' ).hide();
 
 $( '#newPurchase, #newPurchaser' ).hide();
@@ -105,7 +108,7 @@ $( '#newPurchase, #newPurchaser' ).hide();
 				{
 					$( '#newPurchase' ).show();
 					$( '#purchasedate' ).attr( 'disabled', false ).val( '' );
-					$( '#purchasedby' ).val( 'default' );
+					// $( '#purchasedby' ).val( 'default' );
 					$( '#purchasertype' ).html( "Choose Purchaser " )
 										 .parents( 'button' ).attr( 'data-toggle', 'dropdown')
 															 .removeClass( 'active' );
