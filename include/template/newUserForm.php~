@@ -150,11 +150,7 @@ $( '.input_error' ).hide();
 					$( '#newlab_input' ).show();
 
 				else
-				{ /************************ WORK HERE********************/
 					$( '#newlab_input' ).hide();
-					$( '#labmenu>li' ).removeClass( 'selectedlab' );
-					$( this ).parent( "li" ).addClass( 'selectedlab' );
-				}
 
 	  			$( '#labtype').html( $( this ).text() );
 			});

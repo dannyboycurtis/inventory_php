@@ -35,13 +35,13 @@
 	</div>
       <div class="modal-body">
         <ul class="nav nav-pills" id="addRecordTab">
-          <li class="active"><a href="#equipmentInfo" data-toggle="pill">Equipment </a></li>
-		  <li><a href="#purchaseInfo" data-toggle="tab">Purchase </a></li>
-		  <li><a href="#locationInfo" data-toggle="tab">Location </a></li>
-          <li><a href="#netInfo" data-toggle="tab">Network </a></li>
-          <li><a href="#userInfo" data-toggle="tab">Users </a></li>
-          <li><a href="#softwareInfo" data-toggle="tab">Software </a></li>
-          <li><a href="#otherInfo" data-toggle="tab">Other </a></li>
+          <li id="equipmenttab" class="active"><a href="#equipmentInfo" data-toggle="tab">Equipment </a></li>
+		  <li id="purchasetab"><a href="#purchaseInfo" data-toggle="tab">Purchase </a></li>
+		  <li id="locationtab"><a href="#locationInfo" data-toggle="tab">Location </a></li>
+          <li id="networktab"><a href="#netInfo" data-toggle="tab">Network </a></li>
+          <li id="usertab"><a href="#userInfo" data-toggle="tab">Users </a></li>
+          <li id="softwaretab"><a href="#softwareInfo" data-toggle="tab">Software </a></li>
+          <li id="othertab"><a href="#otherInfo" data-toggle="tab">Other </a></li>
         </ul>
 		<br>
           <div class="tab-content">
@@ -109,6 +109,10 @@
 	$( '#locationtype' ).text( "Choose Location " );
 	$( '#buildingtype' ).text( "Choose Building " );
 	$( '#softwaretype' ).text( "Choose Software " );
+
+	$( '.input_error' ).hide();
+	$( this ).find( '.has-error' ).removeClass( 'has-error' );
+	$( '#equipmenttab, #purchasetab, #locationtab, #networktab, #usertab, #softwaretab, #othertab' ).children( 'a' ).removeAttr( 'style' );
   });
 
 $( '#submitequipment' ).on( 'click', function() {
@@ -128,6 +132,9 @@ $( '#submitequipment' ).on( 'click', function() {
 	{
 		$( '#tag_error' ).hide();
 		$( '#tag_input' ).removeClass( 'has-error' );
+
+		// set variable
+		var tag_num = $( '#tag_num' ).val();
 	}
 
 	// serial
@@ -141,6 +148,9 @@ $( '#submitequipment' ).on( 'click', function() {
 	{
 		$( '#serial_error' ).hide();
 		$( '#serial_input' ).removeClass( 'has-error' );
+
+		// set variable
+		var serial = $( '#serial' ).val();
 	}
 
 	// make and model
@@ -186,18 +196,35 @@ $( '#submitequipment' ).on( 'click', function() {
 		$( '#makemodel_error' ).hide();
 		$( '#makemodel_input' ).removeClass( 'has-error' );
 		$( '#makebutton, #modelbutton' ).removeClass( 'btn-danger' ).addClass( 'btn-default' );
+
+		// set variables
+		if ( $( '#maketype' ).text() == "Other " )
+			var make = $( '#newMake' ).val();
+
+		else
+			var make = $( '#maketype' ).text().slice( 0, -1 );
+
+		if ( $( '#modeltype' ).text() == "Other " )
+			var model = $( '#newModel' ).val();
+
+		else
+			var model = $( '#modeltype' ).text().slice( 0, -1 );
+
 	}
 
 	// eq type
 	if ( $( '#eqtype' ).text() == "Choose Type " )
 	{
 		$( '#eqtype_error' ).show().children().html( "Equipment type is required!" );
-		$( 'eqtype_input' ).addClass( 'has-error' );
+		$( '#eqtype_input' ).addClass( 'has-error' );
 		$( '#eqtypebutton' ).addClass( 'btn-danger' ).removeClass( 'btn-default' );
 	}
 
 	else if ( $( '#eqtype' ).text() == "Computer or Tablet " )
 	{
+		// set variable
+		var eqtype = "computer";
+
 		$( '#eqtype_error, #description_error' ).hide();
 		$( '#eqtype_input' ).removeClass( 'has-error' );
 		$( '#eqtypebutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
@@ -213,6 +240,9 @@ $( '#submitequipment' ).on( 'click', function() {
 		{
 			$( '#hostname_error' ).hide();
 			$( '#hostname_input' ).removeClass( 'has-error' );
+
+			// set variables
+			var hostname = $( '#hostname' ).val();
 		}
 
 		// os
@@ -233,11 +263,21 @@ $( '#submitequipment' ).on( 'click', function() {
 		{
 			$( '#os_input, #otheros_input' ).removeClass( 'has-error' );
 			$( '#osbutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
+
+			// set variable
+			if ( $( '#ostype' ).text() == "Other " )
+				var os = $( '#otheros' ).val();
+
+			else
+				var os = $( '#ostype' ).text().slice( 0, -1 );
 		}
 	}
 
 	else if ( $( '#eqtype' ).text() == "Network Printer " )
 	{
+		// set variable
+		var eqtype = "printer";
+
 		$( '#eqtype_error, #description_error, #os_error' ).hide();
 		$( '#eqtype_input' ).removeClass( 'has-error' );
 		$( '#eqtypebutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
@@ -253,12 +293,17 @@ $( '#submitequipment' ).on( 'click', function() {
 		{
 			$( '#hostname_error' ).hide();
 			$( '#hostname_input' ).removeClass( 'has-error' );
-		}
 
+			// set variables
+			var hostname = $( '#hostname' ).val();
+		}
 	}
 
 	else if ( $( '#eqtype' ).text() == "Other Equipment " )
 	{
+		// set variable
+		var eqtype = "other";
+
 		$( '#eqtype_error, #hostname_error, #os_error' ).hide();
 		$( '#eqtype_input' ).removeClass( 'has-error' );
 		$( '#eqtypebutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
@@ -275,6 +320,9 @@ $( '#submitequipment' ).on( 'click', function() {
 			$( '#description_error' ).hide();
 			$( '#description_input' ).removeClass( 'has-error' );
 			$( '#eqtypebutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
+
+			// set variables
+			var description = $( '#description' ).val();
 		}
 	}
 
@@ -284,52 +332,88 @@ $( '#submitequipment' ).on( 'click', function() {
 		$( '#eqtype_input' ).removeClass( 'has-error' );
 	}
 
+	
+
 // purchase tab
 
-	// purchase date
-	if ( $( '#purchasedate' ).text() == "" )
+	// purchase order
+	if ( $( '#purchasetype' ).text() == "Choose Purchase Order" )
 	{
-		$( '#purchasedate_error' ).show().children().html( "Purchase date is required!" );
-		$( '#purchasedate_input' ).addClass( 'has-error' );
+		$( '#purchaseorder_error' ).show().children().html( "Purchase order required!" );
+		$( '#purchasedby_error, #purchasedate_error' ).hide();
+		$( '#purchaseorder_input' ).addClass( 'has-error' );
+		$( '#purchaseorderbutton' ).addClass( 'btn-danger' ).removeClass( 'btn-default' );
 	}
 
 	else
 	{
-		$( '#purchasedate_error' ).hide();
-		$( '#purchasedate_input' ).removeClass( 'has-error' );
-	}
+		if ( $( '#purchasetype' ).text() == "New Purchase Order" )
+			var purchase_order = $( '#newPurchase' ).val();
 
-	// purchased by
-	if ( $( '#purchasertype' ).text() == "Choose Purchaser" )
-	{
-		$( '#purchasedby_error' ).show().children().html( "Purchaser is required!" );
-		$( '#purchasedby_input' ).addClass( 'has-error' );
-		$( '#purchaserbutton' ).addClass( 'btn-danger' ).removeClass( 'btn-default' );
-	}
+		else
+			var purchase_id = $( '#purchasemenu' ).find( '.selectedpurchaser' ).children( '.pid' ).text();
 
-	else if ( $( '#purchasertype' ).text() == "Other " )
-	{
-		$( '#purchaserbutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
 
-		if ( $( '#newPurchaser' ).val() == "" )
+		$( '#purchaseorder_error' ).hide();
+		$( '#purchaseorder_input' ).removeClass( 'has-error' );
+		$( '#purchaseorderbutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
+
+		// purchase date
+		if ( $( '#purchasedate' ).val() == "" )
+		{
+			$( '#purchasedate_error' ).show().children().html( "Purchase date is required!" );
+			$( '#purchasedate_input' ).addClass( 'has-error' );
+		}
+
+		else
+		{
+			$( '#purchasedate_error' ).hide();
+			$( '#purchasedate_input' ).removeClass( 'has-error' );
+
+			// set variable
+			var purchase_date = $( '#purchasedate' ).val();
+		}
+
+		// purchased by
+		if ( $( '#purchasertype' ).text() == "Choose Purchaser" )
 		{
 			$( '#purchasedby_error' ).show().children().html( "Purchaser is required!" );
+			$( '#purchasedby_input' ).addClass( 'has-error' );
+			$( '#purchaserbutton' ).addClass( 'btn-danger' ).removeClass( 'btn-default' );
+		}
+
+		else if ( $( '#purchasertype' ).text() == "Other" )
+		{
+			$( '#purchaserbutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
+
+			if ( $( '#newPurchaser' ).val() == "" )
+			{
+				$( '#purchasedby_input' ).addClass( 'has-error' );
+				$( '#purchasedby_error' ).show().children().html( "Purchaser is required!" );
+			}
+
+			else
+			{
+				$( '#purchasedby_error' ).hide();
+				$( 'purchasedby_input' ).removeClass( 'has-error' );
+
+				// set variable
+				var purchased_by = $( '#newPurchaser' ).val();
+			}
 		}
 
 		else
 		{
 			$( '#purchasedby_error' ).hide();
-			$( 'purchasedby_input' ).removeClass( 'has-error' );
-		}
-	}
+			$( '#purchasedby_input' ).removeClass( 'has-error' );
+			$( '#purchaserbutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
 
-	else
-	{
-		$( '#purchasedby_error' ).hide();
-		$( '#purchasedby_input' ).removeClass( 'has-error' );
-		$( '#purchaserbutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
-	}
-			
+			// set variable
+			var purchased_by = $( '#purchasertype' ).text();
+		}	
+	}	
+
+	
 // location tab
 
 	// department
@@ -356,6 +440,9 @@ $( '#submitequipment' ).on( 'click', function() {
 		{
 			$( '#otherdepartment_error' ).hide();
 			$( '#otherdepartment_input' ).removeClass( 'has-error' );
+
+			// set variable
+			var department = $( '#otherdepartment' ).val();
 		}
 	}
 
@@ -364,6 +451,9 @@ $( '#submitequipment' ).on( 'click', function() {
 		$( '#department_error, #otherdepartment_error' ).hide();
 		$( '#department_input, #otherdepartment_input' ).removeClass( 'has-error' );
 		$( '#departmentbutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
+
+		// set variable
+		var department = $( '#departmenttype' ).text().slice( 0, -1 );
 	}
 
 	// location
@@ -376,6 +466,9 @@ $( '#submitequipment' ).on( 'click', function() {
 
 	else if ( $( '#locationtype' ).text() == "On Campus " )
 	{
+		// set variable
+		var location = "on";
+
 		$( '#location_error' ).hide();
 		$( '#location_input' ).removeClass( 'has-error' );
 		$( '#locationbutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
@@ -401,6 +494,13 @@ $( '#submitequipment' ).on( 'click', function() {
 			$( '#building_error, #otherbuilding_error' ).hide();
 			$( '#building_input, #otherbuilding_input' ).removeClass( 'has-error' );
 			$( '#buildingbutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
+
+			// set variable
+			if ( $( '#buildingtype' ).text() == "Other " )
+				var building = $( '#otherbuilding' ).val();
+
+			else
+				var building = $( '#buildingtype' ).text().slice( 0, -1 );
 		}
 
 		if ( $( '#room_num' ).val() == "" )
@@ -413,11 +513,17 @@ $( '#submitequipment' ).on( 'click', function() {
 		{
 			$( '#room_num_error' ).hide();
 			$( '#room_num_input' ).removeClass( 'has-error' );
+
+			// set variable
+			var room_num = $( '#room_num' ).val();
 		}
 	}
 
 	else
 	{
+		// set variable
+		var location = "off";
+
 		$( '#location_error, #building_error, #otherbuilding_error, #room_num_error' ).hide();
 		$( '#location_input, #building_input, #otherbuilding_input, #room_num_input' ).removeClass( 'has-error' );
 		$( '#locationbutton, #buildingbutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
@@ -437,6 +543,13 @@ $( '#submitequipment' ).on( 'click', function() {
 
 		else if ( $( '#usertype' ).text() == "Faculty/Staff " )
 		{
+			// set variables
+			var users = new Array();
+			$( '#userlist' ).children( 'li' ).each( function(){
+				var user = $( this ).children( '.user_id' ).text();
+				users.push( user );
+			});
+
 			$( '#selectusertype_error' ).hide();
 			$( '#selectusertype_input' ).removeClass( 'has-error' );
 			$( '#usertypebutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
@@ -463,6 +576,13 @@ $( '#submitequipment' ).on( 'click', function() {
 			{
 				$( '#newuser_error' ).hide();
 				$( '#newuser_input' ).removeClass( 'has-error' );
+
+				// set variables
+				var fname = $( '#newuserfname' ).val();
+				var lname = $( '#newuserlname' ).val();
+				var email = $( '#newuseremail' ).val();
+				var phone = $( '#newuserphone' ).val();
+				var newUser = [ fname, lname, email, phone ];
 			}
 		}
 
@@ -471,6 +591,8 @@ $( '#submitequipment' ).on( 'click', function() {
 			$( '#selectusertype_error' ).hide();
 			$( '#selectusertype_input' ).removeClass( 'has-error' );
 			$( '#usertypebutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
+
+			// set variable
 		}
 	}
 
@@ -481,8 +603,34 @@ $( '#submitequipment' ).on( 'click', function() {
 		$( '#usertypebutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
 	}
 
+	// set tab color on error
+	if ( $( '#equipmentForm' ).find( '.form-group' ).hasClass( 'has-error' ) )
+		$( '#equipmenttab>a').css({ "background-color" : "#c71c22", "border-color" : "#c71c22", "color" : "white"});
+
+	else $( '#equipmenttab>a' ).removeAttr( 'style' );
+
+	if ( $( '#purchaseForm' ).find( '.form-group' ).hasClass( 'has-error' ) )
+		$( '#purchasetab>a').css({ "background-color" : "#c71c22", "border-color" : "#c71c22", "color" : "white"});
+
+	else $( '#purchasetab>a' ).removeAttr( 'style' );
+
+	if ( $( '#locationForm' ).find( '.form-group' ).hasClass( 'has-error' ) )
+		$( '#locationtab>a').css({ "background-color" : "#c71c22", "border-color" : "#c71c22", "color" : "white"});
+
+	else $( '#locationtab>a' ).removeAttr( 'style' );
+
+	if ( $( '#userForm' ).find( '.form-group' ).hasClass( 'has-error' ) )
+		$( '#usertab>a').css({ "background-color" : "#c71c22", "border-color" : "#c71c22", "color" : "white"});
+
+	else $( '#usertab>a' ).removeAttr( 'style' );
+
+	// check if any errors exist
+	if ( !$( '#addEquipmentModal' ).find( '.form-group' ).hasClass( 'has-error' ) )
+		alert( "test");
 
 
+	// collect input-data into json
+	var user_input = {};
 
 
 });

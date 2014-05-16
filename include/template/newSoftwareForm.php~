@@ -2,7 +2,7 @@
   <form class="form-horizontal" role="form" id="softwareForm" action="" method="post">
 
     <div id="selectsoftware_input" class="form-group">
-      <label class="col-xs-2 control-label text-right">Software*</label>
+      <label class="col-xs-2 control-label text-right">Software</label>
       <div class="col-xs-3">
         <div class="btn-group">
   			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
