@@ -61,7 +61,7 @@ function list_equipment( query )
 
 function list_users( query )
 {
-	headers = [ "First Name", "Last Name", "Email Address", "Department" ];
+	headers = [ "First Name", "Last Name", "Email Address", "Campus Extension" ];
 
 	$('#processingModal').modal('toggle');
 
@@ -470,9 +470,9 @@ function populateTable_users( results )
 		if ( !this.email)
 			this.email = "N/A";
 		row += "<td>" + this.email + "</td>";
-		if ( !this.department )
-			this.department = "N/A";
-		row += "<td>" + this.department + "</td>";
+		if ( !this.phone )
+			this.phone = "N/A";
+		row += "<td>" + this.phone + "</td>";
 
 		row += "</tr><tr class='tablesorter-childRow'><td colspan='10'>";
 		row += '<div class="panel panel-group">';

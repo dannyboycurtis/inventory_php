@@ -9,7 +9,7 @@
     				<span id="purchasetype">Choose Purchase Order</span> <span class="caret"></span>
   				</button>
   				<ul id="purchasemenu" class="dropdown-menu" role="menu" style="height:auto;max-height: 200px;overflow-x:hidden">
-					<li><a href="#">New Purchase Order </a></li>
+					<li><a href="#">New Purchase Order</a></li>
    					<li class="divider"></li>
   				</ul>
 			</div>
@@ -103,7 +103,7 @@ $( '#purchasedate_input, #purchasedby_input, #newPurchase, #newPurchaser' ).hide
 			});
 
 			$( "#purchasemenu>li>a" ).on( 'click', function(){
-				if ( $( this ).text() == 'New Purchase Order ' )
+				if ( $( this ).text() == 'New Purchase Order' )
 				{
 					$( '#newPurchase, #purchasedate_input, #purchasedby_input' ).show();
 					$( '#purchasedate' ).attr( 'disabled', false ).val( '' );
@@ -112,7 +112,6 @@ $( '#purchasedate_input, #purchasedby_input, #newPurchase, #newPurchaser' ).hide
 															 .removeClass( 'active' );
 					$( '#newPurchaser' ).hide();
 				}
-
 
 	  			else
 				{

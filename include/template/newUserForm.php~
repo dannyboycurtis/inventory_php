@@ -92,13 +92,15 @@ $( '.input_error' ).hide();
   $('#usertypemenu>li>a').on( 'click', function(){
      if ( $( this ).text() == "Faculty/Staff ")
 	{
-       $('#selectusers_input').show();
-		$( '#selectlab_input, #newlab_input' ).hide();
+		$('#selectusers_input').show();
+		$( '#newuser_input>div>div>input' ).val( '' );
+		$( '#selectlab_input, #newlab_input, #newlab_error, #selectlab_error' ).hide();
 	}
 
      else
 	{
-       $('#selectusers_input, #newuser_input').hide();
+		$( '#userlist' ).empty();
+		$('#selectusers_input, #selectusers_error, #newuser_input, #newuser_error').hide();
 		$( '#selectlab_input' ).show();
 	}
 
@@ -119,10 +121,12 @@ $( '.input_error' ).hide();
 
 			$("#usermenu>li>a").on( 'click', function(){
 				if ( $( this ).text() == 'Add New User' )
-					$( '#newuser_input' ).show();
+					$( '#newuser_input, #newuser_error' ).show();
+
 				else
 				{
-					$( '#newuser_input' ).hide();
+					$( '#newuser_input, #newuser_error' ).hide();
+					$( '#newuser_input>div>div>input' ).empty();
 					var uid = $( this ).siblings( '.uid' ).text();
 	  				$( '#userlist').append( "<li><span class='hidden user_id'>" + uid + "</span><i class='fa fa-minus-square' style='cursor:pointer'></i> " + $(this).text() + "</li>");
 						$( '#userlist>li>i').on( 'click', function(){
@@ -147,10 +151,14 @@ $( '.input_error' ).hide();
 
 			$("#labmenu>li>a").on( 'click', function(){
 				if ( $( this ).text() == 'Other' )
-					$( '#newlab_input' ).show();
+					$( '#newlab_input, #newlab_error' ).show();
 
 				else
-					$( '#newlab_input' ).hide();
+				{
+					$( '#newlab_input, #selectlab_error, #newlab_error' ).hide();
+					$( '#labmenu>li' ).removeClass( 'selectedlab' );
+					$( this ).parent( "li" ).addClass( 'selectedlab' );
+				}
 
 	  			$( '#labtype').html( $( this ).text() );
 			});

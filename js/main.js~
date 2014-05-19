@@ -61,7 +61,7 @@ function list_equipment( query )
 
 function list_users( query )
 {
-	headers = [ "First Name", "Last Name", "Email Address", "Department" ];
+	headers = [ "First Name", "Last Name", "Email Address", "Campus Extension" ];
 
 	$('#processingModal').modal('toggle');
 
@@ -789,10 +789,7 @@ function pwdformhash( form, password, conf )
 }
 
 
-function validateEquipment( user_input )
-{
 
 
-}
 
 

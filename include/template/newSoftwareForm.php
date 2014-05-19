@@ -50,13 +50,14 @@
 		success: function( result ){
 			results = $.parseJSON( result );
 			$.each( results, function( i ){
-				$('#softwaremenu').append( "<li><span class='hidden'>" + results[i].softwareid + "</span><a href='#'>" + results[i].software_name + ", " + results[i].licensetype + " </a></li>" );
+				$('#softwaremenu').append( "<li><span class='hidden sid'>" + results[i].softwareid + "</span><a href='#'>" + results[i].software_name + ", " + results[i].licensetype + " </a></li>" );
 			});
 
 			$("#softwaremenu>li>a").on( 'click', function(){
-	  			$( '#softwarelist').append( "<li><i class='fa fa-minus-square' style='cursor:pointer'></i> " + $(this).text() + "</li>");
+				var sid = $( this ).siblings( '.sid' ).text();
+	  			$( '#softwarelist').append( "<li><span class='hidden software_id'>" + sid + "</span><i class='fa fa-minus-square' style='cursor:pointer'></i> " + $(this).text() + "</li>");
 				$( '#softwarelist>li>i').on( 'click', function(){
-							$( this ).parents( 'li' ).remove();
+					$( this ).parents( 'li' ).remove();
 				});
 
 			});

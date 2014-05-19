@@ -148,9 +148,9 @@
      if ( $( this ).text() == "Other Equipment " )
      {
        $('#description_input, #softwarenotavailable, #selectusertype_input').show();
-       $('#usersnotavailable, #hostname_input, #hostname_error, #os_input, #os_error, #printer_input').hide();
+       $('#hostname_input, #hostname_error, #os_input, #os_error, #printer_input, #usersnotavailable').hide();
 		// these are in user/software tabs!
-		$( '#selectsoftware_input, #selectusers_input, #newuser_input' ).hide();
+		$( '#selectsoftware_input, #selectusertype_input, #selectusers_input, #newuser_input' ).hide();
 
      } 
      else if ( $( this ).text() == "Computer or Tablet ")

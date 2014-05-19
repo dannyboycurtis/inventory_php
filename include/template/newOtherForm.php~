@@ -3,7 +3,8 @@
     <div class="form-group">
       <label class="col-xs-1 control-label text-right">Notes*</label>
       <div class="col-xs-5">
-        <textarea class="form-control" rows="5" style="width: 403px; height: 147px;"  id="notes"></textarea>
+        <textarea class="form-control" rows="5" style="width: 403px; height: 147px;"  id="notes">
+        </textarea>
       </div>
     </div>
 

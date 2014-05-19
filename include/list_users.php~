@@ -18,7 +18,7 @@ if ( $_POST['query'] == "_all" )
 						u.f_name, 
 						u.l_name,
 						u.email,
-						u.phone
+						u.department
 			  FROM		user u
 			  WHERE		u.l_name IS NOT NULL
 			  ORDER BY	u.l_name ASC";
@@ -28,7 +28,7 @@ else
 						u.f_name, 
 						u.l_name,
 						u.email,
-						u.phone
+						u.department
 			  FROM		user u
 			  WHERE		u.f_name LIKE ? OR
 						u.l_name LIKE ? OR
@@ -52,7 +52,7 @@ if ( $stmt = $mysqli->prepare( $query ) )
 						$f_name,
 						$l_name,
 						$email,
-						$phone );
+						$department );
 
 	while ( $stmt->fetch() )
 	{
@@ -99,8 +99,6 @@ if ( $stmt = $mysqli->prepare( $query ) )
 		$results[] = array( "userid" => $user_id,
 												"firstname" => $f_name, 
 	 											"lastname" => $l_name,
-												"email" => $email,
-												"phone" => $phone,
 												"equipment" => $equipment, );
 	}
 }
