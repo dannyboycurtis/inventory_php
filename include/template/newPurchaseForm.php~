@@ -58,75 +58,75 @@
 <script>
 $( '#purchasedate' ).mask( "9999-99-99", {placeholder:" "});
 
-$( '.input_error' ).hide();
-
-$( '#purchasedate_input, #purchasedby_input, #newPurchase, #newPurchaser' ).hide();
+// initially hides certain input boxes
+$( '#purchaseForm' ).find( '.form-group' ).not( '#purchaseorder_input' ).hide();
+$( '#newPurchase' ).hide();
 
 // purchased by dropdown
-	$.ajax({
-		type: "POST",
-		url: "include/populate_menus.php",
-		data: { query : "purchased_by" },
-		success: function( result ){
-			results = $.parseJSON( result );
-			$.each( results, function( i ){
-				$('#purchasermenu').append( "<li><a href='#'>" + results[i] + "</a></li>" );
-			});
+$.ajax({
+	type: "POST",
+	url: "include/populate_menus.php",
+	data: { query : "purchased_by" },
+	success: function( result ){
+		results = $.parseJSON( result );
+		$.each( results, function( i ){
+			$('#purchasermenu').append( "<li><a href='#'>" + results[i] + "</a></li>" );
+		});
 
-			$("#purchasermenu>li>a").on( 'click', function(){
-				if ( $( this ).text() == 'Other' )
-					$( '#newPurchaser' ).show();
+		$("#purchasermenu>li>a").on( 'click', function(){
+			if ( $( this ).text() == 'Other' )
+				$( '#newPurchaser' ).show();
 
-				else
-					$( '#newPurchaser' ).hide();
+			else
+				$( '#newPurchaser' ).hide();
 
-	  			$( '#purchasertype').html( $( this ).text() );
-			});
-
-		}
-	});
+  			$( '#purchasertype').html( $( this ).text() );
+		});
+	}
+});
 
 // purchase order dropdown
-	$.ajax({
-		type: "POST",
-		url: "include/populate_menus.php",
-		data: { query : "purchase_order" },
-		success: function( result ){
-			results = $.parseJSON( result );
-			$.each( results, function( i ){
-				var purchaseresults = "<li>";
-				purchaseresults += "<span style='display:none' class='pid'>" + results[i].purchaseid + "</span>";
-				purchaseresults += "<span style='display:none' class='pdate'>" + results[i].purchasedate + "</span>";
-				purchaseresults += "<span style='display:none' class='pby'>" + results[i].purchasedby + "</span>";
-				purchaseresults += "<a href='#'>" + results[i].purchaseorder + "</a></li>";
-				$( '#purchasemenu' ).append( purchaseresults );
-			});
+$.ajax({
+	type: "POST",
+	url: "include/populate_menus.php",
+	data: { query : "purchase_order" },
+	success: function( result ){
+		results = $.parseJSON( result );
+		$.each( results, function( i ){
+			var purchaseresults = "<li>";
+			purchaseresults += "<span style='display:none' class='pid'>" + results[i].purchaseid + "</span>";
+			purchaseresults += "<span style='display:none' class='pdate'>" + results[i].purchasedate + "</span>";
+			purchaseresults += "<span style='display:none' class='pby'>" + results[i].purchasedby + "</span>";
+			purchaseresults += "<a href='#'>" + results[i].purchaseorder + "</a></li>";
 
-			$( "#purchasemenu>li>a" ).on( 'click', function(){
-				if ( $( this ).text() == 'New Purchase Order' )
-				{
-					$( '#newPurchase, #purchasedate_input, #purchasedby_input' ).show();
-					$( '#purchasedate' ).attr( 'disabled', false ).val( '' );
-					$( '#purchasertype' ).html( "Choose Purchaser" )
-										 .parents( 'button' ).attr( 'data-toggle', 'dropdown')
-															 .removeClass( 'active' );
-					$( '#newPurchaser' ).hide();
-				}
+			$( '#purchasemenu' ).append( purchaseresults );
+		});
 
+		$( "#purchasemenu>li>a" ).on( 'click', function(){
+			if ( $( this ).text() == 'New Purchase Order' )
+			{
+				$( '#newPurchase, #purchasedate_input, #purchasedby_input' ).show();
+				$( '#purchasedate' ).attr( 'disabled', false ).val( '' );
+				$( '#purchasertype' ).html( "Choose Purchaser" )
+				$( '#purchaserbutton' ).attr( 'data-toggle', 'dropdown').removeClass( 'active' );
+				$( '#newPurchaser' ).hide();
+			}
 
-	  			else
-				{
-					$( '#purchasemenu>li' ).removeClass( 'selectedpurchaser' );
-					$( this ).parent( "li" ).addClass( 'selectedpurchaser' );
-					$( '#purchasedate').val( $( this ).parents().children( '.pdate').text() ).attr( 'disabled', true );
-					$( '#purchasertype' ).html( $( this ).parents().children( '.pby' ).text() ).parents().addClass( 'active' );
-					$( '#purchasertype' ).parents().removeAttr('data-toggle');
-					$( '#newPurchaser, #newPurchase' ).hide();
-					$( '#purchasedate_input, #purchasedby_input' ).show();
-				}
+  			else
+			{
+				$( '#purchasemenu>li' ).removeClass( 'selectedpurchaser' );
+				$( this ).parent( "li" ).addClass( 'selectedpurchaser' );
 
-				$( '#purchasetype').html( $( this ).text() );
-			});
-		}
-	});
+				$( '#purchasedate').val( $( this ).parents().children( '.pdate').text() ).attr( 'disabled', true );
+				$( '#purchasertype' ).html( $( this ).parents().children( '.pby' ).text() ).parents().addClass( 'active' );
+				$( '#purchasertype' ).parents().removeAttr('data-toggle');
+
+				$( '#newPurchaser, #newPurchase' ).hide();
+				$( '#purchasedate_input, #purchasedby_input' ).show();
+			}
+
+			$( '#purchasetype').html( $( this ).text() );
+		});
+	}
+});
 </script>

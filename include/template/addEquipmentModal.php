@@ -1,107 +1,104 @@
 <!-- Add Equipment Modal -->
 <div class="modal" id="addEquipmentModal"  style="padding-top:40px" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Add Equipment Record <small>(Items with * are optional)</small></h4>
+			</div>
 
+			<div class="modal-body">
+				<ul class="nav nav-pills" id="addRecordTab">
+					<li id="equipmenttab" class="active"><a href="#equipmentInfo" data-toggle="tab">Equipment</a></li>
+					<li id="purchasetab"><a href="#purchaseInfo" data-toggle="tab">Purchase</a></li>
+					<li id="locationtab"><a href="#locationInfo" data-toggle="tab">Location</a></li>
+					<li id="usertab"><a href="#userInfo" data-toggle="tab">Users</a></li>
+					<li id="softwaretab"><a href="#softwareInfo" data-toggle="tab">Software</a></li>
+					<li id="networktab"><a href="#netInfo" data-toggle="tab">Network</a></li>
+					<li id="othertab"><a href="#otherInfo" data-toggle="tab">Other</a></li>
+				</ul>
+				<br>
+				<div class="tab-content">
+					<div class="tab-pane active" id="equipmentInfo">
+						<?php include "newEquipmentForm.php"; ?>
+					</div>
+					<div class="tab-pane" id="purchaseInfo">
+						<?php include "newPurchaseForm.php"; ?>
+					</div>
+					<div class="tab-pane" id="locationInfo">
+						<?php include "newLocationForm.php"; ?>
+					</div>
+					<div class="tab-pane" id="userInfo">
+						<?php include "newUserForm.php"; ?>
+					</div>
+					<div class="tab-pane" id="softwareInfo">
+						<?php include "newSoftwareForm.php"; ?>
+					</div>
+					<div class="tab-pane" id="netInfo">
+						<?php include "newNetworkForm.php"; ?>
+					</div>
+					<div class="tab-pane" id="otherInfo">
+						<?php include "newOtherForm.php"; ?>
+					</div>
+				</div>
+			</div>
 
-    <div class="modal-content">
-	<div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		<h4 class="modal-title">Add Equipment Record <small>(Items with * are optional)</small>
+			<div class="modal-footer"> 
+				<button type="button" class="btn btn-default" data-dismiss="modal" >Cancel</button>
+				<button id="submitequipment" type="button" class="btn btn-primary">Submit</button>
+			</div>
+		</div>
 	</div>
-      <div class="modal-body">
-        <ul class="nav nav-pills" id="addRecordTab">
-          <li id="equipmenttab" class="active"><a href="#equipmentInfo" data-toggle="tab">Equipment </a></li>
-		  <li id="purchasetab"><a href="#purchaseInfo" data-toggle="tab">Purchase </a></li>
-		  <li id="locationtab"><a href="#locationInfo" data-toggle="tab">Location </a></li>
-          <li id="usertab"><a href="#userInfo" data-toggle="tab">Users </a></li>
-          <li id="networktab"><a href="#netInfo" data-toggle="tab">Network </a></li>
-          <li id="softwaretab"><a href="#softwareInfo" data-toggle="tab">Software </a></li>
-          <li id="othertab"><a href="#otherInfo" data-toggle="tab">Other </a></li>
-        </ul>
-		<br>
-          <div class="tab-content">
-            <div class="tab-pane active" id="equipmentInfo">
-              <?php include "newEquipmentForm.php"; ?>
-            </div>
-			<div class="tab-pane" id="purchaseInfo">
-              <?php include "newPurchaseForm.php"; ?>
-            </div>
-			<div class="tab-pane" id="locationInfo">
-              <?php include "newLocationForm.php"; ?>
-            </div>
-            <div class="tab-pane" id="userInfo">
-              <?php include "newUserForm.php"; ?>
-            </div>
-            <div class="tab-pane" id="softwareInfo">
-              <?php include "newSoftwareForm.php"; ?>
-            </div>
-            <div class="tab-pane" id="netInfo">
-              <?php include "newNetworkForm.php"; ?>
-            </div>
-            <div class="tab-pane" id="otherInfo">
-              <?php include "newOtherForm.php"; ?>
-            </div>
-          </div>
-      </div>
-
-      <div class="modal-footer"> 
-        <button type="button" class="btn btn-default" data-dismiss="modal" >Cancel</button>
-        <button id="submitequipment" type="button" class="btn btn-primary">Submit</button>
-      </div>
-    </div>
-  </div>
 </div>
 
-
 <script>
-  // this resets form data in the modal on closing
-  $('#addEquipmentModal').on('hidden.bs.modal', function(){
-    $(this).find('#equipmentForm')[0].reset();
-    $(this).find('#purchaseForm')[0].reset();
-	$(this).find('#locationForm')[0].reset();
-    $(this).find('#userForm')[0].reset();
-    $(this).find('#networkForm')[0].reset();
-    $(this).find('#softwareForm')[0].reset();
-    $(this).find('#otherForm')[0].reset();
-    $('#addRecordTab a:first').tab('show');
-    $('#description_input, #hostname_input, #os_input, #printer_input').hide();
-	$( '#newPurchase, #newPurchaser' ).hide();
-    $('#building_input, #room_num_input, #otherbuilding, #otherdepartment').hide();
-    $('#purchased_by_input').hide();
-	$( '#newMake, #newModel' ).hide();
-	$( '#selectusertype_input, #selectusers_input, #newuser_input, #selectsoftware_input' ).hide();
-	$( '#usersnotavailable, #softwarenotavailable' ).show();
-	$( '#userlist, #softwarelist' ).empty();
-	$( '#maketype' ).text( "Choose Make " );
-	$( '#modeltype' ).text( "Choose Model " );
-	$( '#eqtype' ).text( "Choose Type " );
-	$( '#usertype' ).text( "Choose Type " );
-	$( '#ostype' ).text( "Choose OS " );
-	$( '#purchasetype' ).text( "Choose Purchase Order " );
-	$( '#purchasertype' ).text( "Choose Purchaser " );
-	$( '#departmenttype' ).text( "Choose Department " );
-	$( '#locationtype' ).text( "Choose Location " );
-	$( '#buildingtype' ).text( "Choose Building " );
-	$( '#softwaretype' ).text( "Choose Software " );
-	$( '#purchasedate' ).attr( 'disabled', false ).val( '' );
-	$( '#purchasertype' ).html( "Choose Purchaser" )
-						 .parents( 'button' ).attr( 'data-toggle', 'dropdown')
-											 .removeClass( 'active' );
-	$( '#newPurchaser' ).hide();
-	$( '#purchasedate_input, #purchasedby_input' ).hide();
+// this resets form data in the modal on closing
+$( '#addEquipmentModal' ).on( 'hidden.bs.modal', function(){
+	// reset all form inputs
+    $( this ).find( '#equipmentForm' )[0].reset();
+    $( this ).find( '#purchaseForm' )[0].reset();
+	$( this ).find( '#locationForm' )[0].reset();
+    $( this ).find( '#userForm' )[0].reset();
+    $( this ).find( '#networkForm' )[0].reset();
+    $( this ).find( '#softwareForm' )[0].reset();
+    $( this ).find( '#otherForm' )[0].reset();
 
-	$( '.input_error' ).hide();
+	// reset all hidden forms
+	$( this ).find( '.form-group' ).not( '#tag_input, #serial_input, #makemodel_input, #eqtype_input, #purchaseorder_input, #department_input, #location_input, #softwarenotavailable, #usersnotavailable, #mac_input, #ip_input, #wmac_input, #notes_input' ).add( '#newPurchase, #newMake, #newModel' ).hide();
+
+	// reset user and software lists
+	$( '#userlist, #softwarelist' ).empty();
+
+	// reset texts displayed in menus
+	$( '#maketype' ).text( "Choose Make" );
+	$( '#modeltype' ).text( "Choose Model" );
+	$( '#eqtype' ).text( "Choose Type" );
+	$( '#usertype' ).text( "Choose Type" );
+	$( '#ostype' ).text( "Choose OS" );
+	$( '#purchasetype' ).text( "Choose Purchase Order" );
+	$( '#purchasertype' ).text( "Choose Purchaser" );
+	$( '#departmenttype' ).text( "Choose Department" );
+	$( '#locationtype' ).text( "Choose Location" );
+	$( '#buildingtype' ).text( "Choose Building" );
+
+	// reset disabled purchase forms
+	$( '#purchasedate' ).attr( 'disabled', false ).val( '' );
+	$( '#purchasertype' ).html( "Choose Purchaser" ).parents( 'button' ).attr( 'data-toggle', 'dropdown').removeClass( 'active' );
+
+	// remove all error styles
 	$( this ).find( '.has-error' ).removeClass( 'has-error' );
 	$( this ).find( '.btn-danger' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
-	$( '#equipmenttab, #purchasetab, #locationtab, #networktab, #usertab, #softwaretab, #othertab' ).children( 'a' ).removeAttr( 'style' );
-  });
+	$( '#addRecordTab>li>a' ).removeAttr( 'style' );
+
+	// reset active tab to equipmenttab
+	$( '#addRecordTab a:first' ).tab( 'show' );
+});
 
 $( '#submitequipment' ).on( 'click', function() {
 
 // prepare inputs from menus
 
 // equipment tab
-
 	// tag num
 	if ( $( '#tag_num' ).val() == "" )
 	{
@@ -155,14 +152,14 @@ $( '#submitequipment' ).on( 'click', function() {
 	}
 
 	// make and model
-	if ( $( '#maketype' ).text() == "Choose Make " && $( '#modeltype' ).text() == "Choose Model " )
+	if ( $( '#maketype' ).text() == "Choose Make" && $( '#modeltype' ).text() == "Choose Model" )
 	{
 		$( '#makemodel_error' ).show().children().html( "Make and model are required!" );
 		$( '#makemodel_input' ).addClass( 'has-error' );
 		$( '#makebutton, #modelbutton' ).addClass( 'btn-danger' ).removeClass( 'btn-default' );
 	}
 
-	else if ( $( '#modeltype' ).text() == "Choose Model " )
+	else if ( $( '#modeltype' ).text() == "Choose Model" )
 	{
 		$( '#makemodel_error' ).show().children().html( "Model is required!" );
 		$( '#makemodel_input' ).addClass( 'has-error' );
@@ -170,22 +167,21 @@ $( '#submitequipment' ).on( 'click', function() {
 		$( '#modelbutton' ).addClass( 'btn-danger' ).removeClass( 'btn-default' );
 	}
 
-	else if ( ( $( '#maketype' ).text() == "Other " && $( '#newMake' ).val() == "" )
-				&& ( $( '#modeltype' ).text() == "Other " && $( '#newModel' ).val() == "" ) )
+	else if ( ( $( '#maketype' ).text() == "Other " && $( '#newMake' ).val() == "" ) && ( $( '#modeltype' ).text() == "Other " && $( '#newModel' ).val() == "" ) )
 	{
 		$( '#makemodel_error' ).show().children().html( "Make and model are required!" );
 		$( '#makemodel_input' ).addClass( 'has-error' );
 		$( '#makebutton, #modelbutton' ).addClass( 'btn-danger' ).removeClass( 'btn-default' );
 	}
 
-	else if ( $( '#maketype' ).text() == "Other " && $( '#newMake' ).val() == "" )
+	else if ( $( '#maketype' ).text() == "Other" && $( '#newMake' ).val() == "" )
 	{
 		$( '#makemodel_error' ).show().children().html( "Make is required!" );
 		$( '#makemodel_input' ).addClass( 'has-error' );
 		$( '#makebutton' ).addClass( 'btn-danger' ).removeClass( 'btn-default' );
 	}
 
-	else if ( $( '#modeltype' ).text() == "Other " && $( '#newModel' ).val() == "" )
+	else if ( $( '#modeltype' ).text() == "Other" && $( '#newModel' ).val() == "" )
 	{
 		$( '#makemodel_error' ).show().children().html( "Model is required!" );	
 		$( '#makemodel_input' ).addClass( 'has-error' );
@@ -199,29 +195,29 @@ $( '#submitequipment' ).on( 'click', function() {
 		$( '#makebutton, #modelbutton' ).removeClass( 'btn-danger' ).addClass( 'btn-default' );
 
 		// set variables
-		if ( $( '#maketype' ).text() == "Other " )
+		if ( $( '#maketype' ).text() == "Other" )
 			var make = $( '#newMake' ).val();
 
 		else
-			var make = $( '#maketype' ).text().slice( 0, -1 );
+			var make = $( '#maketype' ).text();
 
-		if ( $( '#modeltype' ).text() == "Other " )
+		if ( $( '#modeltype' ).text() == "Other" )
 			var model = $( '#newModel' ).val();
 
 		else
-			var model = $( '#modeltype' ).text().slice( 0, -1 );
+			var model = $( '#modeltype' ).text();
 
 	}
 
 	// eq type
-	if ( $( '#eqtype' ).text() == "Choose Type " )
+	if ( $( '#eqtype' ).text() == "Choose Type" )
 	{
 		$( '#eqtype_error' ).show().children().html( "Equipment type is required!" );
 		$( '#eqtype_input' ).addClass( 'has-error' );
 		$( '#eqtypebutton' ).addClass( 'btn-danger' ).removeClass( 'btn-default' );
 	}
 
-	else if ( $( '#eqtype' ).text() == "Computer or Tablet " )
+	else if ( $( '#eqtype' ).text() == "Computer or Tablet" )
 	{
 		// set variable
 		var eqtype = "computer";
@@ -248,14 +244,14 @@ $( '#submitequipment' ).on( 'click', function() {
 		}
 
 		// os
-		if ( $( '#ostype' ).text() == "Choose OS " )
+		if ( $( '#ostype' ).text() == "Choose OS" )
 		{
 			$( '#os_error' ).show().children().html( "OS is required!" );
 			$( '#os_input' ).addClass( 'has-error' );
 			$( '#osbutton' ).addClass( 'btn-danger' ).removeClass( 'btn-default' );
 		}
 
-		else if ( $( '#ostype' ).text() == "New Operating System " && $( '#otheros' ).val() == "" )
+		else if ( $( '#ostype' ).text() == "New Operating System" && $( '#otheros' ).val() == "" )
 		{
 			$( '#os_error' ).show().children().html( "OS is required!" );
 			$( '#otheros_input' ).addClass( 'has-error' );
@@ -267,16 +263,16 @@ $( '#submitequipment' ).on( 'click', function() {
 			$( '#osbutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
 
 			// set variable
-			if ( $( '#ostype' ).text() == "New Operating System " )
+			if ( $( '#ostype' ).text() == "New Operating System" )
 				var os = $( '#otheros' ).val();
 
 
 			else
-				var os = $( '#ostype' ).text().slice( 0, -1 );
+				var os = $( '#ostype' ).text();
 		}
 	}
 
-	else if ( $( '#eqtype' ).text() == "Network Printer " )
+	else if ( $( '#eqtype' ).text() == "Network Printer" )
 	{
 		// set variable
 		var eqtype = "printer";
@@ -302,7 +298,7 @@ $( '#submitequipment' ).on( 'click', function() {
 		}
 	}
 
-	else if ( $( '#eqtype' ).text() == "Other Equipment " )
+	else if ( $( '#eqtype' ).text() == "Other Equipment" )
 	{
 		// set variable
 		var eqtype = "other";
@@ -424,14 +420,14 @@ $( '#submitequipment' ).on( 'click', function() {
 // location tab
 
 	// department
-	if ( $( '#departmenttype' ).text() == "Choose Department " )
+	if ( $( '#departmenttype' ).text() == "Choose Department" )
 	{
 		$( '#department_error' ).show().children().html( "Department is required!" );
 		$( '#department_input' ).addClass( 'has-error' );
 		$( '#departmentbutton' ).addClass( 'btn-danger' ).removeClass( 'btn-default' );
 	}
 
-	else if ( $( '#departmenttype' ).text() == "Other " )
+	else if ( $( '#departmenttype' ).text() == "Other" )
 	{
 		$( '#department_error' ).hide();
 		$( '#department_input' ).removeClass( 'has-error' );
@@ -460,18 +456,18 @@ $( '#submitequipment' ).on( 'click', function() {
 		$( '#departmentbutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
 
 		// set variable
-		var department = $( '#departmenttype' ).text().slice( 0, -1 );
+		var department = $( '#departmenttype' ).text();
 	}
 
 	// location
-	if ( $( '#locationtype' ).text() == "Choose Location " )
+	if ( $( '#locationtype' ).text() == "Choose Location" )
 	{
 		$( '#location_error' ).show().children().html( "Location is required!" );
 		$( '#location_input' ).addClass( 'has-error' );
 		$( '#locationbutton' ).addClass( 'btn-danger' ).removeClass( 'btn-default' );
 	}
 
-	else if ( $( '#locationtype' ).text() == "On Campus " )
+	else if ( $( '#locationtype' ).text() == "On Campus" )
 	{
 		// set variable
 		var location = "on";
@@ -480,14 +476,14 @@ $( '#submitequipment' ).on( 'click', function() {
 		$( '#location_input' ).removeClass( 'has-error' );
 		$( '#locationbutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
 
-		if ( $( '#buildingtype' ).text() == "Choose Building " )
+		if ( $( '#buildingtype' ).text() == "Choose Building" )
 		{
 			$( '#building_error' ).show().children().html( "Building is required!" );
 			$( '#building_input' ).addClass( 'has-error' );
 			$( '#buildingbutton' ).addClass( 'btn-danger' ).removeClass( 'btn-default' );
 		}
 
-		else if ( $( '#buildingtype' ).text() == "Other " && $( '#otherbuilding' ).val() == "" )
+		else if ( $( '#buildingtype' ).text() == "Other" && $( '#otherbuilding' ).val() == "" )
 		{
 			$( '#building_error' ).hide();
 			$( '#building_input' ).removeClass( 'has-error' );
@@ -503,11 +499,11 @@ $( '#submitequipment' ).on( 'click', function() {
 			$( '#buildingbutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
 
 			// set variable
-			if ( $( '#buildingtype' ).text() == "Other " )
-				var building = $( '#otherbuilding' ).val();
+			if ( $( '#buildingtype' ).text() == "Other" )
+				var building = $( '#otherbuilding' ).val().toUpperCase();
 
 			else
-				var building = $( '#buildingtype' ).text().slice( 0, -1 );
+				var building = $( '#buildingtype' ).text();
 		}
 
 		if ( $( '#room_num' ).val() == "" )
@@ -622,17 +618,17 @@ else
 
 
 // users/software tabs
-	if ( $( '#eqtype' ).text() == "Computer or Tablet " || $( '#eqtype' ).text() == "Other Equipment " )
+	if ( $( '#eqtype' ).text() == "Computer or Tablet" || $( '#eqtype' ).text() == "Other Equipment" )
 	{
 		// User type
-		if ( $( '#usertype' ).text() == "Choose Type " )
+		if ( $( '#usertype' ).text() == "Choose Type" )
 		{
 			$( '#selectusertype_error' ).show().children().html( "User type required!" );
 			$( '#selectusertype_input' ).addClass( 'has-error' );
 			$( '#usertypebutton' ).addClass( 'btn-danger' ).removeClass( 'btn-default' );
 		}
 
-		else if ( $( '#usertype' ).text() == "Faculty/Staff " )
+		else if ( $( '#usertype' ).text() == "Faculty/Staff" )
 		{
 			// set variables
 			var users = new Array();
@@ -644,14 +640,8 @@ else
 			$( '#selectusertype_error, #selectlab_error, #newlab_error' ).hide();
 			$( '#selectusertype_input' ).removeClass( 'has-error' );
 			$( '#usertypebutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
-
-			if ( $( '#newuserfname:visible' ).val() == "" && $( '#newuserlname:visible' ).val() == "" )
-			{
-				//$( '#newuser_error' ).show().children().html( "First and last name required!" );
-				//$( '#newuser_input' ).addClass( 'has-error' );
-			}
 			
-			else if ( $( '#newuserfname:visible' ).val() == "" )
+			if ( $( '#newuserfname:visible' ).val() == "" )
 			{
 				$( '#newuser_error' ).show().children().html( "First name required!" );
 				$( '#newuser_input' ).addClass( 'has-error' );
@@ -684,7 +674,7 @@ else
 			}
 		}
 
-		else if ( $( '#usertype' ).text() == "Lab Workstation " )
+		else if ( $( '#usertype' ).text() == "Lab Workstation" )
 		{
 			$( '#selectusertype_error' ).hide();
 			$( '#selectusertype_input' ).removeClass( 'has-error' );
@@ -831,7 +821,7 @@ else
 			url: "include/add_equipment.php",
 			data: { data : user_input },
 			success: function( result ){
-			//	$( '#addEquipmentModal' ).modal( 'hide' );
+				$( '#addEquipmentModal' ).modal( 'hide' );
 				alert( result );
 			},
 			error: function(){
@@ -841,5 +831,4 @@ else
 
 	}
 });
-
 </script>

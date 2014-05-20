@@ -25,43 +25,30 @@
   </form>
 </div>
 <script>
-	$( '.input_error' ).hide();
+// initially hides certain input boxes
+$( '#selectsoftware_input, .input_error' ).hide();
 
-  	// initially hides certain input boxes
-	$( '#selectsoftware_input' ).hide();
-
-	$( '#softwarenotavailable' ).show();
-   // this brings up text boxes based on equipment type
-  $('#usertypemenu>li>a').on( 'click', function(){
-     if ( $( this ).text() == "Faculty/Staff ")
-       $('#selectusers').show();
-
-     else
-       $('#selectusers, #newuser').hide();
-
-	$( '#usertype' ).html( $( this ).text() ); 
-   });
+$( '#softwarenotavailable' ).show();
 
 // software dropdown
-	$.ajax({
-		type: "POST",
-		url: "include/populate_menus.php",
-		data: { query : "software" },
-		success: function( result ){
-			results = $.parseJSON( result );
-			$.each( results, function( i ){
-				$('#softwaremenu').append( "<li><span class='hidden software_id'>" + results[i].softwareid + "</span><a href='#'>" + results[i].software_name + ", " + results[i].licensetype + " </a></li>" );
+$.ajax({
+	type: "POST",
+	url: "include/populate_menus.php",
+	data: { query : "software" },
+	success: function( result ){
+		results = $.parseJSON( result );
+		$.each( results, function( i ){
+			$('#softwaremenu').append( "<li><span class='hidden sid'>" + results[i].softwareid + "</span><a href='#'>" + results[i].software_name + ", " + results[i].licensetype + " </a></li>" );
+		});
+
+		$("#softwaremenu>li>a").on( 'click', function(){
+			var sid = $( this ).siblings( '.sid' ).text();
+  			$( '#softwarelist').append( "<li><span class='hidden software_id'>" + sid + "</span><i class='fa fa-minus-square' style='cursor:pointer'></i> " + $(this).text() + "</li>");
+			$( '#softwarelist>li>i').on( 'click', function(){
+				$( this ).parents( 'li' ).remove();
 			});
 
-			$("#softwaremenu>li>a").on( 'click', function(){
-	  			$( '#softwarelist').append( "<li><i class='fa fa-minus-square' style='cursor:pointer'></i> " + $(this).text() + "</li>");
-				$( '#softwarelist>li>i').on( 'click', function(){
-							$( this ).parents( 'li' ).remove();
-				});
-
-			});
-		} 
-	});
-
-
+		});
+	} 
+});
 </script>
