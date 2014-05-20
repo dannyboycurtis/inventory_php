@@ -129,9 +129,9 @@ $( '.input_error' ).hide();
 					$( '#newuserfname, #newuserlname, #newuseremail, #newuserphone' ).empty();
 					var uid = $( this ).siblings( '.uid' ).text();
 	  				$( '#userlist').append( "<li><span class='hidden user_id'>" + uid + "</span><i class='fa fa-minus-square' style='cursor:pointer'></i> " + $(this).text() + "</li>");
-						$( '#userlist>li>i').on( 'click', function(){
-							$( this ).parents( 'li' ).remove();
-						});
+					$( '#userlist>li>i').on( 'click', function(){
+						$( this ).parents( 'li' ).remove();
+					});
 				}
 			});
 		} 

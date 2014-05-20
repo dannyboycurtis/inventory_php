@@ -126,7 +126,7 @@ $( '.input_error' ).hide();
 				else
 				{
 					$( '#newuser_input, #newuser_error' ).hide();
-					$( '#newuser_input>div>div>input' ).empty();
+					$( '#newuserfname, #newuserlname, #newuseremail, #newuserphone' ).empty();
 					var uid = $( this ).siblings( '.uid' ).text();
 	  				$( '#userlist').append( "<li><span class='hidden user_id'>" + uid + "</span><i class='fa fa-minus-square' style='cursor:pointer'></i> " + $(this).text() + "</li>");
 						$( '#userlist>li>i').on( 'click', function(){

@@ -356,12 +356,9 @@ function populateTable_equipment( results )
 		{
 			$.each( this.users, function( i ){
 				if ( this.lastname )
-					row += this.firstname + " " + this.lastname;
+					row += this.firstname + " " + this.lastname + "<br>";
 				else
-					row += this.firstname;
-
-				if ( this.count >= i )
-					row += ", ";
+					row += this.firstname + "<br>";
 			});
 		}
 		row += "</td></tr><tr class='tablesorter-childRow'><td colspan='10'>";
@@ -421,6 +418,9 @@ function populateTable_equipment( results )
 		}
 
 		row += '</div></div>';
+
+		if ( this.description )
+			row += '<hr><div class="row"><div class="col-xs-12"><b>Description:&nbsp;&nbsp;</b>' + this.description + '</div></div>';
 
 		if ( this.eq_notes )
 			row += '<hr><div class="row"><div class="col-xs-12"><b>Notes:&nbsp;&nbsp;</b>' + this.eq_notes + '</div></div>';

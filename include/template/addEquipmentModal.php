@@ -13,8 +13,8 @@
           <li id="equipmenttab" class="active"><a href="#equipmentInfo" data-toggle="tab">Equipment </a></li>
 		  <li id="purchasetab"><a href="#purchaseInfo" data-toggle="tab">Purchase </a></li>
 		  <li id="locationtab"><a href="#locationInfo" data-toggle="tab">Location </a></li>
-          <li id="networktab"><a href="#netInfo" data-toggle="tab">Network </a></li>
           <li id="usertab"><a href="#userInfo" data-toggle="tab">Users </a></li>
+          <li id="networktab"><a href="#netInfo" data-toggle="tab">Network </a></li>
           <li id="softwaretab"><a href="#softwareInfo" data-toggle="tab">Software </a></li>
           <li id="othertab"><a href="#otherInfo" data-toggle="tab">Other </a></li>
         </ul>
@@ -69,14 +69,13 @@
     $('#building_input, #room_num_input, #otherbuilding, #otherdepartment').hide();
     $('#purchased_by_input').hide();
 	$( '#newMake, #newModel' ).hide();
-	$( '#selectusertype_input, #selectusers, #newuser_input, #selectsoftware_input' ).hide();
+	$( '#selectusertype_input, #selectusers_input, #newuser_input, #selectsoftware_input' ).hide();
 	$( '#usersnotavailable, #softwarenotavailable' ).show();
 	$( '#userlist, #softwarelist' ).empty();
 	$( '#maketype' ).text( "Choose Make " );
 	$( '#modeltype' ).text( "Choose Model " );
 	$( '#eqtype' ).text( "Choose Type " );
 	$( '#usertype' ).text( "Choose Type " );
-	$( '#usermenu' ).text( "Choose Users " );
 	$( '#ostype' ).text( "Choose OS " );
 	$( '#purchasetype' ).text( "Choose Purchase Order " );
 	$( '#purchasertype' ).text( "Choose Purchaser " );
@@ -84,6 +83,12 @@
 	$( '#locationtype' ).text( "Choose Location " );
 	$( '#buildingtype' ).text( "Choose Building " );
 	$( '#softwaretype' ).text( "Choose Software " );
+	$( '#purchasedate' ).attr( 'disabled', false ).val( '' );
+	$( '#purchasertype' ).html( "Choose Purchaser" )
+						 .parents( 'button' ).attr( 'data-toggle', 'dropdown')
+											 .removeClass( 'active' );
+	$( '#newPurchaser' ).hide();
+	$( '#purchasedate_input, #purchasedby_input' ).hide();
 
 	$( '.input_error' ).hide();
 	$( this ).find( '.has-error' ).removeClass( 'has-error' );
@@ -106,11 +111,31 @@ $( '#submitequipment' ).on( 'click', function() {
 
 	else
 	{
-		$( '#tag_error' ).hide();
-		$( '#tag_input' ).removeClass( 'has-error' );
+		$.ajax({
+			type: "POST",
+			url: "include/check_tag.php",
+			data: { tag : $( '#tag_num' ).val() },
+			async: false,
+			success: function( result ) {
+				if ( result == "0" )
+				{
+					$( '#tag_error' ).show().children().html( "This property tag is already in use!" );
+					$( '#tag_input' ).addClass( 'has-error' );
+				}
 
-		// set variable
-		var tag_num = $( '#tag_num' ).val();
+				else
+				{
+					$( '#tag_error' ).hide();
+					$( '#tag_input' ).removeClass( 'has-error' );
+				}
+			}
+		});
+
+		if ( !$( '#tag_input' ).hasClass( 'has-error' ) )
+		{
+			// set variable
+			var tag_num = $( '#tag_num' ).val();
+		}
 	}
 
 	// serial
@@ -616,7 +641,6 @@ else
 				users.push( user );
 			});
 
-
 			$( '#selectusertype_error, #selectlab_error, #newlab_error' ).hide();
 			$( '#selectusertype_input' ).removeClass( 'has-error' );
 			$( '#usertypebutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
@@ -664,7 +688,9 @@ else
 		{
 			$( '#selectusertype_error' ).hide();
 			$( '#selectusertype_input' ).removeClass( 'has-error' );
-			$( '#usertypebutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );	
+			$( '#usertypebutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
+
+			$( '#userlist' ).empty();	
 
 			if ( $( "#labtype" ).text() == "Choose Lab" )
 			{
@@ -805,8 +831,8 @@ else
 			url: "include/add_equipment.php",
 			data: { data : user_input },
 			success: function( result ){
-				$( '#addEquipmentModal' ).modal( 'hide' );
-				alert( "Record successfully added!" );
+			//	$( '#addEquipmentModal' ).modal( 'hide' );
+				alert( result );
 			},
 			error: function(){
 				alert( "There was a problem!" );
