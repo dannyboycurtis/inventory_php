@@ -105,42 +105,44 @@ $( '#submitequipment' ).on( 'click', function() {
 
 // equipment tab
 
-	// tag num	
-	if ( $( '#tag_num' ).val() == "" )
-	{
-		$( '#tag_error' ).show().children().html( "Property tag number is required!" );
-		$( '#tag_input' ).addClass( 'has-error' );
-	}
-
-	else
-	{
-		$.ajax({
-			type: "POST",
-			url: "include/check_tag.php",
-			data: { tag : $( '#tag_num' ).val() },
-			async: false,
-			success: function( result ) {
-				if ( result == "0" )
-				{
-					$( '#tag_error' ).show().children().html( "This property tag is already in use!" );
-					$( '#tag_input' ).addClass( 'has-error' );
-				}
-
-				else
-				{
-					$( '#tag_error' ).hide();
-					$( '#tag_input' ).removeClass( 'has-error' );
-				}
-			}
-		});
-
-		if ( !$( '#tag_input' ).hasClass( 'has-error' ) )
+	// tag num
+	if ( $( '#addEquipmentModal' ).find( '.modal-title' ).text() == "Add Equipment Record" )
+	{	
+		if ( $( '#tag_num' ).val() == "" )
 		{
-			// set variable
-			var tag_num = $( '#tag_num' ).val();
+			$( '#tag_error' ).show().children().html( "Property tag number is required!" );
+			$( '#tag_input' ).addClass( 'has-error' );
+		}
+
+		else
+		{
+			$.ajax({
+				type: "POST",
+				url: "include/check_tag.php",
+				data: { tag : $( '#tag_num' ).val() },
+				async: false,
+				success: function( result ) {
+					if ( result == "0" )
+					{
+						$( '#tag_error' ).show().children().html( "This property tag is already in use!" );
+						$( '#tag_input' ).addClass( 'has-error' );
+					}
+
+					else
+					{
+						$( '#tag_error' ).hide();
+						$( '#tag_input' ).removeClass( 'has-error' );
+					}
+				}
+			});
+
+			if ( !$( '#tag_input' ).hasClass( 'has-error' ) )
+			{
+				// set variable
+				var tag_num = $( '#tag_num' ).val();
+			}
 		}
 	}
-
 
 	// serial
 	if ( $( '#serial' ).val() == "" )
