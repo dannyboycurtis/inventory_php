@@ -419,8 +419,8 @@ function populateTable_equipment( results )
 
 		row += '</div></div>';
 
-		if ( this.eq_description )
-			row += '<hr><div class="row"><div class="col-xs-12"><b>Description:&nbsp;&nbsp;</b>' + this.eq_description + '</div></div>';
+		if ( this.description )
+			row += '<hr><div class="row"><div class="col-xs-12"><b>Description:&nbsp;&nbsp;</b>' + this.description + '</div></div>';
 
 		if ( this.eq_notes )
 			row += '<hr><div class="row"><div class="col-xs-12"><b>Notes:&nbsp;&nbsp;</b>' + this.eq_notes + '</div></div>';
@@ -433,12 +433,147 @@ function populateTable_equipment( results )
 		
 	$( '#results_table>tbody' ).html( tableRows.join( "" ) );
 
+
+	// edit equipment modal
 	$( '.edit>i').on( 'click', function(){
 		var tag = $( this ).parents().siblings( '.select' ).children( 'span' ).html();
-		/*******************************************************
-		 Gather attributes, call edit_computer modal
-		*******************************************************/
 
+		// retrieve information about record, add to modal forms
+		$.ajax({
+			type: "POST",
+			url: "include/get_equipment.php",
+			data: { query : tag },
+			success: function( result ){
+				console.log( result );
+				result = $.parseJSON( result );
+				$( '#tag_num' ).attr( 'disabled', true ).val( result[0].tag );
+				$( '#serial' ).val( result[0].serial );
+				$( '#maketype' ).text( result[0].make );
+				$( '#modeltype' ).text( result[0].model );
+
+				if ( result[0].eqtype == "computer" )
+				{
+					$( '#eqtype' ).text( "Computer or Tablet" );
+					$( '#hostname_input' ).show();
+					$( '#hostname_input>label' ).text( "Hostname*" );
+					$( '#hostname' ).val( result[0].hostname );
+					$( '#os_input' ).show();
+					$( '#ostype' ).text( result[0].os );
+					$( '#printer_input' ).show();
+					$( '#eq_printer' ).val( result[0].printer );
+
+					// set software values
+					if ( result[0].software )
+					{
+						$( '#softwarenotavailable' ).hide();
+						$( '#selectsoftware_input' ).show();
+
+						$.each( results[0].software, function( i ){
+							$( '#softwarelist' ).append( "<li><span class='hidden software_id'>" + this.softwareid + "</span><i class='fa fa-minus-square' style='cursor:pointer'></i> " + this.name + ", " + this.licensetype + "</li>" );
+						});
+
+						$( '#softwarelist>li>i').on( 'click', function(){
+							$( this ).parents( 'li' ).remove();
+						});
+					}
+				}
+
+				else if ( result[0].eqtype == "printer" )
+				{
+					$( '#eqtype' ).text( "Network Printer" );
+					$( '#hostname_input' ).show();
+					$( '#hostname' ).val( result[0].hostname );
+				}
+
+				else if ( result[0].eqtype == "other" )
+				{
+					$( '#eqtype' ).text( "Other Equipment" );
+					$( '#description_input' ).show();
+					$( '#description' ).val( result[0].description );		
+				}
+
+				$( '.pid' ).each( function(){
+					if ( $( this ).text() == result[0].purchase_id )
+						$( this ).parent( 'li' ).addClass( 'selectedpurchaser' );
+				});
+
+				if ( result[0].purchase_order )
+					$( '#purchasetype' ).text( result[0].purchase_order );
+				
+				$( '#purchasedate_input' ).show();
+				$( '#purchasedate' ).attr( 'disabled', true ).val( result[0].purchase_date );
+				$( '#purchasedby_input' ).show().find( '#newPurchaser' ).hide();
+				$( '#purchasertype' ).text( result[0].purchased_by ).parent().removeAttr( 'data-toggle' ).addClass( 'active' );
+				
+				$( '#departmenttype' ).text( result[0].department );
+
+				if ( result[0].location == "off" )
+					$( '#locationtype' ).text( "Off Campus" );
+
+				else if ( result[0].location == "on" )
+				{
+					$( '#location_input' ).show();
+					$( '#locationtype' ).text( "On Campus" );
+					$( '#building_input' ).show();
+					$( '#buildingtype' ).text( result[0].building );
+					$( '#room_num_input' ).show();
+					$( '#room_num' ).val( result[0].room_num );
+				}
+
+				// set user information
+				if ( results[0].users )
+				{
+					$( '#selectusertype_input' ).show();
+					$( '#usersnotavailable' ).hide();
+					
+					// check if eq is of type Faculty/staff
+					if ( results[0].users[0].lastname )
+					{
+						$( '#usertype' ).text( "Faculty/Staff" );
+						$( '#selectusers_input' ).show();
+
+						$.each( results[0].users, function( i ){
+							$( '#userlist' ).append( "<li><span class='hidden user_id'>" + this.userid + "</span><i class='fa fa-minus-square' style='cursor:pointer'></i> " + this.firstname + " " + this.lastname + "</li>");
+						});
+
+						$.each( results[0].users, function( i ){
+							$( '#userlist' ).append( "<li><span class='hidden user_id'>" + this.userid + "</span><i class='fa fa-minus-square' style='cursor:pointer'></i> " + this.firstname + " " + this.lastname + "</li>");
+						});
+						$( '#userlist>li>i').on( 'click', function(){
+							$( this ).parents( 'li' ).remove();
+						});
+
+					}
+
+					// eq is of type lab workstation
+					else
+					{
+						$( '#usertype' ).text( "Lab Workstation" );
+						$( '#selectlab_input' ).show();
+										
+						$( '.uid' ).each( function(){
+							if ( $( this ).text() == result[0].users[0].userid )
+								$( this ).parent( 'li' ).addClass( 'selectedlab' );
+						});
+
+						$( '#labtype' ).text( results[0].users[0].firstname );
+					}
+				}
+
+				// set network information
+				$( '#mac' ).val( result[0].mac );
+				$( '#wmac' ).val( result[0].wmac );
+				$( '#ip' ).val( result[0].ip );
+
+				// set notes
+				$( '#notes' ).text( result[0].eq_notes );
+			}
+		});
+
+
+
+
+		$( '#addEquipmentModal' ).modal( 'show' ).find( '.modal-title' ).text( "Edit Equipment Record" );
 	});
 
 

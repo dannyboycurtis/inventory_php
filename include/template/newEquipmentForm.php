@@ -167,6 +167,7 @@ $( '#eqtypemenu>li>a' ).on( 'click', function(){
 		$( '#eqtype_submenu' ).find( '.form-group' ).removeClass( 'has-error' ).hide();
 		$( '#osbutton, #usertypebutton, #selectlabbutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
 		$( '#hostname_input, #os_input, #printer_input' ).show();
+		$( '#hostname_input>label' ).text( "Hostname*" );
 		$( '#usertab>a' ).removeAttr( 'style' );
 
 		// enable software and user selection
@@ -180,6 +181,7 @@ $( '#eqtypemenu>li>a' ).on( 'click', function(){
 		$( '#eqtype_submenu' ).find( '.form-group' ).removeClass( 'has-error' ).hide();
 		$( '#osbutton, #usertypebutton, #selectlabbutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
 		$( '#hostname_input' ).show();
+		$( '#hostname_input>label' ).text( "Hostname" );
 		$( '#usertab>a' ).removeAttr( 'style' );
 
 		// disable software and user selection

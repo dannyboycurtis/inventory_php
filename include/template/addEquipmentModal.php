@@ -4,7 +4,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title">Add Equipment Record <small>(Items with * are optional)</small></h4>
+				<h4 class="modal-title">Add Equipment Record</h4> <small>(Items with * are optional)</small>
 			</div>
 
 			<div class="modal-body">
@@ -81,10 +81,6 @@ $( '#addEquipmentModal' ).on( 'hidden.bs.modal', function(){
 	$( '#locationtype' ).text( "Choose Location" );
 	$( '#buildingtype' ).text( "Choose Building" );
 
-	// reset disabled purchase forms
-	$( '#purchasedate' ).attr( 'disabled', false ).val( '' );
-	$( '#purchasertype' ).html( "Choose Purchaser" ).parents( 'button' ).attr( 'data-toggle', 'dropdown').removeClass( 'active' );
-
 	// remove all error styles
 	$( this ).find( '.has-error' ).removeClass( 'has-error' );
 	$( this ).find( '.btn-danger' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
@@ -92,6 +88,15 @@ $( '#addEquipmentModal' ).on( 'hidden.bs.modal', function(){
 
 	// reset active tab to equipmenttab
 	$( '#addRecordTab a:first' ).tab( 'show' );
+
+	// enable all inputs
+	$( this ).find( 'input' ).attr( 'disabled', false );
+
+	// enable all dropdowns
+	$( this ).find( 'button' ).attr( 'data-toggle', 'dropdown').removeClass( 'active' );
+
+	// reset modal-title
+	$( this ).find( '.modal-title' ).text( "Add Equipment Record" );
 });
 
 $( '#submitequipment' ).on( 'click', function() {
@@ -99,39 +104,43 @@ $( '#submitequipment' ).on( 'click', function() {
 // prepare inputs from menus
 
 // equipment tab
+
 	// tag num
-	if ( $( '#tag_num' ).val() == "" )
-	{
-		$( '#tag_error' ).show().children().html( "Property tag number is required!" );
-		$( '#tag_input' ).addClass( 'has-error' );
-	}
-
-	else
-	{
-		$.ajax({
-			type: "POST",
-			url: "include/check_tag.php",
-			data: { tag : $( '#tag_num' ).val() },
-			async: false,
-			success: function( result ) {
-				if ( result == "0" )
-				{
-					$( '#tag_error' ).show().children().html( "This property tag is already in use!" );
-					$( '#tag_input' ).addClass( 'has-error' );
-				}
-
-				else
-				{
-					$( '#tag_error' ).hide();
-					$( '#tag_input' ).removeClass( 'has-error' );
-				}
-			}
-		});
-
-		if ( !$( '#tag_input' ).hasClass( 'has-error' ) )
+	if ( $( '#addEquipmentModal' ).find( '.modal-title' ).text() == "Add Equipment Record" )
+	{	
+		if ( $( '#tag_num' ).val() == "" )
 		{
-			// set variable
-			var tag_num = $( '#tag_num' ).val();
+			$( '#tag_error' ).show().children().html( "Property tag number is required!" );
+			$( '#tag_input' ).addClass( 'has-error' );
+		}
+
+		else
+		{
+			$.ajax({
+				type: "POST",
+				url: "include/check_tag.php",
+				data: { tag : $( '#tag_num' ).val() },
+				async: false,
+				success: function( result ) {
+					if ( result == "0" )
+					{
+						$( '#tag_error' ).show().children().html( "This property tag is already in use!" );
+						$( '#tag_input' ).addClass( 'has-error' );
+					}
+
+					else
+					{
+						$( '#tag_error' ).hide();
+						$( '#tag_input' ).removeClass( 'has-error' );
+					}
+				}
+			});
+
+			if ( !$( '#tag_input' ).hasClass( 'has-error' ) )
+			{
+				// set variable
+				var tag_num = $( '#tag_num' ).val();
+			}
 		}
 	}
 
@@ -228,20 +237,8 @@ $( '#submitequipment' ).on( 'click', function() {
 		$( '#eqtypebutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
 
 		// hostname
-		if ( $( '#hostname' ).val() == "" )
-		{
-			$( '#hostname_error' ).show().children().html( "Hostname is required!" );
-			$( '#hostname_input' ).addClass( 'has-error' );
-		}
-
-		else
-		{
-			$( '#hostname_error' ).hide();
-			$( '#hostname_input' ).removeClass( 'has-error' );
-
-			// set variables
+		if ( $( '#hostname' ).val() != "" )
 			var hostname = $( '#hostname' ).val();
-		}
 
 		// os
 		if ( $( '#ostype' ).text() == "Choose OS" )

@@ -92,7 +92,7 @@ else if ( $_POST['query'] == 'users' )
 
 else if ( $_POST['query'] == 'labs' )
 {
-	$query_stmt = "SELECT user_id, f_name
+	$query_stmt = "SELECT u.user_id, u.f_name
 					FROM user u
 							INNER JOIN ( SELECT f_name, COUNT(*) total
 											FROM user

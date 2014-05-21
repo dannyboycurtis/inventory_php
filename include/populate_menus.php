@@ -194,9 +194,6 @@ else if ( $_POST['query'] == 'building' )
 }
 
 
-
-
-
 else if ( $_POST['query' ] == 'software' )
 {
 	$query_stmt = "SELECT software_id, software_name, license_type FROM software ORDER BY software_name ASC";

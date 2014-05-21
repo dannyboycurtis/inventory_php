@@ -140,7 +140,7 @@ if ( $stmt = $mysqli->prepare( $query_stmt ) )
 			$stmt2->close();
 		}	
 
-		$get_software_from_tag = "SELECT s.software_name, s.software_id, s.license_type
+		$get_software_from_tag = "SELECT s.software_name, s.software_id
 								  FROM software s JOIN licensed_to l ON s.software_id = l.software_id
 								  WHERE l.computer_tag = ?";
 
@@ -150,10 +150,10 @@ if ( $stmt = $mysqli->prepare( $query_stmt ) )
 			$stmt3->bind_param( "s", $tag );
 			$stmt3->execute();
 			$stmt3->store_result();
-			$stmt3->bind_result( $software_name, $software_id, $license_type );
+			$stmt3->bind_result( $software_name, $software_id );
 
 			while ( $stmt3->fetch() )
-				$software[] = array( "name" => $software_name, "softwareid" => $software_id, "licensetype" => $license_type );
+				$software[] = array( "name" => $software_name, "softwareid" => $software_id );
 
 			$stmt3->close();
 		}

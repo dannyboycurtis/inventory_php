@@ -20,16 +20,19 @@ $query = $_POST['query'];
 $query_stmt = "
 SELECT	e.tag_num,
 		e.serial, 
-		CONCAT( e.make, ' ', e.model ), 
+		e.make,
+		e.model, 
 		e.department, 
 		e.location, 
-		CONCAT( e.building, ' ', e.room_num ),
+		e.building,
+		e.room_num,
 		n.mac,
 		n.wmac,
 		n.ip,
 		eqd.description,
 		eqn.notes,
 		eqp.printer,
+		p.purchase_id,
 		p.purchase_order,
 		p.purchase_date,
 		p.purchased_by,
@@ -43,68 +46,30 @@ FROM equipment e
 		LEFT OUTER JOIN eq_network n ON e.tag_num = n.tag_num
 		LEFT OUTER JOIN eq_description eqd ON e.tag_num = eqd.tag_num
 		LEFT OUTER JOIN eq_notes eqn ON e.tag_num = eqn.tag_num
-		LEFT OUTER JOIN eq_printer eqp ON e.tag_num = eqp.tag_num ";
-
-if ( $_POST['query'] == '_computers' )
-	$query_stmt .= "JOIN uses us ON e.tag_num = us.tag_num 
-					JOIN user u ON us.user_id = u.user_id 
-					WHERE u.l_name IS NOT NULL 
-					GROUP BY e.tag_num 
-					ORDER BY e.tag_num DESC";
-
-else if ( $_POST['query'] == '_labs' )
-	$query_stmt .= "JOIN uses us ON e.tag_num = us.tag_num 
-					JOIN user u ON us.user_id = u.user_id
-					WHERE u.l_name IS NULL
-					GROUP BY e.tag_num 
-					ORDER BY p.purchase_date DESC";
-
-else if ( $_POST['query'] == '_printers' )
-	$query_stmt .= "WHERE pr.printer_tag IS NOT NULL
-					ORDER BY pr.hostname ASC";
-
-else
-	$query_stmt .= "WHERE e.tag_num LIKE ? 
-					OR e.serial LIKE ? 
-					OR e.make LIKE ? 
-					OR e.model LIKE ? 
-					OR e.department LIKE ? 
-					OR c.os LIKE ? 
-					OR c.hostname LIKE ? 
-					OR pr.hostname LIKE ? 
-					OR p.purchase_order LIKE ? 
-					OR p.purchase_date LIKE ? 
-					OR p.purchased_by LIKE ? 
-					OR n.mac LIKE ? 
-					OR n.wmac LIKE ? 
-					OR n.ip LIKE ? 
-					GROUP BY e.tag_num 
-					ORDER BY e.tag_num DESC";
+		LEFT OUTER JOIN eq_printer eqp ON e.tag_num = eqp.tag_num
+WHERE e.tag_num = ? LIMIT 1";
 
 
 if ( $stmt = $mysqli->prepare( $query_stmt ) ) 
 {
-	unset( $results );
-
-	$q = '%' . $query . '%';
-
-	if ( $query != "_computers" or $query != "_labs" or $query != "_printers" )
-		$stmt->bind_param( "ssssssssssssss", $q, $q, $q, $q, $q, $q, $q, $q, $q, $q, $q, $q, $q, $q );
-
+	$stmt->bind_param( "s", $query );
  	$stmt->execute();
 	$stmt->store_result();
 	$stmt->bind_result( $tag,
 						$serial,
-						$makemodel,
+						$make,
+						$model,
 						$department,
-						$offcampus,
-						$location, 
+						$location,
+						$building,
+						$room_num,
 						$mac,
 						$wmac,
 						$ip,
 						$description,
 						$notes,
 						$printer,
+						$purchase_id,
 						$purchase_order,
 						$purchase_date,
 						$purchased_by,
@@ -116,12 +81,18 @@ if ( $stmt = $mysqli->prepare( $query_stmt ) )
 	{
 		unset( $users, $software );				
 
-		if ( $offcampus == 'off' )
-			$location = "Off Campus";
+		if ( $os )
+			$eqtype = "computer";
 
-		if ( !( $hostname ) and $phostname )
+		else if ( $phostname )
+		{
 			$hostname = $phostname;				
-	
+			$eqtype = "printer";
+		}
+
+		else
+			$eqtype = "other";
+
 		$get_users_from_tag = "SELECT u.user_id, u.f_name, u.l_name
 							   FROM user u JOIN uses us ON u.user_id = us.user_id
 							   WHERE us.tag_num = ?";
@@ -161,8 +132,11 @@ if ( $stmt = $mysqli->prepare( $query_stmt ) )
 		// Set results and headers arrays
 		$results[] = array( "tag" => $tag, 
 							"serial" => $serial, 
-							"makemodel" => $makemodel, 
+							"make" => $make, 
+							"model" => $model,
 							"location" => $location,
+							"building" => $building,
+							"room_num" => $room_num,
 							"department" => $department,
 			 				"mac" => $mac,
 			 				"wmac" => $wmac,
@@ -170,13 +144,15 @@ if ( $stmt = $mysqli->prepare( $query_stmt ) )
 							"description" => $description,
 			 				"eq_notes" => $notes,							
 							"eq_printer" => $printer,
+							"purchase_id" => $purchase_id,
 							"purchase_order" => $purchase_order, 
 							"purchase_date" => $purchase_date,
 							"purchased_by" => $purchased_by,
 			 				"os" => $os,
 			 				"hostname" => $hostname,
 		 					"software" => $software,
-							"users" => $users, );
+							"users" => $users,
+							"eqtype" => $eqtype );
 	}
 }
 
