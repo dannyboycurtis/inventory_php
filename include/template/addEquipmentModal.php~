@@ -69,6 +69,9 @@ $( '#addEquipmentModal' ).on( 'hidden.bs.modal', function(){
 	// reset user and software lists
 	$( '#userlist, #softwarelist' ).empty();
 
+	// reset notes
+	$( '#notes' ).empty();
+
 	// reset texts displayed in menus
 	$( '#maketype' ).text( "Choose Make" );
 	$( '#modeltype' ).text( "Choose Model" );
@@ -777,7 +780,10 @@ else
 	{
 		// set all other variables
 		if ( $( '#notes' ).val() != "" )
-			var notes = $( '#notes' ).val();
+		var notes = $( '#notes' ).val();
+
+		//alert( "notes: " + $( '#notes' ).val() );
+
 		if ( eqtype == "computer" )
 		{
 			var software = new Array();

@@ -166,7 +166,7 @@ if ( isset( $user_input["mac"] ) or isset( $user_input["wmac"] ) or isset( $user
 		$error .= "networkinsert;";
 }
 
-if ( isset( $user_input["notes"] ) )
+if ( $user_input["notes"] )
 {
 	// add eq_notes entry
 	$query_stmt = "INSERT INTO eq_notes VALUES( ?, ? )
@@ -180,6 +180,18 @@ if ( isset( $user_input["notes"] ) )
 
 	else
 		$error .= "notesinsert;";
+}
+
+else
+{
+	// delete eq_notes entry
+	$query_stmt = "DELETE FROM eq_notes WHERE tag_num = ?";
+
+	if ( $stmt = $mysqli->prepare( $query_stmt ) )
+	{
+		$stmt->bind_param( 's', $user_input["tag_num"] );
+		$stmt->execute();
+	}
 }
 
 

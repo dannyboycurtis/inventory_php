@@ -780,7 +780,8 @@ else
 	{
 		// set all other variables
 		if ( $( '#notes' ).val() != "" )
-			var notes = $( '#notes' ).val();
+		var notes = $( '#notes' ).val();
+
 		if ( eqtype == "computer" )
 		{
 			var software = new Array();

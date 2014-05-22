@@ -423,7 +423,7 @@ function populateTable_equipment( results )
 			row += '<hr><div class="row"><div class="col-xs-12"><b>Description:&nbsp;&nbsp;</b><span class="table_description">' + this.description + '</span></div></div>';
 
 		if ( this.eq_notes )
-			row += '<hr><div class="row"><div class="col-xs-12"><b>Notes:&nbsp;&nbsp;</b><span class="table_notes">' + this.eq_notes + '</span></div></div>';
+			row += '<hr><div class="row"><div class="col-xs-12"><b>Notes:&nbsp;&nbsp;</b>' + this.eq_notes + '</div></div>';
 
 		row += '</div></td></tr>';
 
@@ -444,6 +444,8 @@ function populateTable_equipment( results )
 			url: "include/get_equipment.php",
 			data: { query : tag },
 			success: function( result ){
+
+				console.log( result );
 				result = $.parseJSON( result );
 				$( '#tag_num' ).attr( 'disabled', true ).val( result[0].tag );
 				$( '#serial' ).val( result[0].serial );
@@ -498,6 +500,9 @@ function populateTable_equipment( results )
 
 				if ( result[0].purchase_order )
 					$( '#purchasetype' ).text( result[0].purchase_order );
+
+				else
+					$( '#purchasetype' ).text( "Not Available" );
 				
 				$( '#purchasedate_input' ).show();
 				$( '#purchasedate' ).attr( 'disabled', true ).val( result[0].purchase_date );
@@ -562,7 +567,7 @@ function populateTable_equipment( results )
 				$( '#ip' ).val( result[0].ip );
 
 				// set notes
-				$( '#notes' ).text( result[0].eq_notes );
+				$( '#notes' ).val( result[0].eq_notes );
 			}
 		});
 

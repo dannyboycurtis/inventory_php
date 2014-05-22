@@ -163,10 +163,10 @@ if ( isset( $user_input["mac"] ) or isset( $user_input["wmac"] ) or isset( $user
 	}
 
 	else
-		return 0;
+		$error .= "networkinsert;";
 }
 
-if ( isset( $user_input["notes"] ) )
+if ( $user_input["notes"] )
 {
 	// add eq_notes entry
 	$query_stmt = "INSERT INTO eq_notes VALUES( ?, ? )
@@ -179,7 +179,7 @@ if ( isset( $user_input["notes"] ) )
 	}
 
 	else
-		return 0;
+		$error .= "notesinsert;";
 }
 
 
@@ -197,7 +197,7 @@ if ( $user_input["eqtype"] == "printer" )
 	}
 
 	else
-		return 0;
+		$error .= "networkprinterinsert;";
 
 	// delete entries in eq_description and computer
 	$query_stmt = "DELETE FROM eq_description WHERE tag_num = ?";
@@ -209,7 +209,7 @@ if ( $user_input["eqtype"] == "printer" )
 	}
 
 	else
-		return 0;
+		$error .= "deletedesc;";
 
 	$query_stmt = "DELETE FROM computer WHERE computer_tag = ?";
 
@@ -220,7 +220,7 @@ if ( $user_input["eqtype"] == "printer" )
 	}
 
 	else
-		return 0;
+		$error .= "deletecomputer;";
 }
 
 // add users and software if eqtype is computer or other
@@ -238,7 +238,7 @@ if ( $user_input["eqtype"] == "computer" or $user_input["eqtype"] == "other" )
 		}
 
 		else
-			return 0;
+			$error .= "usesinsert;";
 	}
 }
 
@@ -255,7 +255,7 @@ if ( $user_input["eqtype"] == "other" )
 	}
 
 	else
-		return 0;
+		$error .= "descinsert;";
 
 	// delete network_printer, computer entries
 	$query_stmt = "DELETE FROM network_printer WHERE printer_tag = ?";
@@ -267,7 +267,7 @@ if ( $user_input["eqtype"] == "other" )
 	}
 
 	else
-		return 0;
+		$error .= "deletenetprint;";
 
 	$query_stmt = "DELETE FROM computer WHERE computer_tag = ?";
 
@@ -278,7 +278,7 @@ if ( $user_input["eqtype"] == "other" )
 	}
 
 	else
-		return 0;
+		$error .= "deletecomp;";
 }
 
 // add licensed_to, computer, eq_printer if eqtype is computer
@@ -294,7 +294,7 @@ if ( $user_input["eqtype"] == "computer" )
 	}
 
 	else
-		return 0;
+		$error .= "compinsert;";
 
 	// delete network_printer, eq_description entries
 	$query_stmt = "DELETE FROM network_printer WHERE printer_tag = ?";
@@ -306,7 +306,7 @@ if ( $user_input["eqtype"] == "computer" )
 	}
 
 	else
-		return 0;
+		$error .= "deletenetprint;";
 
 	$query_stmt = "DELETE FROM eq_description WHERE tag_num = ?";
 
@@ -317,7 +317,7 @@ if ( $user_input["eqtype"] == "computer" )
 	}
 
 	else
-		return 0;
+		$error .= "deletedesc;";
 
 	// add licensed_to entries
 	$query_stmt = "INSERT INTO licensed_to VALUES ( ?, ? )";
@@ -331,7 +331,7 @@ if ( $user_input["eqtype"] == "computer" )
 		}
 
 		else
-			return 0;
+			$error .= "licenseinsert;";
 	}
 
 	// add eq_printer entry
@@ -344,7 +344,7 @@ if ( $user_input["eqtype"] == "computer" )
 	}
 
 	else
-		return 0;
+		$error .= "printerinsert;";
 }
 
 
