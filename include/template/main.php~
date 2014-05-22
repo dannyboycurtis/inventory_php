@@ -13,7 +13,6 @@
 								</button>
         				<ul id="searchmenu" class="dropdown-menu">
           				<li><a href="#">Equipment</a></li>
-          				<li><a href="#">Users</a></li>
           				<li><a href="#">Purchases</a></li>
 									<?php if ( $_SESSION['role'] > 1 ) : ?>
           					<li><a href="#">Software</a></li>
@@ -40,8 +39,6 @@
 						var choice = $( '#searchtype' ).text();
 						if ( choice == 'Equipment' )
 							list_equipment( $( '#searchinput' ).val() );
-						if ( choice == 'Users' )
-							list_users( $( '#searchinput' ).val() );
 						if ( choice == 'Purchases' )
 							list_purchases( $( '#searchinput' ).val() );
 						if ( choice == 'Software' )

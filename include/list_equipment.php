@@ -180,6 +180,9 @@ if ( $stmt = $mysqli->prepare( $query_stmt ) )
 	}
 }
 
+$_SESSION["querytype"] = "equipment";
+$_SESSION["query"] = $_POST["query"];
+
 echo json_encode( $results );
 
 ?>

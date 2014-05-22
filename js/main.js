@@ -345,12 +345,12 @@ function populateTable_equipment( results )
 		if ( role > 2 )
 			row += "<td class='trash' rowspan='2'><i class='fa fa-trash-o'></i></td>";
 
-		row += "<td>" + this.tag + "</td>";
-		row += "<td>" + this.serial + "</td>";
-		row += "<td>" + this.makemodel + "</td>";
-		row += "<td>" + this.purchase_date + "</td>";
-		row += "<td>" + this.location + "</td>";
-		row += "<td>" + this.department + "</td><td>";
+		row += "<td class='table_tag'>" + this.tag + "</td>";
+		row += "<td class='table_serial'>" + this.serial + "</td>";
+		row += "<td class='table_makemodel'>" + this.makemodel + "</td>";
+		row += "<td class='table_purchasedate'>" + this.purchase_date + "</td>";
+		row += "<td class='table_location'>" + this.location + "</td>";
+		row += "<td class='table_department'>" + this.department + "</td><td class='table_users'>";
 
 		if ( this.users )
 		{
@@ -366,45 +366,45 @@ function populateTable_equipment( results )
 
 		row += '<b>Purchase Order:&nbsp;&nbsp;</b>';
 		if ( this.purchase_order )
-			row += "<span class='view_purchase' style='cursor: pointer' title='View this purchase order'>" + this.purchase_order + "</span>";
+			row += "<span class='view_purchase table_purchaseorder' style='cursor: pointer' title='View this purchase order'>" + this.purchase_order + "</span>";
 
-		row += '<br><b>Purchased By:&nbsp;&nbsp;</b>';
+		row += '<br><b>Purchased By:&nbsp;&nbsp;</b><span class="table_purchasedby">';
 		if ( this.purchased_by )
 			row += this.purchased_by;
 
-		row += '</div><div class="col-xs-3">';
+		row += '</span></div><div class="col-xs-3">';
 
-		row += '<b>Hostname:&nbsp;&nbsp;</b>';
+		row += '<b>Hostname:&nbsp;&nbsp;</b><span class="table_hostname">';
 		if ( this.hostname )
 			row += this.hostname;
 
-		row += '<br><b>OS:&nbsp;&nbsp;</b>';
+		row += '</span><br><b>OS:&nbsp;&nbsp;</b><span class="table_os">';
 		if ( this.os )
 			row += this.os;
 
-		row += '<br><b>Printer:&nbsp;&nbsp;</b>';
+		row += '</span><br><b>Printer:&nbsp;&nbsp;</b><span class="table_printer">';
 		if ( this.eq_printer )
 			row += this.eq_printer;
 
-		row += '</div>';
+		row += '</span></div>';
 
 		if ( role > 1 )
 		{
 			row += '<div class="col-xs-3">';
 
-			row += '<b>MAC:&nbsp;&nbsp;</b>';
+			row += '<b>MAC:&nbsp;&nbsp;</b><span class="table_mac">';
 			if ( this.mac )
 				row += this.mac;
 
-			row += '<br><b>WMAC:&nbsp;&nbsp;</b>';
+			row += '</span><br><b>WMAC:&nbsp;&nbsp;</b><span class="table_wmac">';
 			if ( this.wmac )
 				row += this.wmac;
 
-			row += '<br><b>IP:&nbsp;&nbsp;</b>';
+			row += '</span><br><b>IP:&nbsp;&nbsp;</b><span class="table_ip">';
 			if ( this.ip )		
 				row += this.ip;
 			
-			row += '</div>';
+			row += '</span></div>';
 		}
 
 		row += '<div class="col-xs-3">';
@@ -420,10 +420,10 @@ function populateTable_equipment( results )
 		row += '</div></div>';
 
 		if ( this.description )
-			row += '<hr><div class="row"><div class="col-xs-12"><b>Description:&nbsp;&nbsp;</b>' + this.description + '</div></div>';
+			row += '<hr><div class="row"><div class="col-xs-12"><b>Description:&nbsp;&nbsp;</b><span class="table_description">' + this.description + '</span></div></div>';
 
 		if ( this.eq_notes )
-			row += '<hr><div class="row"><div class="col-xs-12"><b>Notes:&nbsp;&nbsp;</b>' + this.eq_notes + '</div></div>';
+			row += '<hr><div class="row"><div class="col-xs-12"><b>Notes:&nbsp;&nbsp;</b><span class="table_notes">' + this.eq_notes + '</span></div></div>';
 
 		row += '</div></td></tr>';
 
@@ -444,7 +444,6 @@ function populateTable_equipment( results )
 			url: "include/get_equipment.php",
 			data: { query : tag },
 			success: function( result ){
-				console.log( result );
 				result = $.parseJSON( result );
 				$( '#tag_num' ).attr( 'disabled', true ).val( result[0].tag );
 				$( '#serial' ).val( result[0].serial );
@@ -462,12 +461,12 @@ function populateTable_equipment( results )
 					$( '#printer_input' ).show();
 					$( '#eq_printer' ).val( result[0].printer );
 
+					$( '#softwarenotavailable' ).hide();
+					$( '#selectsoftware_input' ).show();
+
 					// set software values
 					if ( result[0].software )
 					{
-						$( '#softwarenotavailable' ).hide();
-						$( '#selectsoftware_input' ).show();
-
 						$.each( results[0].software, function( i ){
 							$( '#softwarelist' ).append( "<li><span class='hidden software_id'>" + this.softwareid + "</span><i class='fa fa-minus-square' style='cursor:pointer'></i> " + this.name + ", " + this.licensetype + "</li>" );
 						});
@@ -566,9 +565,6 @@ function populateTable_equipment( results )
 				$( '#notes' ).text( result[0].eq_notes );
 			}
 		});
-
-
-
 
 		$( '#addEquipmentModal' ).modal( 'show' ).find( '.modal-title' ).text( "Edit Equipment Record" );
 	});

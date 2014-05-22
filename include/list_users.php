@@ -30,10 +30,11 @@ else
 						u.email,
 						u.phone
 			  FROM		user u
-			  WHERE		u.f_name LIKE ? OR
+			  WHERE		( u.f_name LIKE ? OR
 						u.l_name LIKE ? OR
 						u.email LIKE ? OR
-						u.department LIKE ?
+						u.phone LIKE ?  ) AND
+						u.l_name IS NOT NULL
 			  ORDER BY	u.l_name ASC";
 
 if ( $stmt = $mysqli->prepare( $query ) ) 
@@ -104,6 +105,10 @@ if ( $stmt = $mysqli->prepare( $query ) )
 												"equipment" => $equipment, );
 	}
 }
+
+$_SESSION["querytype"] = "users";
+$_SESSION["query"] = $_POST["query"];
+
 echo json_encode( $results );
 
 ?>

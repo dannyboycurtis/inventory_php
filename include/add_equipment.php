@@ -53,7 +53,7 @@ if ( !( $user_input["purchase_id"] ) )
 	}
 
 	else
-		return 0;
+		$error .= "purchaseinsert;";
 }
 
 else
@@ -80,7 +80,7 @@ if ( $user_input["new_user"] )
 	}
 
 	else
-		return 0;
+		$error .= "userinsert;";
 }
 
 // add new lab
@@ -117,11 +117,13 @@ if ( $user_input["lab_name"] )
 				if ( $user_id )
 					$user_input["users"][] = $user_id;
 			}
+
+			else $error .= "userinsert;";
 		}
 	}
 
 	else
-		return 0;
+		$error .= "userselect;";
 }
 
 else if ( $user_input["lab_id"] )
@@ -129,51 +131,55 @@ else if ( $user_input["lab_id"] )
 
 
 // add equipment
-$query_stmt = "INSERT IGNORE INTO equipment VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+$query_stmt = "INSERT INTO equipment VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ? )
+				ON DUPLICATE KEY UPDATE serial = VALUES(serial),
+										make = VALUES(make),
+										model = VALUES(model),
+										department = VALUES(department),
+										location = VALUES(location),
+										building = VALUES(building),
+										room_num = VALUES( room_num ),
+										purchase_id = VALUES( purchase_id )";
 
 if ( $stmt = $mysqli->prepare( $query_stmt ) )
 {
 	$stmt->bind_param( 'sssssssss', $user_input["tag_num"], $user_input["serial"], $user_input["make"], $user_input["model"], $user_input["department"], $user_input["location"], $user_input["building"], $user_input["room_num"], $purchase_id );
 	$stmt->execute();
-	if ( $stmt->affected_rows != 1 )
-		return 0;
 }
 
 else
-	return "Equipment insert failed!";
+	$error .= "equipmentinsert;";
 
 if ( isset( $user_input["mac"] ) or isset( $user_input["wmac"] ) or isset( $user_input["ip"] ) )
 {
 	// add eq_network entry
-	$query_stmt = "INSERT IGNORE INTO eq_network VALUES( ?, ?, ?, ? )";
+	$query_stmt = "INSERT INTO eq_network VALUES( ?, ?, ?, ? )
+					ON DUPLICATE KEY UPDATE mac = VALUES(mac), wmac = VALUES(wmac), ip = VALUES(ip)";
 
 	if ( $stmt = $mysqli->prepare( $query_stmt ) )
 	{
 		$stmt->bind_param( 'ssss', $user_input["tag_num"], $user_input["mac"], $user_input["wmac"], $user_input["ip"] );
 		$stmt->execute();
-		if ( $stmt->affected_rows != 1 )
-			return 0;
 	}
 
 	else
-		return 0;
+		$error .= "networkinsert;";
 }
 
 if ( isset( $user_input["notes"] ) )
 {
 	// add eq_notes entry
-	$query_stmt = "INSERT IGNORE INTO eq_notes VALUES( ?, ? )";
+	$query_stmt = "INSERT INTO eq_notes VALUES( ?, ? )
+					ON DUPLICATE KEY UPDATE notes = VALUES(notes)";
 
 	if ( $stmt = $mysqli->prepare( $query_stmt ) )
 	{
 		$stmt->bind_param( 'ss', $user_input["notes"], $user_input["tag_num"] );
 		$stmt->execute();
-		if ( $stmt->affected_rows != 1 )
-			return 0;
 	}
 
 	else
-		return 0;
+		$error .= "notesinsert;";
 }
 
 
@@ -181,25 +187,47 @@ if ( isset( $user_input["notes"] ) )
 if ( $user_input["eqtype"] == "printer" )
 {
 	// add network_printer entry
-	$query_stmt = "INSERT IGNORE INTO network_printer VALUES ( ?, ? )";
+	$query_stmt = "INSERT INTO network_printer VALUES ( ?, ? )
+					ON DUPLICATE KEY UPDATE hostname = VALUES(hostname)";
 
 	if ( $stmt = $mysqli->prepare( $query_stmt ) )
 	{
 		$stmt->bind_param( 'ss', $user_input["hostname"], $user_input["tag_num"] );
 		$stmt->execute();
-		if ( $stmt->affected_rows != 1 )
-			return 0;
 	}
 
 	else
-		return 0;
+		$error .= "networkprinterinsert;";
+
+	// delete entries in eq_description and computer
+	$query_stmt = "DELETE FROM eq_description WHERE tag_num = ?";
+
+	if ( $stmt = $mysqli->prepare( $query_stmt ) )
+	{
+		$stmt->bind_param( 's', $user_input["tag_num"] );
+		$stmt->execute();
+	}
+
+	else
+		$error .= "deletedesc;";
+
+	$query_stmt = "DELETE FROM computer WHERE computer_tag = ?";
+
+	if ( $stmt = $mysqli->prepare( $query_stmt) )
+	{
+		$stmt->bind_param( 's', $user_input["tag_num"] );
+		$stmt->execute();
+	}
+
+	else
+		$error .= "deletecomputer;";
 }
 
 // add users and software if eqtype is computer or other
 if ( $user_input["eqtype"] == "computer" or $user_input["eqtype"] == "other" )
 {
 	// add uses entries
-	$query_stmt = "INSERT IGNORE INTO uses VALUES( ?, ? )";
+	$query_stmt = "INSERT INTO uses VALUES( ?, ? )";
 
 	foreach( $user_input["users"] as $user )
 	{
@@ -207,52 +235,92 @@ if ( $user_input["eqtype"] == "computer" or $user_input["eqtype"] == "other" )
 		{
 			$stmt->bind_param( 'ss', $user, $user_input["tag_num"] );
 			$stmt->execute();
-			if ( $stmt->affected_rows != 1 )
-				return 0;
 		}
 
 		else
-			return 0;
+			$error .= "usesinsert;";
 	}
 }
 
 // add description
-if ( isset( $user_input["description"] ) )
+if ( $user_input["eqtype"] == "other" )
 {
 	// add eq_description entry
-	$query_stmt = "INSERT IGNORE INTO eq_description VALUES ( ?, ? )";
+	$query_stmt = "INSERT INTO eq_description VALUES ( ?, ? ) ON DUPLICATE KEY UPDATE description = VALUES(description)";
 
 	if ( $stmt = $mysqli->prepare( $query_stmt ) )
 	{
 		$stmt->bind_param( 'ss', $user_input["description"], $user_input["tag_num"] );
 		$stmt->execute();
-		if ( $stmt->affected_rows != 1 )
-			return 0;
 	}
 
 	else
-		return 0;
+		$error .= "descinsert;";
+
+	// delete network_printer, computer entries
+	$query_stmt = "DELETE FROM network_printer WHERE printer_tag = ?";
+
+	if ( $stmt = $mysqli->prepare( $query_stmt ) )
+	{
+		$stmt->bind_param( 's', $user_input["tag_num"] );
+		$stmt->execute();
+	}
+
+	else
+		$error .= "deletenetprint;";
+
+	$query_stmt = "DELETE FROM computer WHERE computer_tag = ?";
+
+	if ( $stmt = $mysqli->prepare( $query_stmt ) )
+	{
+		$stmt->bind_param( 's', $user_input["tag_num"] );
+		$stmt->execute();
+	}
+
+	else
+		$error .= "deletecomp;";
 }
 
 // add licensed_to, computer, eq_printer if eqtype is computer
 if ( $user_input["eqtype"] == "computer" )
 {
 	// add computer entry
-	$query_stmt = "INSERT IGNORE INTO computer VALUES ( ?, ?, ? )";
+	$query_stmt = "INSERT INTO computer VALUES ( ?, ?, ? ) ON DUPLICATE KEY UPDATE hostname = VALUES(hostname), os = VALUES(os)";
 
 	if ( $stmt = $mysqli->prepare( $query_stmt ) )
 	{
 		$stmt->bind_param( 'sss', $user_input["hostname"], $user_input["os"], $user_input["tag_num"] );
 		$stmt->execute();
-		if ( $stmt->affected_rows != 1 )
-			return 0;
 	}
 
 	else
-		return 0;
+		$error .= "compinsert;";
+
+	// delete network_printer, eq_description entries
+	$query_stmt = "DELETE FROM network_printer WHERE printer_tag = ?";
+
+	if ( $stmt = $mysqli->prepare( $query_stmt ) )
+	{
+		$stmt->bind_param( 's', $user_input["tag_num"] );
+		$stmt->execute();
+	}
+
+	else
+		$error .= "deletenetprint;";
+
+	$query_stmt = "DELETE FROM eq_description WHERE tag_num = ?";
+
+	if ( $stmt = $mysqli->prepare( $query_stmt ) )
+	{
+		$stmt->bind_param( 's', $user_input["tag_num"] );
+		$stmt->execute();
+	}
+
+	else
+		$error .= "deletedesc;";
 
 	// add licensed_to entries
-	$query_stmt = "INSERT IGNORE INTO licensed_to VALUES ( ?, ? )";
+	$query_stmt = "INSERT INTO licensed_to VALUES ( ?, ? )";
 
 	foreach( $user_input["software"] as $software )
 	{
@@ -260,29 +328,39 @@ if ( $user_input["eqtype"] == "computer" )
 		{
 			$stmt->bind_param( 'ss', $software, $user_input["tag_num"] );
 			$stmt->execute();
-			if ( $stmt->affected_rows != 1 )
-				return 0;
 		}
 
 		else
-			return 0;
+			$error .= "licenseinsert;";
 	}
 
 	// add eq_printer entry
-	$query_stmt = "INSERT IGNORE INTO eq_printer VALUES ( ?, ? )";
+	$query_stmt = "INSERT INTO eq_printer VALUES ( ?, ? ) ON DUPLICATE KEY UPDATE printer = VALUES(printer)";
 
 	if ( $stmt = $mysqli->prepare( $query_stmt ) )
 	{
 		$stmt->bind_param( 'ss', $user_input["printer"], $user_input["tag_num"] );
 		$stmt->execute();
-		if ( $stmt->affected_rows != 1 )
-			return "Eq_printer insert failed!";
 	}
 
 	else
-		return 0;
+		$error .= "printerinsert;";
 }
 
-echo "The record was successfully added"; 
+
+if ( $user_input["operation"] == "insert" )
+{
+	$result = array( "message" => "The record was successfully added", "query" => $_SESSION["query"] );
+
+	echo json_encode( $result ) ;
+
+}
+
+else if ( $user_input["operation"] == "update" )
+{
+	$result = array( "message" => "The record was successfully updated", "query" => $_SESSION["query"], "errors" => $error );
+
+	echo json_encode( $result ) ;
+}
 
 ?>

@@ -69,6 +69,9 @@ $( '#addEquipmentModal' ).on( 'hidden.bs.modal', function(){
 	// reset user and software lists
 	$( '#userlist, #softwarelist' ).empty();
 
+	// reset notes
+	$( '#notes' ).empty();
+
 	// reset texts displayed in menus
 	$( '#maketype' ).text( "Choose Make" );
 	$( '#modeltype' ).text( "Choose Model" );
@@ -105,42 +108,56 @@ $( '#submitequipment' ).on( 'click', function() {
 
 // equipment tab
 
-	// tag num	
-	if ( $( '#tag_num' ).val() == "" )
+	if ( $( '#addEquipmentModal' ).find( 'h4' ).text() == "Add Equipment Record" )
 	{
-		$( '#tag_error' ).show().children().html( "Property tag number is required!" );
-		$( '#tag_input' ).addClass( 'has-error' );
+		// set operation type
+		var operationtype = "insert";
+
+		// tag num	
+		if ( $( '#tag_num' ).val() == "" )
+		{
+			$( '#tag_error' ).show().children().html( "Property tag number is required!" );
+			$( '#tag_input' ).addClass( 'has-error' );
+		}
+
+		else
+		{
+			$.ajax({
+				type: "POST",
+				url: "include/check_tag.php",
+				data: { tag : $( '#tag_num' ).val() },
+				async: false,
+				success: function( result ) {
+					if ( result == "0" )
+					{
+						$( '#tag_error' ).show().children().html( "This property tag is already in use!" );
+						$( '#tag_input' ).addClass( 'has-error' );
+					}
+
+					else
+					{
+						$( '#tag_error' ).hide();
+						$( '#tag_input' ).removeClass( 'has-error' );
+					}
+				}
+			});
+
+			if ( !$( '#tag_input' ).hasClass( 'has-error' ) )
+			{
+				// set variable
+				var tag_num = $( '#tag_num' ).val();
+			}
+		}
 	}
 
 	else
 	{
-		$.ajax({
-			type: "POST",
-			url: "include/check_tag.php",
-			data: { tag : $( '#tag_num' ).val() },
-			async: false,
-			success: function( result ) {
-				if ( result == "0" )
-				{
-					$( '#tag_error' ).show().children().html( "This property tag is already in use!" );
-					$( '#tag_input' ).addClass( 'has-error' );
-				}
+		// set operationtype for edit
+		var operationtype = "update";
 
-				else
-				{
-					$( '#tag_error' ).hide();
-					$( '#tag_input' ).removeClass( 'has-error' );
-				}
-			}
-		});
-
-		if ( !$( '#tag_input' ).hasClass( 'has-error' ) )
-		{
-			// set variable
-			var tag_num = $( '#tag_num' ).val();
-		}
+		// set variable
+		var tag_num = $( '#tag_num' ).val();
 	}
-
 
 	// serial
 	if ( $( '#serial' ).val() == "" )
@@ -612,8 +629,8 @@ else
 }
 
 
-// users/software tabs
-	if ( $( '#eqtype' ).text() == "Computer or Tablet" || $( '#eqtype' ).text() == "Other Equipment" )
+// users tab 
+	if ( eqtype == "computer" || eqtype == "other" )
 	{
 		// User type
 		if ( $( '#usertype' ).text() == "Choose Type" )
@@ -782,7 +799,7 @@ else
 		}
 
 		// collect input-data into json
-		var user_input = { "tag_num" : tag_num,
+		var input = { "tag_num" : tag_num,
 							"serial" : serial,
 							"make" : make,
 							"model" : model,
@@ -805,25 +822,31 @@ else
 							"lab_id" : lab_id,
 							"lab_name" : lab_name,
 							"software" : software,
-							"notes" : notes };
+							"notes" : notes,
+							"operation" : operationtype };
 
-		user_input = JSON.stringify( user_input );
+		console.log( input );
 
-		alert( user_input );
+		user_input = JSON.stringify( input );
 
 		$.ajax({
 			type: "POST",
 			url: "include/add_equipment.php",
 			data: { data : user_input },
 			success: function( result ){
+
+				// update table
+				var results = $.parseJSON( result );
+				alert( results.message );
+				list_equipment( results.query );
+
 				$( '#addEquipmentModal' ).modal( 'hide' );
-				alert( result );
+
 			},
 			error: function(){
-				alert( "There was a problem!" );
+				alert( "There was a problem in the database!" );
 			}
 		});
-
 	}
 });
 </script>

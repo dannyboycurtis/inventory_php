@@ -111,6 +111,10 @@ if ( $stmt = $mysqli->prepare( $query ) )
 												"equipment" => $equipment, );
 	}
 }
+
+$_SESSION["querytype"] = "software";
+$_SESSION["query"] = $_POST["query"];
+
 echo json_encode( $results );
 
 ?>

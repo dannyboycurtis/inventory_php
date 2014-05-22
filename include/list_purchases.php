@@ -123,6 +123,10 @@ if ( $stmt = $mysqli->prepare( $query ) )
 												"software" => $software, );
 	}
 }
+
+$_SESSION["querytype"] = "purchases";
+$_SESSION["query"] = $_POST["query"];
+
 echo json_encode( $results );
 
 ?>
