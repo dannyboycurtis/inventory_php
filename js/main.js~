@@ -184,7 +184,7 @@ function setupTablesorter( role )
 				.removeClass('fa-square-o')
 				.addClass('fa-check-square-o');
 
-			$('#select_all>div').html( '<i class="fa fa-check-square-o"></i>');
+			$('#select_all').html( '<i class="fa fa-check-square-o"></i>');
 
 		}
 		else if ( $(this).hasClass( 'unchecked' ) )
@@ -193,7 +193,7 @@ function setupTablesorter( role )
 				.removeClass('fa-check-square-o')
 				.addClass('fa-square-o');
 
-			$('#select_all>div').html( '<i class="fa fa-square-o"></i>');
+			$('#select_all').html( '<i class="fa fa-square-o"></i>');
 		}
 	});
 
@@ -202,6 +202,10 @@ function setupTablesorter( role )
 		cssChildRow : 'tablesorter-childRow',
 		headerTemplate : '{content} {icon}',
 		widgets: [ 'filter' ],
+		headers: { 0 : { sorter: false },
+					'#edit_selected' : { sorter : false },
+					'#trash_selected' : { sorter : false }
+		},
 		widgetOptions: {
 			filter_external : '.search',
 			filter_childRows : false,
@@ -209,17 +213,6 @@ function setupTablesorter( role )
 			filter_ssFilter : 'tablesorter-filter'
 		}
 	};
-
-	ignoreHeaders = {
-		0: { sorter: false } };
-
-	if ( role > 1 )
-		ignoreHeaders += { 1: { sorter: false } };
-
-	if ( role > 2 )
-		ignoreHeaders += { 2: { sorter: false } };
-
-	options.headers = ignoreHeaders;
 
 	var pagerOptions = {
 		container: $(".pager"),
@@ -234,12 +227,21 @@ function setupTablesorter( role )
     cssLast: '.last'
 	};
 
+
 	$('#table_panel_head').html( '<div class="col-xs-3"><input class="form-control search" type="text" placeholder="Filter Results" data-column="all"></div><div class="col-xs-9"><button id="createReportBtn" class="pull-right btn btn-info collapse in" data-toggle="collapse" href="#report_panel"><i class="fa fa-file"></i>&nbsp;&nbsp;Create Report</button></div>' );
 
 	$('#results_table').tablesorter( options )
 		.tablesorterPager(pagerOptions)
 		.bind( 'sortStart', function(){
 			$(this).trigger('pageSet', 0 );
+		})
+		.bind( 'pagerComplete', function(){
+			if ( $( '.select:visible' ).find( 'i' ).hasClass( 'fa-square-o' ) )
+			{
+				$( '#select_all>i' ).addClass( 'fa-square-o' ).removeClass( 'fa-check-square-o' );
+				$( '#select_all' ).addClass( 'unchecked' ).removeClass( 'checked' );
+
+			}
 		});
 
 	$('.tablesorter-childRow td').hide();
@@ -568,7 +570,6 @@ function populateTable_equipment( results )
 
 				// set notes
 				$( '#notes' ).val( result[0].eq_notes );
-				alert( "notes retrieved: " + result[0].eq_notes );
 			}
 		});
 
