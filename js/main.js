@@ -240,14 +240,12 @@ function setupTablesorter( role )
 			{
 				$( '#select_all>i' ).addClass( 'fa-square-o' ).removeClass( 'fa-check-square-o' );
 				$( '#select_all' ).addClass( 'unchecked' ).removeClass( 'checked' );
-
 			}
 
 			else
 			{
 				$( '#select_all>i' ).addClass( 'fa-check-square-o' ).removeClass( 'fa-square-o' );
 				$( '#select_all' ).addClass( 'checked' ).removeClass( 'unchecked' );
-
 			}
 		});
 

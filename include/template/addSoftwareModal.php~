@@ -1,0 +1,39 @@
+<!-- Add Software Modal -->
+<div class="modal" id="addSoftwareModal"  style="padding-top:40px" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Add Software Record</h4> <small>(Items with * are optional)</small>
+			</div>
+
+			<div class="modal-body">
+				<ul class="nav nav-pills" id="addSwRecordTab">
+					<li id="swSoftwaretab" class="active"><a href="#swSoftwareInfo" data-toggle="tab">Equipment</a></li>
+					<li id="swPurchasetab"><a href="#swPurchaseInfo" data-toggle="tab">Purchase</a></li>
+					<li id="swOthertab"><a href="#swOtherInfo" data-toggle="tab">Other</a></li>
+				</ul>
+				<br>
+				<div class="tab-content">
+					<div class="tab-pane active" id="swSoftwareInfo">
+						<?php include "newSwSoftwareForm.php"; ?>
+					</div>
+					<div class="tab-pane" id="swPurchaseInfo">
+						<?php include "newSwPurchaseForm.php"; ?>
+					</div>
+					<div class="tab-pane" id="swOtherInfo">
+						<?php include "newSwOtherForm.php"; ?>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="modal-footer"> 
+				<button type="button" class="btn btn-default" data-dismiss="modal" >Cancel</button>
+				<button id="submitsoftware" type="button" class="btn btn-primary">Submit</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+

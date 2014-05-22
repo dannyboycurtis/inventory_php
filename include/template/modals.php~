@@ -13,7 +13,7 @@
 <?php if( $_SESSION['role'] > 1 )
 {
 
-	include_once "include/template/addEquipmentModal.php";
-	include_once "include/template/addSoftwareModal.php";
+	include "include/template/addEquipmentModal.php";
+	include "include/template/addSoftwareModal.php";
 }
 ?>

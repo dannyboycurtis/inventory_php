@@ -211,26 +211,6 @@ else if ( $_POST['query' ] == 'software' )
 	}	
 }
 
-else if ( $_POST['query'] == 'licensetype' )
-{
-	$query_stmt = "SELECT DISTINCT license_type FROM software WHERE license_type IS NOT NULL";
-
-	if ( $stmt = $mysqli->prepare( $query_stmt ) )
-	{
-		unset( $results );
-
- 		$stmt->execute();
-		$stmt->store_result();
-		$stmt->bind_result( $license_type);
-
-		while ( $stmt->fetch() )
-			$results[] = $license_type;
-	}	
-}
-
-
-
-
 echo json_encode( $results );
 
 ?>

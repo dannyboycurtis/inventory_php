@@ -8,14 +8,14 @@
 			</div>
 
 			<div class="modal-body">
-				<ul class="nav nav-pills" id="addRecordTab">
+				<ul class="nav nav-pills" id="addEqRecordTab">
 					<li id="equipmenttab" class="active"><a href="#equipmentInfo" data-toggle="tab">Equipment</a></li>
-					<li id="purchasetab"><a href="#purchaseInfo" data-toggle="tab">Purchase</a></li>
+					<li id="eqPurchasetab"><a href="#purchaseInfo" data-toggle="tab">Purchase</a></li>
 					<li id="locationtab"><a href="#locationInfo" data-toggle="tab">Location</a></li>
 					<li id="usertab"><a href="#userInfo" data-toggle="tab">Users</a></li>
-					<li id="softwaretab"><a href="#softwareInfo" data-toggle="tab">Software</a></li>
+					<li id="eqSoftwaretab"><a href="#softwareInfo" data-toggle="tab">Software</a></li>
 					<li id="networktab"><a href="#netInfo" data-toggle="tab">Network</a></li>
-					<li id="othertab"><a href="#otherInfo" data-toggle="tab">Other</a></li>
+					<li id="eqOthertab"><a href="#otherInfo" data-toggle="tab">Other</a></li>
 				</ul>
 				<br>
 				<div class="tab-content">
@@ -32,7 +32,7 @@
 						<?php include "newUserForm.php"; ?>
 					</div>
 					<div class="tab-pane" id="softwareInfo">
-						<?php include "newSoftwareForm.php"; ?>
+						<?php include "newEqSoftwareForm.php"; ?>
 					</div>
 					<div class="tab-pane" id="netInfo">
 						<?php include "newNetworkForm.php"; ?>
@@ -87,10 +87,10 @@ $( '#addEquipmentModal' ).on( 'hidden.bs.modal', function(){
 	// remove all error styles
 	$( this ).find( '.has-error' ).removeClass( 'has-error' );
 	$( this ).find( '.btn-danger' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
-	$( '#addRecordTab>li>a' ).removeAttr( 'style' );
+	$( '#addEqRecordTab>li>a' ).removeAttr( 'style' );
 
 	// reset active tab to equipmenttab
-	$( '#addRecordTab a:first' ).tab( 'show' );
+	$( '#addEqRecordTab a:first' ).tab( 'show' );
 
 	// enable all inputs
 	$( this ).find( 'input' ).attr( 'disabled', false );
