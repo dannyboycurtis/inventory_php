@@ -74,8 +74,7 @@ function login( $user, $password, $mysqli )
             if ( checkbrute( $user_id, $mysqli ) == true ) 
                 return "account_locked"; // Account is locked 
 
-			else
-			{
+			else {
                 // Check if the password in the database matches
                 // the password the user submitted.
                 if ( $db_password == $password )

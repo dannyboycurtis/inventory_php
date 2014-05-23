@@ -3,6 +3,7 @@
 // Database Configuration 
 define("HOST", "localhost");
 
+
 // For Login Database
 define("L_USER", "login");
 define("L_PASSWORD", "eKcGZr59zAa2BEWU");
