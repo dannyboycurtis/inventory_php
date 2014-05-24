@@ -1,6 +1,8 @@
 <div class="container">
 	<form class="form-horizontal" role="form" id="addSoftwareForm" action="">
 
+		<input id= "software_id" type="hidden"> 
+
 		<div id="softwarename_input" class="form-group">
 			<label class="col-xs-2 control-label text-right">Software Name</label>
 			<div class="col-xs-3">

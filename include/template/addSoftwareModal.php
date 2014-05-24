@@ -44,7 +44,7 @@ $( '#addSoftwareModal' ).on( 'hidden.bs.modal', function(){
     $( this ).find( '#swOtherForm' )[0].reset();
 
 	// reset all hidden forms
-	$( this ).find( '.form-group' ).not( '#swPurchaseorder_input, #swNotes_input' ).add( '#swNewPurchase' ).hide();
+	$( this ).find( '.form-group' ).not( '#softwarename_input, #licensenum_input, #licensetype_input, #numberoflicenses_input, #swPurchaseorder_input, #swNotes_input' ).add( '#swNewPurchase' ).hide();
 
 	// reset notes
 	$( '#swNotes' ).empty();
@@ -271,15 +271,19 @@ $( '#submitsoftware' ).on( 'click', function() {
 		else
 			var operationtype = "insert";
 
+		if ( $( '#software_id' ).val() != "" )
+			var software_id = $( '#software_id' ).val();
+
 		// collect input-data into json
-		var input = { "software_name" : software_name,
-							"license_num" : license_num,
-							"license_type" : license_type,
-							"number_of_licenses" : number_of_licenses,
-							"purchase_id" : purchase_id,
-							"new_purchase" : new_purchase,
-							"notes" : notes,
-							"operation" : operationtype };
+		var input = { "software_id" : software_id,
+						"software_name" : software_name,
+						"license_num" : license_num,
+						"license_type" : license_type,
+						"number_of_licenses" : number_of_licenses,
+						"purchase_id" : purchase_id,
+						"new_purchase" : new_purchase,
+						"notes" : notes,
+						"operation" : operationtype };
 
 		console.log( input );
 

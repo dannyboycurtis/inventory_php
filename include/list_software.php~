@@ -18,9 +18,8 @@ if ( $_POST['query'] == "_all" )
 											s.license_num,
 											s.license_type,
 											s.number_of_licenses,
-											s.notes,
-											p.purchase_date
-						FROM			software s JOIN purchase p ON s.purchase_id = p.purchase_id
+											s.notes
+						FROM			software s
 						ORDER BY	s.software_name ASC";
 
 else
@@ -29,9 +28,8 @@ else
 											s.license_num,
 											s.license_type,
 											s.number_of_licenses,
-											s.notes,
-											p.purchase_date
-						FROM			software s JOIN purchase p ON s.purchase_id = p.purchase_id
+											s.notes
+						FROM			software s
 						WHERE			s.software_name LIKE ? OR
 											s.license_num LIKE ? OR
 											s.license_type LIKE ? OR
@@ -55,8 +53,7 @@ if ( $stmt = $mysqli->prepare( $query ) )
 											$license_num,
 											$license_type,
 											$number_of_licenses,
-											$notes,
-											$purchase_date );
+											$notes );
 
 	while ( $stmt->fetch() )
 	{
@@ -110,7 +107,6 @@ if ( $stmt = $mysqli->prepare( $query ) )
 	 											"licensenumber" => $license_num,
 												"licensetype" => $license_type,
 												"licensequantity" => $number_of_licenses,
-												"purchasedate" => $purchase_date,
 												"licensenotes" => $notes,
 												"equipment" => $equipment, );
 	}

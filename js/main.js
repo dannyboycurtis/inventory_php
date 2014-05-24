@@ -130,7 +130,7 @@ function list_purchases( query )
 
 function list_software( query )
 {
-	headers = [ "Software Name", "License Number", "License Type", "License Quantity", "Notes" ];
+	headers = [ "Software Name", "License Number", "License Type", "License Quantity", "Purchase Date" ];
 
 	$('#processingModal').modal('toggle');
 	$.ajax({
@@ -497,7 +497,8 @@ function populateTable_equipment( results )
 				{
 					$( '#eqtype' ).text( "Other Equipment" );
 					$( '#description_input' ).show();
-					$( '#description' ).val( result[0].description );		
+					$( '#description' ).val( result[0].description );
+					$( '#softwarenotavailable' ).show();	
 				}
 
 				$( '.pid' ).each( function(){
@@ -749,10 +750,13 @@ function populateTable_software( results )
 		row += "<td>" + this.licensenumber + "</td>";
 		row += "<td>" + this.licensetype + "</td>";
 		row += "<td>" + this.licensequantity + "</td>";
-		row += "<td>" + this.licensenotes + "</td>";
+		row += "<td>" + this.purchasedate + "</td>";	
 
 		row += "</tr><tr class='tablesorter-childRow'><td colspan='10'>";
 		row += '<div class="panel panel-group">';
+
+		if ( this.licensenotes )
+			row += "<b>Notes:</b> " + this.licensenotes + "<br><br>";
 
 		if ( this.equipment )
 		{
