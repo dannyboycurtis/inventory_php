@@ -1,50 +1,31 @@
-<!-- Add Software Modal -->
-<div class="modal" id="addSoftwareModal"  style="padding-top:40px" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!-- Edit User Modal -->
+<div class="modal" id="editUserModal"  style="padding-top:40px" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title">Add Software Record</h4> <small>(Items with * are optional)</small>
+				<h4 class="modal-title">Edit User Record</h4> <small>(Items with * are optional)</small>
 			</div>
 
 			<div class="modal-body">
-				<ul class="nav nav-pills" id="addSwRecordTab">
-					<li id="swSoftwaretab" class="active"><a href="#swSoftwareInfo" data-toggle="tab">Software</a></li>
-					<li id="swPurchasetab"><a href="#swPurchaseInfo" data-toggle="tab">Purchase</a></li>
-					<li id="swOthertab"><a href="#swOtherInfo" data-toggle="tab">Other</a></li>
-				</ul>
-				<br>
-				<div class="tab-content">
-					<div class="tab-pane active" id="swSoftwareInfo">
-						<?php include "newSwSoftwareForm.php"; ?>
-					</div>
-					<div class="tab-pane" id="swPurchaseInfo">
-						<?php include "newSwPurchaseForm.php"; ?>
-					</div>
-					<div class="tab-pane" id="swOtherInfo">
-						<?php include "newSwOtherForm.php"; ?>
-					</div>
-				</div>
 
 			</div>
 
 			<div class="modal-footer"> 
 				<button type="button" class="btn btn-default" data-dismiss="modal" >Cancel</button>
-				<button id="submitsoftware" type="button" class="btn btn-primary">Submit</button>
+				<button id="submituser" type="button" class="btn btn-primary">Submit</button>
 			</div>
 		</div>
 	</div>
 </div>
 
 <script>
-$( '#addSoftwareModal' ).on( 'hidden.bs.modal', function(){
+$( '#editUserModal' ).on( 'hidden.bs.modal', function(){
 	// reset all form inputs
-    $( this ).find( '#swPurchaseForm' )[0].reset();
-    $( this ).find( '#addSoftwareForm' )[0].reset();
-    $( this ).find( '#swOtherForm' )[0].reset();
+    $( this ).find( '#userForm' )[0].reset();
 
 	// reset all hidden forms
-	$( this ).find( '.form-group' ).not( '#softwarename_input, #licensenum_input, #licensetype_input, #numberoflicenses, #swPurchaseorder_input, #swNotes_input' ).add( '#swNewPurchase' ).hide();
+	$( this ).find( '.form-group' ).not( '#softwarename_input, #licensenum_input, #licensetype_input, #numberoflicenses_input, #swPurchaseorder_input, #swNotes_input' ).add( '#swNewPurchase' ).hide();
 
 	// reset notes
 	$( '#swNotes' ).empty();
@@ -265,25 +246,16 @@ $( '#submitsoftware' ).on( 'click', function() {
 
 		}
 
-		if ( $( '#addSoftwareModal' ).find( 'h4' ).text() == 'Edit Software Record' )
-			var operationtype = "update";
 
-		else
-			var operationtype = "insert";
-
-		if ( $( '#software_id' ).val() != "" )
+		if ( $( '#phone' ).val() != "" )
 			var software_id = $( '#software_id' ).val();
 
 		// collect input-data into json
-		var input = { "software_id" : software_id,
-						"software_name" : software_name,
-						"license_num" : license_num,
-						"license_type" : license_type,
-						"number_of_licenses" : number_of_licenses,
-						"purchase_id" : purchase_id,
-						"new_purchase" : new_purchase,
-						"notes" : notes,
-						"operation" : operationtype };
+		var input = { "user_id" : user_id,
+						"f_name" : f_name,
+						"l_name" : l_name,
+						"email" : email,
+						"phone" : phone };
 
 		console.log( input );
 
@@ -291,7 +263,7 @@ $( '#submitsoftware' ).on( 'click', function() {
 
 		$.ajax({
 			type: "POST",
-			url: "include/add_software.php",
+			url: "include/edit_user.php",
 			data: { data : user_input },
 			success: function( result ){
 
@@ -300,7 +272,7 @@ $( '#submitsoftware' ).on( 'click', function() {
 				alert( results.message );
 				returnToQuery( results.query, results.querytype );
 
-				$( '#addSoftwareModal' ).modal( 'hide' );
+				$( '#editUserModal' ).modal( 'hide' );
 
 			},
 			error: function(){

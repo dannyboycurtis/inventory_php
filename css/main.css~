@@ -20,6 +20,12 @@
 {
 	cursor: pointer;
 }
+
+#results_table .select_all
+{
+	width: 40;
+}
+
 #results_table td
 {
 	color:#669;
@@ -47,11 +53,5 @@ html
 }
 li a { text-align:left; }
 
-.tab_error
-{ 
-	background-color: #c71c22;
-	border-color: #c71c22;
-	color: white
-}
 
 

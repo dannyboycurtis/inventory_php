@@ -67,7 +67,7 @@
 					<input class='form-control' id='newuserfname' placeholder='First Name'>
 					<input class='form-control' id='newuserlname' placeholder='Last Name' style='margin-top:10px'>
 					<input class='form-control' id='newuseremail' placeholder='Email Address*' style='margin-top:10px'>
-					<input class='form-control' id='newuserphone' placeholder='Phone Number*' style='margin-top:10px'>
+					<input class='form-control' id='newuserphone' placeholder='Campus Extension*' style='margin-top:10px'>
 				</div>
 			</div>
 		</div>
@@ -84,6 +84,8 @@
 </div>
 
 <script>
+$( '#newuserphone' ).mask( '99999', {placeholder:" "} );
+
 // initially hides certain input boxes
 $( '#userForm' ).find( '.form-group' ).hide();
 

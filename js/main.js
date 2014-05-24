@@ -288,6 +288,9 @@ function setupTablesorter( role )
 		list_purchases( $( this ).html() );
 	});
 
+	$( '#results_table' ).find( 'colgroup' ).remove();
+
+
 }
 
 
@@ -300,7 +303,7 @@ function createHeaders( role, headers )
 		.addClass( "unchecked" )
 		.attr({ "id" : "select_all",
 				"scope" : "col",
-				"style" : "padding-left: 5px" })
+				"style" : "padding-left: 5px;width: 10px" })
 		.html( "<i class='fa fa-square-o'></i>" ) );
 
 	if ( role > 1 )
@@ -308,7 +311,7 @@ function createHeaders( role, headers )
 	headerRow.push( $( "<th>" )
 		.attr({ "id" : "edit_selected",
 				"scope" : "col",
-				"style" : "padding-left: 5px" })
+				"style" : "padding-left: 5px;width: 10px" })
 		.html( "<i class='fa fa-cog'></i>" ) );
 	}
 
@@ -317,7 +320,7 @@ function createHeaders( role, headers )
 	headerRow.push( $( "<th>" )
 		.attr({ "id" : "trash_selected",
 				"scope" : "col",
-				"style" : "padding-left: 5px" })
+				"style" : "padding-left: 5px;width: 10px" })
 		.html( "<i class='fa fa-trash-o'></i>" ) );
 	}
 
@@ -606,14 +609,14 @@ function populateTable_users( results )
 		if ( role > 2 )
 			row += "<td class='trash' rowspan='2'><i class='fa fa-trash-o'></i></td>";
 
-		row += "<td>" + this.firstname + "</td>";
-		row += "<td>" + this.lastname + "</td>";
+		row += "<td class='fname'>" + this.firstname + "</td>";
+		row += "<td class='lname'>" + this.lastname + "</td>";
 		if ( !this.email)
 			this.email = "N/A";
-		row += "<td>" + this.email + "</td>";
+		row += "<td class='email'>" + this.email + "</td>";
 		if ( !this.phone )
 			this.phone = "N/A";
-		row += "<td>" + this.phone + "</td>";
+		row += "<td class='phone'>" + this.phone + "</td>";
 
 		row += "</tr><tr class='tablesorter-childRow'><td colspan='10'>";
 		row += '<div class="panel panel-group">';
@@ -643,11 +646,15 @@ function populateTable_users( results )
 	$( '#results_table>tbody' ).html( tableRows.join( "" ) );
 
 	$( '.edit>i').on( 'click', function(){
-		var tag = $(this).parents().siblings( '.select' ).children( 'span' ).html();
+		var userid = $(this).parents().siblings( '.select' ).children( 'span' ).html();
+		var fname = $(this).parents().siblings( '.fname' ).html();
+		var lname = $(this).parents().siblings( '.lname' ).html();
+		var email = $(this).parents().siblings( '.email' ).html();
+		var phone = $(this).parents().siblings( '.phone' ).html();
 		/*******************************************************
 		 Gather attributes, call edit_user modal
 		*******************************************************/
-		alert( "Edit " + tag );
+		alert( userid + " " + fname + " " + lname + " " + email + " " + phone );
 	});
 }
 
@@ -695,7 +702,7 @@ function populateTable_purchases( results )
 			});
 		}		
 		
-		if ( this.software )
+		else if ( this.software )
 		{
 			$.each( this.software, function( i ){
 				row += "<div class='panel panel-default' style='padding: 5px'>";
@@ -706,7 +713,14 @@ function populateTable_purchases( results )
 				if ( this.count >= i )
 					row += "<br>";
 			});
-		}		
+		}
+
+		else
+		{
+			row += "&nbsp;&nbsp;No items in this purchase order!";
+
+		}
+
 		row += '</div></td></tr>';
 
 		tableRows.push( row );		
@@ -715,8 +729,9 @@ function populateTable_purchases( results )
 		
 	$( '#results_table>tbody' ).html( tableRows.join( "" ) );
 
+	// edit purchase
 	$( '.edit>i').on( 'click', function(){
-		var tag = $(this).parents().siblings( '.select' ).children( 'span' ).html();
+		var purchaseid = $(this).parents().siblings( '.select' ).children( 'span' ).html();
 		/*******************************************************
 		 Gather attributes, call edit_purchase modal
 		*******************************************************/
@@ -755,8 +770,8 @@ function populateTable_software( results )
 		row += "</tr><tr class='tablesorter-childRow'><td colspan='10'>";
 		row += '<div class="panel panel-group">';
 
-		if ( this.licensenotes )
-			row += "<b>Notes:</b> " + this.licensenotes + "<br><br>";
+		if ( this.notes )
+			row += "&nbsp;&nbsp;<b>Notes:</b> " + this.notes + "<br><br>";
 
 		if ( this.equipment )
 		{
@@ -782,16 +797,58 @@ function populateTable_software( results )
 		
 	$( '#results_table>tbody' ).html( tableRows.join( "" ) );
 
+	// edit software
 	$( '.edit>i').on( 'click', function(){
-		var tag = $( this ).parents().siblings( '.select' ).children( 'span' ).html();
-		/*******************************************************
-		 Gather attributes, call edit_software modal
-		*******************************************************/
-		alert( "Edit " + tag );
+		var softwareid = $( this ).parents().siblings( '.select' ).children( 'span' ).html();
+
+		// retrieve information about record, add to modal forms
+		$.ajax({
+			type: "POST",
+			url: "include/get_software.php",
+			data: { query : softwareid },
+			success: function( result ){
+
+				console.log( result );
+				result = $.parseJSON( result );
+
+				$( '.pid' ).each( function(){
+					if ( $( this ).text() == result[0].purchase_id )
+						$( this ).parent( 'li' ).addClass( 'selectedpurchaser' );
+				});
+
+				if ( result[0].purchase_order )
+					$( '#swPurchasetype' ).text( result[0].purchase_order );
+
+				else
+					$( '#swPurchasetype' ).text( "Not Available" );
+				
+				$( '#swPurchasedate_input' ).show();
+				$( '#swPurchasedate' ).attr( 'disabled', true ).val( result[0].purchase_date );
+				$( '#swPurchasedby_input' ).show().find( '#newPurchaser' ).hide();
+				$( '#swPurchasertype' ).text( result[0].purchased_by ).parent().removeAttr( 'data-toggle' ).addClass( 'active' );
+				$( '#swNewPurchaser' ).hide();				
+
+				// set software information
+				$( '#software_id' ).val( result[0].software_id );
+				$( '#software_name' ).val( result[0].software_name );
+				$( '#license_num' ).val( result[0].license_num );
+				$( '#licensetype' ).text( result[0].license_type );
+
+				if ( result[0].license_type == "Single User" || result[0].license_type == "Single Computer" )
+					$( '#number_of_licenses' ).attr( 'disabled', true ).val( "1" );
+
+				else
+					$( '#number_of_licenses' ).val( result[0].number_of_licenses );
+					
+
+				// set notes
+				$( '#swNotes' ).val( result[0].notes );
+			}
+		});
+
+		$( '#addSoftwareModal' ).modal( 'show' ).find( '.modal-title' ).text( "Edit Software Record" );
 	});
-
 }
-
 
 
 //  Password hashing functions

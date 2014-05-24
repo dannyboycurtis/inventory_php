@@ -111,7 +111,7 @@ if ( $stmt = $mysqli->prepare( $query ) )
 												"licensetype" => $license_type,
 												"licensequantity" => $number_of_licenses,
 												"purchasedate" => $purchase_date,
-												"licensenotes" => $notes,
+												"notes" => $notes,
 												"equipment" => $equipment, );
 	}
 }
