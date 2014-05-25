@@ -49,6 +49,24 @@ if ( !( $user_input["purchase_id"] ) )
 				$stmt->bind_param( 'sss', $purchase_order, $purchase_date, $purchased_by );
  				$stmt->execute();
 				$purchase_id = $stmt->insert_id;
+
+				$activity_stmt = "INSERT INTO activity VALUES ( ?, ?, ?, ? )";
+
+				if ( $stmt2 = $mysqli->prepare( $activity_stmt ) )
+				{
+					$now = date( 'm/d/Y - h:i:s a' );
+					$type = "INSERT - purchase";
+
+					if ( !( $purchase_order ) )
+						$record = "N/A - " . $purchase_date;
+
+					else
+						$record = $purchase_order . " - " . $purchase_date;
+
+					$stmt2->bind_param( 'ssss', $_SESSION["username"], $now, $type, $record );
+					$stmt2->execute();
+				}
+
 			}	
 		}
 	}

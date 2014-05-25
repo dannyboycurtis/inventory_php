@@ -65,11 +65,12 @@ else
 
 if ( $user_input["software_id" ] )
 {
-	$query_stmt = "UPDATE software SET software_name = ?, license_num = ?, license_type = ?, number_of_licenses = ?, notes = ?, purchase_id = ? WHERE software_id = ?";
+	$query_stmt = "UPDATE software SET software_name = ?, license_num = AES_ENCRYPT( ?, ? ), license_type = ?, number_of_licenses = ?, notes = ?, purchase_id = ? WHERE software_id = ?";
 
 	if ( $stmt = $mysqli->prepare( $query_stmt ) )
 	{
-		$stmt->bind_param( 'sssssss', $user_input["software_name"], $user_input["license_num"], $user_input["license_type"], $user_input["number_of_licenses"], $user_input["notes"], $user_input["purchase_id"], $user_input["software_id"] );
+		$lic_salt = LIC_SALT;
+		$stmt->bind_param( 'ssssssss', $user_input["software_name"], $user_input["license_num"], $lic_salt, $user_input["license_type"], $user_input["number_of_licenses"], $user_input["notes"], $user_input["purchase_id"], $user_input["software_id"] );
 		$stmt->execute();
 	}
 
