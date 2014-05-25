@@ -50,8 +50,7 @@ if ( $stmt = $mysqli->prepare( $query_stmt ) )
 						$purchase_date,
 						$purchased_by );
 
-
-
+	$stmt->fetch();
 
 		// Set results and headers arrays
 		$results[] = array( "software_id" => $software_id,

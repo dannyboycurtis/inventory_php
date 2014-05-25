@@ -134,6 +134,28 @@ $( '#submituser' ).on( 'click', function() {
 		var l_name = $( '#l_name' ).val();
 	}
 
+	// check if a user with this first and last name together exist
+	$.ajax({
+		type: "POST",
+		url: "include/check_user.php",
+		data: { fname: $( '#fname' ).val(), lname: $( '#lname' ).val() },
+		async: false,
+		success: function( result ){
+			alert( result );
+			if ( result == "1" )
+			{
+				$( '#user_error' ).show().children().html( "This name already exists in the database!" );
+				$( '#fname_input, #lname_input' ).addClass( 'has-error' );
+			}
+
+			else
+			{
+				$( '#user_error' ).hide();
+				$( '#fname_input, #lname_input' ).removeClass( 'has-error' );
+			}
+		}
+	});
+
 	// check if any errors exist
 	if ( !$( '#editUserModal' ).find( '.form-group' ).hasClass( 'has-error' ) )
 	{

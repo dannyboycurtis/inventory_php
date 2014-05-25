@@ -74,7 +74,7 @@ $( '#editPurchaseModal' ).on( 'hidden.bs.modal', function(){
     $( this ).find( '#editPurchaseForm' )[0].reset();
 
 	// reset all hidden forms
-	$( this ).find( '.form-group' ).not( '#pPurchaseorder_input, #pPurchasedate_input, #pPurchasedby_input' ).add( '#pNewPurchaser' ).hide();
+	$( this ).find( '.form-group' ).not( '#pPurchaseorder_input, #pPurchasedate_input, #pPurchasedby_input,' ).add( '#pNewPurchaser' ).hide();
 
 	// remove all error styles
 	$( this ).find( '.has-error' ).removeClass( 'has-error' );

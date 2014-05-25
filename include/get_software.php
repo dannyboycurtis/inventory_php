@@ -20,7 +20,7 @@ $query = $_POST['query'];
 $query_stmt = "
 SELECT	s.software_id,
 		s.software_name,
-		s.license_num,
+		AES_DECRYPT( s.license_num, ? ),
 		s.license_type,
 		s.number_of_licenses,
 		s.notes,
@@ -36,7 +36,9 @@ WHERE s.software_id = ? LIMIT 1";
 
 if ( $stmt = $mysqli->prepare( $query_stmt ) ) 
 {
-	$stmt->bind_param( "s", $query );
+	$lic_salt = LIC_SALT;
+
+	$stmt->bind_param( "ss", $lic_salt, $query );
  	$stmt->execute();
 	$stmt->store_result();
 	$stmt->bind_result( $software_id,

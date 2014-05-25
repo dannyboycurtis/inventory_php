@@ -37,7 +37,7 @@ if( $logged )
 	<div class="jumbotron">
   	  <div class="container">
 		<h1 style="font-family:'Times New Roman';">
-          College of Arts & Letters<br>
+          <?php echo ORGANIZATION; ?><br>
       	  Equipment and Software Inventory
     	</h1>
     	<p>To begin your search, please log in:</p>

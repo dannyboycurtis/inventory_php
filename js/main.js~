@@ -7,6 +7,21 @@ function checkRole()
     }).responseText;
 }
 
+function returnToQuery( query, querytype )
+{
+	if ( querytype == "equipment" )
+		list_equipment( query );
+
+	if ( querytype == "software" )
+		list_software( query );
+
+	if ( querytype == "purchases" )
+		list_purchases( query );
+
+	if ( querytype == "users" )
+		list_users( query );
+}
+
 function delete_record( record_id, type, record_row )
 {
 		x = confirm( "This will permanently delete the record.\nClick OK to proceed." );
@@ -49,7 +64,7 @@ function list_equipment( query )
 
 			populateTable_equipment( $.parseJSON( result ) );
 
-			setupTablesorter( role );
+			setupTablesorter( 'equipment', role );
 
 			$('#processingModal').modal('toggle');	
 		
@@ -84,7 +99,7 @@ function list_users( query )
 
 			populateTable_users( $.parseJSON( result ) );
 
-			setupTablesorter( role );
+			setupTablesorter( 'user', role );
 
 			$('#processingModal').modal('toggle');
 		
@@ -118,7 +133,7 @@ function list_purchases( query )
 
 			populateTable_purchases( $.parseJSON( result ) );
 
-			setupTablesorter( role );
+			setupTablesorter( 'purchases', role );
 
 			$('#processingModal').modal('toggle');
 		
@@ -152,7 +167,7 @@ function list_software( query )
 
 			populateTable_software( $.parseJSON( result ) );
 
-			setupTablesorter( role );
+			setupTablesorter( 'software', role );
 
 			$('#processingModal').modal('toggle');
 		
@@ -163,7 +178,7 @@ function list_software( query )
 }
 
 
-function setupTablesorter( role )
+function setupTablesorter( record_type, role )
 {
 	$('#results_table').trigger("destroy");
 	
@@ -276,7 +291,7 @@ function setupTablesorter( role )
 		var record_row = $( this ).closest( '.parent_row');
 		var record_id = $( this ).parents().siblings( '.select' ).children( 'span' ).html();
 
-		delete_record( record_id, 'equipment', record_row );
+		delete_record( record_id, record_type, record_row );
 	});
 
 	
@@ -536,11 +551,11 @@ function populateTable_equipment( results )
 				}
 
 				// set user information
+				$( '#selectusertype_input' ).show();
+				$( '#usersnotavailable' ).hide();
+
 				if ( result[0].users )
-				{
-					$( '#selectusertype_input' ).show();
-					$( '#usersnotavailable' ).hide();
-					
+				{	
 					// check if eq is of type Faculty/staff
 					if ( result[0].users[0].lastname )
 					{
@@ -646,11 +661,17 @@ function populateTable_users( results )
 	$( '#results_table>tbody' ).html( tableRows.join( "" ) );
 
 	$( '.edit>i').on( 'click', function(){
-		var userid = $(this).parents().siblings( '.select' ).children( 'span' ).html();
-		/*******************************************************
-		 Gather attributes, call edit_user modal
-		*******************************************************/
-		alert( "Edit " + tag );
+		$( '#user_id' ).val( $(this).parents().siblings( '.select' ).children( 'span' ).html() );
+		$( '#f_name' ).val( $(this).parents().siblings( '.fname' ).html() );
+		$( '#l_name' ).val( $(this).parents().siblings( '.lname' ).html() );
+
+		if ( $(this).parents().siblings( '.email' ).html() != "N/A" )
+			$( '#email' ).val( $(this).parents().siblings( '.email' ).html() );
+
+		if ( $(this).parents().siblings( '.phone' ).html() != "N/A" )
+			$( '#phone' ).val( $(this).parents().siblings( '.phone' ).html() );
+
+		$( '#editUserModal' ).modal( 'show' );
 	});
 }
 
@@ -675,9 +696,9 @@ function populateTable_purchases( results )
 
 		if ( !this.purchaseorder )
 			this.purchaseorder = "N/A";
-		row += "<td>" + this.purchaseorder + "</td>";
-		row += "<td>" + this.purchasedate + "</td>";
-		row += "<td>" + this.purchasedby + "</td>";
+		row += "<td class='porder'>" + this.purchaseorder + "</td>";
+		row += "<td class='pdate'>" + this.purchasedate + "</td>";
+		row += "<td class='pby'>" + this.purchasedby + "</td>";
 
 		row += "</tr><tr class='tablesorter-childRow'><td colspan='10'>";
 		row += '<div class="panel panel-group">';
@@ -713,7 +734,7 @@ function populateTable_purchases( results )
 
 		else
 		{
-			row += "&nbsp;&nbsp;No items in this purchase order!";
+			row += "&nbsp;&nbsp;<b>No items in this purchase order!</b>";
 
 		}
 
@@ -727,11 +748,18 @@ function populateTable_purchases( results )
 
 	// edit purchase
 	$( '.edit>i').on( 'click', function(){
-		var purchaseid = $(this).parents().siblings( '.select' ).children( 'span' ).html();
-		/*******************************************************
-		 Gather attributes, call edit_purchase modal
-		*******************************************************/
-		alert( "Edit " + tag );
+		$( '#pPurchase_id' ).val( $(this).parents().siblings( '.select' ).children( 'span' ).html() );
+		$( '#pPurchaseorder' ).val( $(this).parents().siblings( '.porder' ).html() );
+
+		if ( $( '#pPurchaseorder' ).val() == "N/A" )
+			$( '#pPurchaseorder' ).val( "" );			
+
+		$( '#pPurchasedate' ).val( $(this).parents().siblings( '.pdate' ).html() );
+		$( '#pPurchasertype' ).text( $(this).parents().siblings( '.pby' ).html() );
+		$( '#pNewPurchaser, .input_error' ).hide();
+
+		alert( $(this).parents().siblings( '.select' ).children( 'span' ).html());
+		$( '#editPurchaseModal' ).modal( 'show' );
 	});
 }
 
@@ -783,7 +811,10 @@ function populateTable_software( results )
 				if ( this.count >= i )
 					row += "<br>";
 			});
-		}		
+		}	
+
+		else
+			row += "&nbsp;&nbsp;<b>This software has not been assigned to any equipment!</b><br>";
 
 		row += '</div></td></tr>';
 

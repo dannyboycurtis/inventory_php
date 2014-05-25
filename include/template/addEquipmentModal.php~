@@ -839,7 +839,7 @@ else
 				// update table
 				var results = $.parseJSON( result );
 				alert( results.message );
-				returnToQuery( results.query, results.querytype );
+				list_equipment( results.query );
 
 				$( '#addEquipmentModal' ).modal( 'hide' );
 

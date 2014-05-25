@@ -15,6 +15,7 @@ $mysqli = inventory_db_connect();
 if ( !isset( $_POST['data'] ) )
 	header( 'Location: ../portal.php' );
 
+$error = "";
 
 $user_input = json_decode( $_POST['data'], true );
 
@@ -64,11 +65,12 @@ else
 
 if ( $user_input["software_id" ] )
 {
-	$query_stmt = "UPDATE software SET software_name = ?, license_num = ?, license_type = ?, number_of_licenses = ?, notes = ?, purchase_id = ? WHERE software_id = ?";
+	$query_stmt = "UPDATE software SET software_name = ?, license_num = AES_ENCRYPT( ?, ? ), license_type = ?, number_of_licenses = ?, notes = ?, purchase_id = ? WHERE software_id = ?";
 
 	if ( $stmt = $mysqli->prepare( $query_stmt ) )
 	{
-		$stmt->bind_param( 'sssssss', $user_input["software_name"], $user_input["license_num"], $user_input["license_type"], $user_input["number_of_licenses"], $user_input["notes"], $user_input["purchase_id"], $user_input["software_id"] );
+		$lic_salt = LIC_SALT;
+		$stmt->bind_param( 'ssssssss', $user_input["software_name"], $user_input["license_num"], $lic_salt, $user_input["license_type"], $user_input["number_of_licenses"], $user_input["notes"], $user_input["purchase_id"], $user_input["software_id"] );
 		$stmt->execute();
 	}
 
@@ -78,11 +80,12 @@ if ( $user_input["software_id" ] )
 
 else
 {
-	$query_stmt = "INSERT IGNORE INTO software ( software_name, license_num, license_type, number_of_licenses, notes, purchase_id ) VALUES( ?, ?, ?, ?, ?, ? )";
+	$query_stmt = "INSERT INTO software ( software_name, license_num, license_type, number_of_licenses, notes, purchase_id ) VALUES( ?, AES_ENCRYPT( ?, ? ), ?, ?, ?, ? )";
 
 	if ( $stmt = $mysqli->prepare( $query_stmt ) )
 	{
-		$stmt->bind_param( 'ssssss', $user_input["software_name"], $user_input["license_num"], $user_input["license_type"], $user_input["number_of_licenses"], $user_input["notes"], $purchase_id );
+		$lic_salt = LIC_SALT;
+		$stmt->bind_param( 'sssssss', $user_input["software_name"], $user_input["license_num"], $lic_salt, $user_input["license_type"], $user_input["number_of_licenses"], $user_input["notes"], $purchase_id );
 		$stmt->execute();
 	}
 
@@ -93,6 +96,18 @@ else
 
 if ( $user_input["operation"] == "insert" )
 {
+	$activity_stmt = "INSERT INTO activity VALUES ( ?, ?, ?, ? )";
+
+	if ( $stmt2 = $mysqli->prepare( $activity_stmt ) )
+	{
+		$now = date( 'm/d/Y - h:i:s a' );
+		$type = "INSERT - software";
+		$record = $user_input["software_name"] . " - " . $user_input["license_type"];
+
+		$stmt2->bind_param( 'ssss', $_SESSION["username"], $now, $type, $record );
+		$stmt2->execute();
+	}
+
 	$result = array( "message" => "The record was successfully added", "query" => $_SESSION["query"], "querytype" => $_SESSION["querytype"], "errors" => $error );
 
 	echo json_encode( $result ) ;
@@ -101,6 +116,18 @@ if ( $user_input["operation"] == "insert" )
 
 else if ( $user_input["operation"] == "update" )
 {
+	$activity_stmt = "INSERT INTO activity VALUES ( ?, ?, ?, ? )";
+
+	if ( $stmt2 = $mysqli->prepare( $activity_stmt ) )
+	{
+		$now = date( 'm/d/Y - h:i:s a' );
+		$type = "UPDATE - software";
+		$record = $user_input["software_name"] . " - " . $user_input["license_type"];
+
+		$stmt2->bind_param( 'ssss', $_SESSION["username"], $now, $type, $record );
+		$stmt2->execute();
+	}
+
 	$result = array( "message" => "The record was successfully updated", "query" => $_SESSION["query"], "querytype" => $_SESSION["querytype"], "errors" => $error );
 
 	echo json_encode( $result ) ;

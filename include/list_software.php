@@ -15,7 +15,7 @@ $mysqli = inventory_db_connect();
 if ( $_POST['query'] == "_all" )
 	$query = "SELECT s.software_id,
 					 s.software_name,
-											s.license_num,
+											AES_DECRYPT( s.license_num, ? ),
 											s.license_type,
 											s.number_of_licenses,
 											s.notes,
@@ -26,7 +26,7 @@ if ( $_POST['query'] == "_all" )
 else
 	$query = "SELECT	 	s.software_id,
 											s.software_name,
-											s.license_num,
+											AES_DECRYPT( s.license_num, ? ),
 											s.license_type,
 											s.number_of_licenses,
 											s.notes,
@@ -42,11 +42,17 @@ if ( $stmt = $mysqli->prepare( $query ) )
 {
 	unset( $results );
 
+	$lic_salt = LIC_SALT;
+
 	if ( $_POST['query'] != '_all' )
 	{
 		$word = '%' . $_POST['query'] . '%';
-		$stmt->bind_param( "ssss", $word, $word, $word, $word );
+		$stmt->bind_param( "sssss", $lic_salt, $word, $word, $word, $word );
 	}
+
+	else
+		$stmt->bind_param( "s", $lic_salt ); 
+
 
  	$stmt->execute();
 	$stmt->store_result();

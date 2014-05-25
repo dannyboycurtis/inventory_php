@@ -238,6 +238,16 @@ if ( $user_input["eqtype"] == "printer" )
 // add users and software if eqtype is computer or other
 if ( $user_input["eqtype"] == "computer" or $user_input["eqtype"] == "other" )
 {
+
+	// delete removed uses
+	$query_stmt = "DELETE FROM uses WHERE tag_num = ?";
+
+	if ( $stmt = $mysqli->prepare( $query_stmt ) )
+	{
+		$stmt->bind_param( 's', $user_input["tag_num"] );
+		$stmt->execute();
+	}
+
 	// add uses entries
 	$query_stmt = "INSERT INTO uses VALUES( ?, ? )";
 
@@ -362,15 +372,38 @@ if ( $user_input["eqtype"] == "computer" )
 
 if ( $user_input["operation"] == "insert" )
 {
-	$result = array( "message" => "The record was successfully added", "query" => $_SESSION["query"] );
+	$activity_stmt = "INSERT INTO activity VALUES ( ?, ?, ?, ? )";
+
+	if ( $stmt2 = $mysqli->prepare( $activity_stmt ) )
+	{
+		$now = date( 'm/d/Y - h:i:s a' );
+		$type = "INSERT - equipment";
+		$record = $user_input["tag_num"];
+
+		$stmt2->bind_param( 'ssss', $_SESSION["username"], $now, $type, $record );
+		$stmt2->execute();
+	}
+
+	$result = array( "message" => "The record was successfully added", "query" => $_SESSION["query"], "querytype" => $_SESSION["querytype"] );
 
 	echo json_encode( $result ) ;
-
 }
 
 else if ( $user_input["operation"] == "update" )
 {
-	$result = array( "message" => "The record was successfully updated", "query" => $_SESSION["query"], "errors" => $error );
+	$activity_stmt = "INSERT INTO activity VALUES ( ?, ?, ?, ? )";
+
+	if ( $stmt2 = $mysqli->prepare( $activity_stmt ) )
+	{
+		$now = date( 'm/d/Y - h:i:s a' );
+		$type = "UPDATE - equipment";
+		$record = $user_input["tag_num"];
+
+		$stmt2->bind_param( 'ssss', $_SESSION["username"], $now, $type, $record );
+		$stmt2->execute();
+	}
+
+	$result = array( "message" => "The record was successfully updated", "query" => $_SESSION["query"], "querytype" => $_SESSION["querytype"], "errors" => $error );
 
 	echo json_encode( $result ) ;
 }
