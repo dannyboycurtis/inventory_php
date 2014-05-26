@@ -1,5 +1,5 @@
 <?php
-include_once '../include/common.php';
+include_once 'include/common.php';
 
 $mysqli = login_db_connect();
  

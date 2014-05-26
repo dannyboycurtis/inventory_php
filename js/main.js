@@ -9,6 +9,9 @@ function checkRole()
 
 function returnToQuery( query, querytype )
 {
+	if ( query == "_portal" )
+		location.reload();
+
 	if ( querytype == "equipment" )
 		list_equipment( query );
 
@@ -24,20 +27,41 @@ function returnToQuery( query, querytype )
 
 function delete_record( record_id, type, record_row )
 {
-		x = confirm( "This will permanently delete the record.\nClick OK to proceed." );
-		if ( x == true )
-		{
-			$.ajax({
-				type: "POST",
-				url: "include/delete_record.php",
-				data: { record_id : record_id, type : type },
-				success: function( result ) {
-					$( record_row ).next( '.tablesorter-childRow' ).addBack().remove();
-					$( '#results_table' ).trigger( 'update' );
-				}
-			});
-		}
+	x = confirm( "This will permanently delete the record.\nClick OK to proceed." );
+	if ( x == true )
+	{
+		$.ajax({
+			type: "POST",
+			url: "include/delete_record.php",
+			data: { record_id : record_id, type : type },
+			success: function( result ) {
+				$( record_row ).next( '.tablesorter-childRow' ).addBack().remove();
+				$( '#results_table' ).trigger( 'update' );
+			}
+		});
+	}
+}
 
+function delete_user( uname )
+{
+	x = confirm( "This will permanently delete " + uname + ".\nClick OK to proceed." );
+	if ( x == true )
+	{
+		$.ajax({
+			type: "POST",
+			url: "include/delete_user.php",
+			data: { uname : uname },
+			success: function( result ) {
+				if ( result == "1" )
+					alert( "The user has been successfully removed!" );
+
+				else
+					alert( "There was a problem deleting this user!" );
+
+				list_inventoryusers();
+			}
+		});
+	}
 }
 
 function list_equipment( query )
@@ -65,6 +89,8 @@ function list_equipment( query )
 			populateTable_equipment( $.parseJSON( result ) );
 
 			setupTablesorter( 'equipment', role );
+
+			$( '#pager>.row').show();
 
 			$('#processingModal').modal('toggle');	
 		
@@ -101,6 +127,8 @@ function list_users( query )
 
 			setupTablesorter( 'user', role );
 
+			$( '#pager>.row').show();
+
 			$('#processingModal').modal('toggle');
 		
 			$('#search_panel:visible #report_panel:visible').collapse('hide');
@@ -134,6 +162,8 @@ function list_purchases( query )
 			populateTable_purchases( $.parseJSON( result ) );
 
 			setupTablesorter( 'purchases', role );
+
+			$( '#pager>.row').show();
 
 			$('#processingModal').modal('toggle');
 		
@@ -169,10 +199,153 @@ function list_software( query )
 
 			setupTablesorter( 'software', role );
 
+			$( '#pager>.row').show();
+
 			$('#processingModal').modal('toggle');
 		
 			$('#search_panel:visible #report_panel:visible').collapse('hide');
 			$('#table_panel').collapse('show');
+		}
+	});
+}
+
+
+
+function list_activity( query )
+{
+	$('#processingModal').modal('toggle');
+
+	$.ajax({
+		type: "POST",
+		url: "include/list_activity.php",
+		data: { user : query },
+		success: function( result ) {
+			$( '#results_table>thead>tr').html( "<th scope='col'>Username</th><th scope='col'>Date & Time</th><th scope='col'>Operation</th><th scope='col'>Record ID/Name</th>" );
+	
+			$('#table_panel').collapse('show');
+
+			$('#results_table').trigger('filterReset');
+
+			$('#results_table>tbody').empty();
+
+			var results = $.parseJSON( result );
+
+			var tableRows = new Array();
+
+			$.each( results, function(){
+				row = "";
+				row += "<tr class='parent_row'>";
+				row += "<td>" + this.username + "</td>";
+				row += "<td>" + this.timestamp + "</td>";
+				row += "<td>" + this.operation + "</td>";
+				row += "<td>" + this.record + "</td></tr>";
+
+				tableRows.push( row );		
+			});
+		
+			$( '#results_table>tbody' ).html( tableRows.join( "" ) );
+
+			//setupTablesorter( 'activity', role );
+
+			$('#results_table').trigger("destroy");
+	
+			var options = {
+				widthFixed : true,
+				headerTemplate : '{content} {icon}',
+				widgets: [ 'filter' ],
+				widgetOptions: {
+					filter_external : '.search',
+					filter_childRows : false,
+					filter_columnFilters : false,
+					filter_ssFilter : 'tablesorter-filter'
+				}
+			};
+
+			var pagerOptions = {
+				container: $(".pager"),
+				page: 0,
+				size: 15,
+				output: ' <b>( Results: {filteredRows} )  Showing Results {startRow} to {endRow}</b> ',
+			    cssPageDisplay: '.pagedisplay',
+			    cssPageSize: '.pagesize',
+				cssNext: '.next',
+			    cssPrev: '.prev',
+			    cssFirst: '.first',
+			    cssLast: '.last'
+			};
+
+			$('#table_panel_head').empty().html( '<div class="col-xs-3"><input class="form-control search" type="text" placeholder="Filter Results" data-column="all"></div>' );
+
+			$('#results_table').tablesorter( options )
+				.tablesorterPager(pagerOptions)
+				.bind( 'sortStart', function(){
+					$(this).trigger('pageSet', 0 );
+				});
+
+			$( '#results_table' ).find( 'colgroup' ).remove();
+
+			$('#processingModal').modal('toggle');
+		
+			$( '#pager>.row').show();
+
+			$('#table_panel').collapse('show');
+
+			$('#search_panel, #report_panel:visible').collapse('hide');
+
+
+		}
+	});
+}
+
+
+function list_inventoryusers(){
+	$.ajax({
+		type: "POST",
+		url: "include/list_inventoryusers.php",
+		success: function( result ) {
+			var results = $.parseJSON( result );
+
+			var list = new Array();
+
+			$.each( results, function(){
+				row = "<tr style='border-bottom: 1px solid blue'><td class='uname'>" + this.user + "</td><td>" + this.role + "</td>";
+				row += "<td> <button class='changerole btn btn-primary'>Change Role</button> <button class='changepass btn btn-primary'>Change Password</button> <button class='deleteuser btn btn-primary'>Delete User</button></tr>";
+				list.push( row );		
+			});
+
+			row = "<tr><td colspan=3><br><button id='adduser' class='btn btn-primary'>Create User</button></td></tr>";
+
+			list.push( row ); 
+
+			$( '#results_table>thead>tr' ).html( "<th scope='col' width='15'>Username</th><th scope='col' width='10'>Role</th><th scope='col'>Actions</th>" );
+
+			$( '#results_table>tbody' ).html( list.join( "" ) );
+
+			$( '.changerole' ).on( 'click', function(){
+				change_role( $( this ).parents().siblings( '.uname' ).text() );
+			});
+
+			$( '.changepass' ).on( 'click', function(){
+				change_pass( $( this ).parents().siblings( '.uname' ).text() );
+			});
+
+			$( '.deleteuser' ).on( 'click', function(){
+				delete_user( $( this ).parent().siblings( '.uname' ).text() );
+			});
+
+			$( '#adduser' ).on( 'click', function(){
+				add_user();
+			});
+
+			$('#table_panel_head' ).empty();
+
+			$( '#pager>.row').hide();
+		
+			$('#table_panel').collapse('show');
+
+			$('#search_panel, #report_panel:visible').collapse('hide');
+
+
 		}
 	});
 }
@@ -304,8 +477,6 @@ function setupTablesorter( record_type, role )
 	});
 
 	$( '#results_table' ).find( 'colgroup' ).remove();
-
-
 }
 
 
@@ -877,6 +1048,35 @@ function populateTable_software( results )
 }
 
 
+
+
+function populateTable_activity( results )
+{
+	var role = checkRole();
+
+	var tableRows = new Array();
+
+	if ( !results )
+		return;
+
+	$.each( results, function(){
+		row = "";
+		row += "<tr class='parent_row'>";
+		row += "<td>" + this.username + "</td>";
+		row += "<td>" + this.timestamp + "</td>";
+		row += "<td>" + this.operation + "</td>";
+		row += "<td>" + this.recordid + "</td></tr>";
+
+		tableRows.push( row );		
+	});
+		
+	$( '#results_table>tbody' ).html( tableRows.join( "" ) );
+}
+
+
+
+
+
 //  Password hashing functions
 
 function formhash( form, password )
@@ -1014,9 +1214,3 @@ function pwdformhash( form, password, conf )
     form.submit();
     return true;
 }
-
-
-
-
-
-

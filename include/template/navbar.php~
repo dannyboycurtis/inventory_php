@@ -47,26 +47,25 @@
             </ul>
           </li>
         </ul>
-	    <?php
-	  		if ( $_SESSION['role'] == 4 )
-				echo '<ul class="nav navbar-nav">
-      				    <li class="dropdown">
-        				  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administration <b class="caret"></b></a>
-        				  <ul class="dropdown-menu">
-        	 			    <li><a href="#"><span class="glyphicon glyphicon-list"></span>&nbsp; Manage Inventory Users</a></li>
-        	  			    <li><a href="#"><span class="glyphicon glyphicon-eye-open"></span>&nbsp; View User Activity Log</a></li>
-        				  </ul>
-      					</li>
-    				  </ul>';
-	    ?>
+	    <?php if ( $_SESSION['role'] == 4 ) : ?>
+			<ul class="nav navbar-nav">
+      		    <li class="dropdown">
+        			<a href="#" class="dropdown-toggle" data-toggle="dropdown">Administration <b class="caret"></b></a>
+        			<ul class="dropdown-menu">
+        				<li><a href="#"><span class="glyphicon glyphicon-list"></span>&nbsp; Manage Inventory Users</a></li>
+        			    <li><a id="viewUserLogAll" href="#"><span class="glyphicon glyphicon-eye-open"></span>&nbsp; View User Activity Log</a></li>
+        			</ul>
+      			</li>
+    		</ul>
+		<?php endif; ?>
         <ul class="nav navbar-nav navbar-right text-right">
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $_SESSION['username']; ?> &nbsp;<span class="glyphicon glyphicon-cog"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="#" class="text-right">View User Log &nbsp;<span class="glyphicon glyphicon-list-alt"></span></a></li>
-              <li><a href="#">Reset Password &nbsp;<span class="glyphicon glyphicon-wrench"></span></a></li>
+              <li><a id="viewUserLog" href="#" class="text-right">View User Log &nbsp;<span class="glyphicon glyphicon-list-alt"></span></a></li>
+              <li><a href="#" class="text-right">Reset Password &nbsp;<span class="glyphicon glyphicon-wrench"></span></a></li>
               <li class="divider"></li>
-              <li><a href="include/process_logout.php">Log out &nbsp;&nbsp;<i class="fa fa-sign-out"></i></a></li>
+              <li><a href="include/process_logout.php" class="text-right">Log out &nbsp;&nbsp;<i class="fa fa-sign-out"></i></a></li>
             </ul>
           </li>
         </ul>
@@ -75,3 +74,13 @@
     </div><!--/.nav-collapse -->
   </div>
 </div>
+
+<script>
+$( '#viewUserLog' ).on( 'click', function(){
+	list_activity( '<?php echo $_SESSION["username"]; ?>' );
+});
+
+$( '#viewUserLogAll' ).on( 'click', function(){
+	list_activity( '_all' );
+});
+</script>

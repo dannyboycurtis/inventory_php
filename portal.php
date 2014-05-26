@@ -10,7 +10,9 @@ $logged = login_check( $mysqli );
 
 if ( !( $logged ) )
 	header( 'Location: login.php' );
-	
+
+$_SESSION["query"] = "_portal";
+
 ?>
 <!DOCTYPE html>
 <html>
