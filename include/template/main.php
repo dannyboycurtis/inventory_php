@@ -9,10 +9,16 @@
 						<div class="input-group">
       				<div class="input-group-btn">
         				<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-									<span id="searchtype">Equipment</span> <span class="caret"></span>
+									<span id="searchtype">Property Tag</span> <span class="caret"></span>
 								</button>
         				<ul id="searchmenu" class="dropdown-menu">
-          				<li><a href="#">Equipment</a></li>
+          				<li><a href="#">Property Tag</a></li>
+          				<li><a href="#">Serial Number</a></li>
+          				<li><a href="#">Make & Model</a></li>
+          				<li><a href="#">Hostname</a></li>
+          				<li><a href="#">IP Address</a></li>
+          				<li><a href="#">MAC Address</a></li>
+						<li class="divider"></li>
 						<li><a href="#">Users</a></li>
           				<li><a href="#">Purchases</a></li>
 									<?php if ( $_SESSION['role'] > 1 ) : ?>
