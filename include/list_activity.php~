@@ -13,10 +13,10 @@ if ( !( $logged ) )
 $mysqli = inventory_db_connect();
 
 if ( $_POST['user'] == "_all" )
-	$query = "SELECT inventory_user, timestamp, type, record_id FROM activity ORDER BY timestamp DESC";
+	$query = "SELECT inventory_user, timestamp, type, record_id FROM activity ORDER BY timestamp DESC LIMIT 500";
 
 else
-	$query = "SELECT inventory_user, timestamp, type, record_id FROM activity WHERE inventory_user = ? ORDER BY timestamp DESC";
+	$query = "SELECT inventory_user, timestamp, type, record_id FROM activity WHERE inventory_user = ? ORDER BY timestamp DESC LIMIT 500";
 
 if ( $stmt = $mysqli->prepare( $query ) ) 
 {
@@ -43,7 +43,7 @@ if ( $stmt = $mysqli->prepare( $query ) )
 }
 
 $_SESSION["querytype"] = "activity";
-$_SESSION["query"] = $_POST["query"];
+$_SESSION["query"] = $_POST["user"];
 
 echo json_encode( $results );
 

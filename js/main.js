@@ -9,9 +9,6 @@ function checkRole()
 
 function returnToQuery( query, querytype )
 {
-	if ( query == "_portal" )
-		location.reload();
-
 	if ( querytype == "equipment" )
 		list_equipment( query );
 
@@ -23,6 +20,9 @@ function returnToQuery( query, querytype )
 
 	if ( querytype == "users" )
 		list_users( query );
+
+	else
+		location.reload();
 }
 
 function delete_record( record_id, type, record_row )
@@ -288,7 +288,7 @@ function list_activity( query )
 		
 			$( '#pager>.row').show();
 
-			$('#table_panel').collapse('show');
+			$('#table_panel').collapse('show').parent().show();
 
 			$('#search_panel, #report_panel:visible').collapse('hide');
 
@@ -309,7 +309,7 @@ function list_inventoryusers(){
 
 			$.each( results, function(){
 				row = "<tr style='border-bottom: 1px solid blue'><td class='uname'>" + this.user + "</td><td>" + this.role + "</td>";
-				row += "<td> <button class='changerole btn btn-primary'>Change Role</button> <button class='changepass btn btn-primary'>Change Password</button> <button class='deleteuser btn btn-primary'>Delete User</button></tr>";
+				row += "<td> <button class='changepass btn btn-primary'>Change Password</button> <button class='deleteuser btn btn-primary'>Delete User</button></tr>";
 				list.push( row );		
 			});
 
@@ -321,12 +321,13 @@ function list_inventoryusers(){
 
 			$( '#results_table>tbody' ).html( list.join( "" ) );
 
-			$( '.changerole' ).on( 'click', function(){
-				change_role( $( this ).parents().siblings( '.uname' ).text() );
-			});
 
 			$( '.changepass' ).on( 'click', function(){
-				change_pass( $( this ).parents().siblings( '.uname' ).text() );
+				var uname = $( this ).parents().siblings( '.uname' ).text();
+
+				$( '#changePasswordUser' ).val( uname );
+
+				$( '#changePasswordModal' ).modal( 'show' );
 			});
 
 			$( '.deleteuser' ).on( 'click', function(){
@@ -334,14 +335,14 @@ function list_inventoryusers(){
 			});
 
 			$( '#adduser' ).on( 'click', function(){
-				add_user();
+				$( '#registerUserModal' ).modal( 'show' );
 			});
 
 			$('#table_panel_head' ).empty();
 
 			$( '#pager>.row').hide();
 		
-			$('#table_panel').collapse('show');
+			$('#table_panel').collapse('show').parent().show();
 
 			$('#search_panel, #report_panel:visible').collapse('hide');
 
@@ -477,6 +478,9 @@ function setupTablesorter( record_type, role )
 	});
 
 	$( '#results_table' ).find( 'colgroup' ).remove();
+
+	// show table
+	$( '#table_panel' ).parent().show();
 }
 
 

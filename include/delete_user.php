@@ -10,7 +10,8 @@ $logged = login_check( $mysqli );
 if ( !( $logged ) )
 	header( 'Location: ../login.php' );
 
-$mysqli = login_db_connect();
+if ( $_SESSION["role"] < 4 )
+	header( 'Location: ../portal.php' );
 
 $delete_stmt = "DELETE FROM users WHERE username = ? LIMIT 1";
 

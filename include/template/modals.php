@@ -10,12 +10,18 @@
   </div>
 </div>
 
-<?php if( $_SESSION['role'] > 1 )
-{
+<?php
+	include_once "include/template/changePasswordModal.php";
 
-	include_once "include/template/addEquipmentModal.php";
-	include_once "include/template/addSoftwareModal.php";
-	include_once "include/template/editUserModal.php";
-	include_once "include/template/editPurchaseModal.php";
-}
+	if( $_SESSION['role'] > 1 )
+	{
+
+		include_once "include/template/addEquipmentModal.php";
+		include_once "include/template/addSoftwareModal.php";
+		include_once "include/template/editUserModal.php";
+		include_once "include/template/editPurchaseModal.php";
+	}
+
+	if ( $_SESSION['role'] > 3 )
+		include_once "include/template/registerUserModal.php";
 ?>

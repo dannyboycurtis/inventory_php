@@ -112,4 +112,8 @@ if( $logged )
 
 ?> 
 
+<script>
+$( '#user' ).focus();
+</script>
+
 </html>

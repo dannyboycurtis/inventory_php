@@ -63,7 +63,7 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $_SESSION['username']; ?> &nbsp;<span class="glyphicon glyphicon-cog"></span></a>
             <ul class="dropdown-menu">
               <li><a id="viewUserLog" href="#" class="text-right">View User Log &nbsp;<span class="glyphicon glyphicon-list-alt"></span></a></li>
-              <li><a href="#" class="text-right">Reset Password &nbsp;<span class="glyphicon glyphicon-wrench"></span></a></li>
+              <li><a id="changeCurrentUserPass" href="#" class="text-right">Reset Password &nbsp;<span class="glyphicon glyphicon-wrench"></span></a></li>
               <li class="divider"></li>
               <li><a href="include/process_logout.php" class="text-right">Log out &nbsp;&nbsp;<i class="fa fa-sign-out"></i></a></li>
             </ul>
@@ -86,5 +86,10 @@ $( '#viewUserLogAll' ).on( 'click', function(){
 
 $( '#manageUsers' ).on( 'click', function(){
 	list_inventoryusers();
+	$( '#table_panel' ).parent().show();
+});
+
+$( '#changeCurrentUserPass' ).on( 'click', function(){
+	$( '#changePasswordModal' ).modal( 'show' );
 });
 </script>
