@@ -105,28 +105,35 @@ else if ( $_POST['type'] == 'serial' )
 
 else if ( $_POST['type'] == 'makemodel' )
 {
-	$query = explode( "/", $query );
+	$querywords = explode( " ", $query );
 
-	$query_stmt .= "WHERE e.make = ? AND e.model = ?
-					GROUP BY e.tag_num
+	$query_stmt .= "WHERE ";
+
+	foreach( $querywords as $word )
+	{
+		$query_stmt .= "e.make LIKE '%" . $word . "%' OR e.model LIKE '%" . $word . "%' OR ";
+	}
+
+	$query_stmt = substr( $query_stmt, 0, -3 );
+
+	$query_stmt .= "GROUP BY e.tag_num
 					ORDER BY e.tag_num DESC";
 
 	if ( $stmt = $mysqli->prepare( $query_stmt ) ) 
-	{
-		$stmt->bind_param( 'ss', $query[0], $query[1] );
 		$stmt->execute();
-	}
 }
 
 else if ( $_POST['type'] == 'hostname' )
 {
-	$query_stmt .= "WHERE c.hostname = ? OR pr.hostname = ? 
+	$query_stmt .= "WHERE c.hostname LIKE ? OR pr.hostname LIKE ? 
 					GROUP BY e.tag_num
 					ORDER BY e.tag_num DESC";
 
 	if ( $stmt = $mysqli->prepare( $query_stmt ) ) 
 	{
-		$stmt->bind_param( 'ss', $query, $query );
+		$q = '%' . $query . '%';
+
+		$stmt->bind_param( 'ss', $q, $q );
 		$stmt->execute();
 	}
 }

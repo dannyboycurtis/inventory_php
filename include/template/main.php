@@ -5,56 +5,40 @@
 		<div id="search_panel" class="panel-collapse collapse in">
 			<div class="panel-body">
 				<div class="row">
-  				<div class="col-xs-5">
+  					<div class="col-xs-5">
 						<div class="input-group">
-      				<div class="input-group-btn">
-        				<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+      						<div class="input-group-btn">
+        						<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
 									<span id="searchtype">Property Tag</span> <span class="caret"></span>
 								</button>
-        				<ul id="searchmenu" class="dropdown-menu">
-          				<li><a href="#">Property Tag</a></li>
-          				<li><a href="#">Serial Number</a></li>
-          				<li><a href="#">Make & Model</a></li>
-          				<li><a href="#">Hostname</a></li>
-          				<li><a href="#">IP Address</a></li>
-          				<li><a href="#">MAC Address</a></li>
-						<li class="divider"></li>
-						<li><a href="#">Users</a></li>
-          				<li><a href="#">Purchases</a></li>
+        						<ul id="searchmenu" class="dropdown-menu">
+          							<li><a href="#">Property Tag</a></li>
+          							<li><a href="#">Serial Number</a></li>
+          							<li><a href="#">Hostname</a></li>
+          							<li><a href="#">IP Address</a></li>
+          							<li><a href="#">MAC Address</a></li>
+									<li class="divider"></li>
+          							<li><a href="#">Purchase Order</a></li>
+									<li><a href="#">Purchase Date</a></li>
+									<li class="divider"></li>
+									<li><a href="#">Users</a></li>
+									<li class="divider"></li>
 									<?php if ( $_SESSION['role'] > 1 ) : ?>
-          					<li><a href="#">Software</a></li>
+          								<li><a href="#">Software</a></li>
 									<?php endif; ?>
-        				</ul>
+        						</ul>
 							</div><!-- btn-group -->
-      				<input id="searchinput" type="text" class="form-control" placeholder="Search">
+      						<input id="searchinput" type="text" class="form-control" placeholder="Search">
 							<span class="input-group-btn">
-        				<button id="executesearch" class="btn btn-primary" type="button">
+        						<button id="executesearch" class="btn btn-primary" type="button">
 									<i class="fa fa-search"></i>
 								</button>
-      				</span>
+      						</span>
 						</div><!-- input-group -->
 						<span class="help-block">Select type of search and enter keywords</span>
 						<p> For purchase dates, please use the following format: YYYY-MM-DD</p>
 					</div><!-- col-xs-5 -->
 				</div><!-- row -->
-				<script>
-					$("#searchmenu>li>a").on( 'click', function(){
-	  					$( '#searchtype').html( $( this ).text() );
-					});
-
-					$( '#executesearch' ).on( 'click', function(){
-						var choice = $( '#searchtype' ).text();
-						if ( choice == 'Equipment' )
-							list_equipment( $( '#searchinput' ).val() );
-						if ( choice == 'Users' )
-							list_users( $( '#searchinput' ).val() );
-						if ( choice == 'Purchases' )
-							list_purchases( $( '#searchinput' ).val() );
-						if ( choice == 'Software' )
-							list_software( $( '#searchinput' ).val() );
-					});
-
-				</script>
 			</div><!-- panel-body -->
 		</div><!-- #search_panel -->
 	</div><!-- panel -->
@@ -128,15 +112,35 @@ $("#searchmenu>li>a").on( 'click', function(){
 
 $( '#executesearch' ).on( 'click', function(){
 	var choice = $( '#searchtype' ).text();
-	if ( choice == 'Equipment' )
-		list_equipment( $( '#searchinput' ).val() );
+
+	if ( choice == 'Property Tag' )
+		list_equipment( $( '#searchinput' ).val(), "tag_num" );
+	if ( choice == 'Serial Number' )
+		list_equipment( $( '#searchinput' ).val(), "serial" );
+	if ( choice == 'Hostname' )
+		list_equipment( $( '#searchinput' ).val(), "hostname" );
+	if ( choice == 'IP Address' )
+		list_equipment( $( '#searchinput' ).val(), "ip" );
+	if ( choice == 'MAC Address' )
+		list_equipment( $( '#searchinput' ).val(), "mac" );
 	if ( choice == 'Users' )
 		list_users( $( '#searchinput' ).val() );
-	if ( choice == 'Purchases' )
-		list_purchases( $( '#searchinput' ).val() );
+	if ( choice == 'Purchase Order' )
+		list_purchases( $( '#searchinput' ).val(), "purchaseorder");
+	if ( choice == 'Purchase Date' )
+		list_purchases( $( '#searchinput' ).val(), "purchasedate" );
 	if ( choice == 'Software' )
 		list_software( $( '#searchinput' ).val() );
 });
+
+$( '#makemodelsearch' ).on( 'click', function(){
+	if ( $( '#makequerytype' ).text() != "Choose Make" && $( '#modelquerytype' ).text() != "Choose Model" )
+	{
+		var makemodel = $( '#makequerytype' ).text() + "/" + $( '#modelquerytype' ).text();
+		list_equipment( makemodel, "makemodel" );
+	}
+});
+
 
 $( '#search_panel, #report_panel' ).on( 'show.bs.collapse', function(){
 	$( this ).parent().show();

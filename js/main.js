@@ -7,18 +7,18 @@ function checkRole()
     }).responseText;
 }
 
-function returnToQuery( query, querytype )
+function returnToQuery( query, type )
 {
-	if ( querytype == "equipment" )
-		list_equipment( query );
+	if ( type == "tag_num" || type == "serial" || type == "makemodel" || type == "hostname" || type == "ip" || type == "mac" )
+		list_equipment( query, type );
 
-	if ( querytype == "software" )
+	if ( type == "software" )
 		list_software( query );
 
-	if ( querytype == "purchases" )
+	if ( type == "purchases" )
 		list_purchases( query );
 
-	if ( querytype == "users" )
+	if ( type == "users" )
 		list_users( query );
 
 	else
@@ -64,7 +64,7 @@ function delete_user( uname )
 	}
 }
 
-function list_equipment( query )
+function list_equipment( query, type )
 {
 	headers = [ "Property Tag", "Serial Number", "Make & Model", "Purchase Date", "Location", "Department", "Users" ];
 
@@ -72,7 +72,7 @@ function list_equipment( query )
 	$.ajax({
 		type: "POST",
 		url: "include/list_equipment.php",
-		data: { query : query },
+		data: { query : query, type : type },
 		success: function( result ) {
 			var role = checkRole();
 
@@ -137,7 +137,7 @@ function list_users( query )
 	});
 }
 
-function list_purchases( query )
+function list_purchases( query, type )
 {
 	headers = [ "Purchase Order", "Purchase Date", "Purchased By" ];
 
@@ -145,7 +145,7 @@ function list_purchases( query )
 	$.ajax({
 		type: "POST",
 		url: "include/list_purchases.php", 
-		data: { query: query },
+		data: { query: query, type : type },
 		success: function( result ) {
 			var role = checkRole();
 
