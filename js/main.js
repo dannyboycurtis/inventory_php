@@ -76,26 +76,34 @@ function list_equipment( query, type )
 		success: function( result ) {
 			var role = checkRole();
 
-			createHeaders( role, headers );
+			var results = $.parseJSON( result );
 
-			$('#search_panel:visible, #filter_panel:visible, #report_panel:visible').collapse('hide');
-	
-			$('#table_panel').collapse('show');
+			if ( !results )
+			{
+				$('#processingModal').modal('toggle');
+				alert( "No records found!" );
+			}
 
-			$('#results_table').trigger('filterReset');
+			else
+			{
+				createHeaders( role, headers );
 
-			$('#results_table>tbody').empty();
+				$('#results_table').trigger('filterReset');
 
-			populateTable_equipment( $.parseJSON( result ) );
+				$('#results_table>tbody').empty();
 
-			setupTablesorter( 'equipment', role );
+				populateTable_equipment( results );
 
-			$( '#pager>.row').show();
+				setupTablesorter( 'equipment', role );
 
-			$('#processingModal').modal('toggle');	
+				$( '#pager>.row').show();
+
+				$('#processingModal').modal('toggle');	
 		
-			$('#search_panel:visible #report_panel:visible').collapse('hide');
-			$('#table_panel').collapse('show');
+				$('#search_panel:visible, #report_panel:visible').collapse('hide');
+
+				$('#table_panel').collapse('show').parent().show();
+			}
 		}
 	});
 }
@@ -113,26 +121,34 @@ function list_users( query )
 		success: function( result ) {
 			var role = checkRole();
 
-			createHeaders( role, headers );
+			var results = $.parseJSON( result );
 
-			$('#search_panel:visible, #filter_panel:visible, #report_panel:visible').collapse('hide');
-	
-			$('#table_panel').collapse('show');
+			if ( !results )
+			{
+				$('#processingModal').modal('toggle');
+				alert( "No records found!" );
+			}
 
-			$('#results_table').trigger('filterReset');
+			else
+			{
+				createHeaders( role, headers );
 
-			$('#results_table>tbody').empty();
+				$('#results_table').trigger('filterReset');
 
-			populateTable_users( $.parseJSON( result ) );
+				$('#results_table>tbody').empty();
 
-			setupTablesorter( 'user', role );
+				populateTable_users( $.parseJSON( result ) );
 
-			$( '#pager>.row').show();
+				setupTablesorter( 'user', role );
 
-			$('#processingModal').modal('toggle');
+				$( '#pager>.row').show();
+
+				$('#processingModal').modal('toggle');
 		
-			$('#search_panel:visible #report_panel:visible').collapse('hide');
-			$('#table_panel').collapse('show');
+				$('#search_panel:visible, #report_panel:visible').collapse('hide');
+
+				$('#table_panel').collapse('show').parent().show();
+			}
 		}
 	});
 }
@@ -149,26 +165,34 @@ function list_purchases( query, type )
 		success: function( result ) {
 			var role = checkRole();
 
-			createHeaders( role, headers );
+			var results = $.parseJSON( result );
 
-			$('#search_panel:visible, #filter_panel:visible, #report_panel:visible').collapse('hide');
-	
-			$('#table_panel').collapse('show');
+			if ( !results )
+			{
+				$('#processingModal').modal('toggle');
+				alert( "No records found!" );
+			}
 
-			$('#results_table').trigger('filterReset');
+			else
+			{
+				createHeaders( role, headers );
 
-			$('#results_table>tbody').empty();
+				$('#results_table').trigger('filterReset');
 
-			populateTable_purchases( $.parseJSON( result ) );
+				$('#results_table>tbody').empty();
 
-			setupTablesorter( 'purchases', role );
+				populateTable_purchases( $.parseJSON( result ) );
 
-			$( '#pager>.row').show();
+				setupTablesorter( 'purchases', role );
 
-			$('#processingModal').modal('toggle');
+				$( '#pager>.row').show();
+
+				$('#processingModal').modal('toggle');
 		
-			$('#search_panel:visible #report_panel:visible').collapse('hide');
-			$('#table_panel').collapse('show');
+				$('#search_panel:visible, #report_panel:visible').collapse('hide');
+
+				$('#table_panel').collapse('show').parent().show();
+			}
 		}
 	});
 }
@@ -185,26 +209,34 @@ function list_software( query )
 		success: function( result ) {
 			var role = checkRole();
 
-			createHeaders( role, headers );
+			var results = $.parseJSON( result );
 
-			$('#search_panel:visible, #filter_panel:visible, #report_panel:visible').collapse('hide');
-	
-			$('#table_panel').collapse('show');
+			if ( !results )
+			{
+				$('#processingModal').modal('toggle');
+				alert( "No records found!" );
+			}
 
-			$('#results_table').trigger('filterReset');
+			else
+			{
+				createHeaders( role, headers );
 
-			$('#results_table>tbody').empty();
+				$('#results_table').trigger('filterReset');
 
-			populateTable_software( $.parseJSON( result ) );
+				$('#results_table>tbody').empty();
 
-			setupTablesorter( 'software', role );
+				populateTable_software( $.parseJSON( result ) );
 
-			$( '#pager>.row').show();
+				setupTablesorter( 'software', role );
 
-			$('#processingModal').modal('toggle');
+				$( '#pager>.row').show();
+
+				$('#processingModal').modal('toggle');
 		
-			$('#search_panel:visible #report_panel:visible').collapse('hide');
-			$('#table_panel').collapse('show');
+				$('#search_panel:visible, #report_panel:visible').collapse('hide');
+
+				$('#table_panel').collapse('show').parent().show();
+			}
 		}
 	});
 }
@@ -221,8 +253,6 @@ function list_activity( query )
 		data: { user : query },
 		success: function( result ) {
 			$( '#results_table>thead>tr').html( "<th scope='col'>Username</th><th scope='col'>Date & Time</th><th scope='col'>Operation</th><th scope='col'>Record ID/Name</th>" );
-	
-			$('#table_panel').collapse('show');
 
 			$('#results_table').trigger('filterReset');
 
@@ -288,11 +318,9 @@ function list_activity( query )
 		
 			$( '#pager>.row').show();
 
+			$('#search_panel:visible, #report_panel:visible').collapse('hide');
+
 			$('#table_panel').collapse('show').parent().show();
-
-			$('#search_panel, #report_panel:visible').collapse('hide');
-
-
 		}
 	});
 }
@@ -341,12 +369,10 @@ function list_inventoryusers(){
 			$('#table_panel_head' ).empty();
 
 			$( '#pager>.row').hide();
-		
+
+			$('#search_panel:visible, #report_panel:visible').collapse('hide');
+
 			$('#table_panel').collapse('show').parent().show();
-
-			$('#search_panel, #report_panel:visible').collapse('hide');
-
-
 		}
 	});
 }
@@ -470,11 +496,11 @@ function setupTablesorter( record_type, role )
 
 	
 	$( '.view_equipment' ).on( 'click', function(){
-		list_equipment( $( this ).html() );
+		list_equipment( $( this ).html(), "tag_num" );
 	});
 
 	$( '.view_purchase' ).on( 'click', function(){
-		list_purchases( $( this ).html() );
+		list_purchases( $( this ).html(), "purchaseorder" );
 	});
 
 	$( '#results_table' ).find( 'colgroup' ).remove();
