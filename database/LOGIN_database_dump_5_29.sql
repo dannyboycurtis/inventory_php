@@ -1,0 +1,78 @@
+-- MySQL dump 10.13  Distrib 5.5.37, for debian-linux-gnu (x86_64)
+--
+-- Host: localhost    Database: login
+-- ------------------------------------------------------
+-- Server version	5.5.37-0ubuntu0.13.10.1-log
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `login_attempts`
+--
+
+DROP TABLE IF EXISTS `login_attempts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `login_attempts` (
+  `user_id` int(11) NOT NULL,
+  `time` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `login_attempts`
+--
+
+LOCK TABLES `login_attempts` WRITE;
+/*!40000 ALTER TABLE `login_attempts` DISABLE KEYS */;
+INSERT INTO `login_attempts` VALUES (2,'1398812311'),(2,'1398812324'),(2,'1398812326'),(2,'1398812327'),(2,'1398812328'),(2,'1398812329'),(1,'1400010634'),(1,'1400783483'),(1,'1400783486'),(1,'1400783488'),(1,'1400783490'),(1,'1400783491'),(1,'1400783492'),(1,'1400873212');
+/*!40000 ALTER TABLE `login_attempts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(40) NOT NULL,
+  `password` char(128) NOT NULL,
+  `salt` char(128) NOT NULL,
+  `role` int(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username_UNIQUE` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'admin','e1a8f7fa79cc23d4fba1c77c51283118c6e632cd41a61c6ccb1f02b79834d167d1d1771f9e93c99341b21345853f6dc8e8f2ece3f79ba1abac42a7781f7cff8a','19092cdc4707768c539c8664831da991119cfcfcabe9788dd4c877ac43fa078d6d7147ad68dac15d71a552537a3808796b6db5bcfb1d9449727f2903573d8743',4),(2,'level1','0947a185cb98e32a638872dbdd690ce0a4b1fdafffa0a6da9f3ed66ac934e9ade9828c26108c0dbf5e648d5f3516e7e4c141efd054f339ea97cba53e76cb2c57','95ebdd9d7fdf702bdbc320e200c43bffc103ff3ddffd23a1cdce463178cf032a0bb8f9062558ec7dc1287f26245bd7d8094cc8c9ed6ee85c3516828e116d445f',1),(3,'level2','dcf1d1b7692bb319892a67f3f1c3cee2a4935d3523aed459c88b22447b04581bab7963d46fd96b4484fcaae33925eae8dfc7d50262e3d0797607641b98863ffe','e05cd25608b13eeb1875c3f7b6ecfc8a463488d670ac74f6f868dd909df27a15096c1b56596394896ed73e45400b0960b83c50f893606dcffcddab5a88bf15db',2),(4,'level3','c602a22cc362bfbc8bfcc705b608a5bed750372794042617d9d94b649957bc1019bf24662728ab9356355ce2931c386b1e32de73093795838e59f7270b85200c','82c75878859d791299cf003680432413c118ed40e2d8faeddc6f0606899f22c9892245d8ce2a987d0cf91f87e4991eb121e1e980f5f941ed8cf330b47454f810',3);
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2014-05-29 15:36:40
