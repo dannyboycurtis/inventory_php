@@ -103,6 +103,19 @@ else if ( $_POST['type'] == 'serial' )
 	}
 }
 
+else if ( $_POST['type'] == 'make' )
+{
+	$query_stmt .= "WHERE e.make = ?
+					GROUP BY e.tag_num
+					ORDER BY e.tag_num DESC";
+
+	if ( $stmt = $mysqli->prepare( $query_stmt ) ) 
+	{
+		$stmt->bind_param( 's', $query );
+		$stmt->execute();
+	}
+}
+
 else if ( $_POST['type'] == 'makemodel' )
 {
 	$query = explode( "/", $query );
@@ -114,6 +127,19 @@ else if ( $_POST['type'] == 'makemodel' )
 	if ( $stmt = $mysqli->prepare( $query_stmt ) ) 
 	{
 		$stmt->bind_param( 'ss', $query[0], $query[1] );
+		$stmt->execute();
+	}
+}
+
+else if ( $_POST['type'] == 'department' )
+{
+	$query_stmt .= "WHERE e.department = ?
+					GROUP BY e.tag_num
+					ORDER BY e.tag_num DESC";
+
+	if ( $stmt = $mysqli->prepare( $query_stmt ) ) 
+	{
+		$stmt->bind_param( 's', $query );
 		$stmt->execute();
 	}
 }
@@ -156,6 +182,20 @@ else if ( $_POST['type'] == 'mac' )
 		$stmt->execute();
 	}
 }
+
+else if ( $_POST['type'] == 'purchasedby' )
+{
+	$query_stmt .= "WHERE p.purchased_by = ?
+					GROUP BY e.tag_num
+					ORDER BY e.tag_num DESC";
+
+	if ( $stmt = $mysqli->prepare( $query_stmt ) ) 
+	{
+		$stmt->bind_param( 's', $query );
+		$stmt->execute();
+	}
+}
+
 
 unset( $results );
 

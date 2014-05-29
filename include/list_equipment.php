@@ -196,6 +196,18 @@ else if ( $_POST['type'] == 'purchasedby' )
 	}
 }
 
+else if ( $_POST['type'] == 'purchasedate' )
+{
+	$query_stmt .= "WHERE p.purchase_date_by = ?
+					GROUP BY e.tag_num
+					ORDER BY e.tag_num DESC";
+
+	if ( $stmt = $mysqli->prepare( $query_stmt ) ) 
+	{
+		$stmt->bind_param( 's', $query );
+		$stmt->execute();
+	}
+}
 
 unset( $results );
 
