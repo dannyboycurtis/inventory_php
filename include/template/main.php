@@ -32,14 +32,15 @@
 	      							</span>
 								</div><!-- input-group -->
 								<span class="help-block">Select type of search and enter keywords</span>
-
+								<p> For purchase dates, please use the following format: YYYY-MM-DD</p>
 							</div><!-- col-xs-5 -->
 							<div class="col-xs-7">
-								<p class="form-control-static"> Note: for purchase dates, please use the following format: YYYY-MM-DD</p>
+
 							</div>
 
 					
 						</div><!-- row -->
+						<hr>
 						<h4>Additional Search Options:</h4>
 						<div class="row">
 							<div class="col-xs-4">
