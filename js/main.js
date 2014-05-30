@@ -471,7 +471,7 @@ function setupTablesorter( record_type, role )
 	});
 
 	$( '#results_table>tbody' ).on( 'mouseover', function(){
-		$( '#search_panel:visible, #report_panel:visible' ).collapse( 'hide' );
+		$( '#search_panel:visible' ).collapse( 'hide' );
 	});
 
 	$( '#table_panel_head>div>input' ).on( 'click', function(){

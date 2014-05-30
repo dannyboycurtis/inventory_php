@@ -118,7 +118,7 @@ else if ( $_POST['type'] == 'make' )
 
 else if ( $_POST['type'] == 'makemodel' )
 {
-	$query = explode( "/", $query );
+	$querywords = explode( "/", $query );
 
 	$query_stmt .= "WHERE e.make = ? AND e.model = ?
 					GROUP BY e.tag_num
@@ -126,7 +126,7 @@ else if ( $_POST['type'] == 'makemodel' )
 
 	if ( $stmt = $mysqli->prepare( $query_stmt ) ) 
 	{
-		$stmt->bind_param( 'ss', $query[0], $query[1] );
+		$stmt->bind_param( 'ss', $querywords[0], $querywords[1] );
 		$stmt->execute();
 	}
 }
@@ -198,7 +198,7 @@ else if ( $_POST['type'] == 'purchasedby' )
 
 else if ( $_POST['type'] == 'purchasedate' )
 {
-	$query_stmt .= "WHERE p.purchase_date_by = ?
+	$query_stmt .= "WHERE p.purchase_date = ?
 					GROUP BY e.tag_num
 					ORDER BY e.tag_num DESC";
 
@@ -208,6 +208,20 @@ else if ( $_POST['type'] == 'purchasedate' )
 		$stmt->execute();
 	}
 }
+
+else if ( $_POST['type'] == 'location' )
+{
+	$query_stmt .= "WHERE e.location = ?
+					GROUP BY e.tag_num
+					ORDER BY e.tag_num DESC";
+
+	if ( $stmt = $mysqli->prepare( $query_stmt ) ) 
+	{
+		$stmt->bind_param( 's', $query );
+		$stmt->execute();
+	}
+}
+
 
 unset( $results );
 

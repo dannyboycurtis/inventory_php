@@ -21,7 +21,6 @@
 	        	  							<li><a href="#">Hostname</a></li>
 	        	  							<li><a href="#">IP Address</a></li>
 	        	  							<li><a href="#">MAC Address</a></li>
-	        	  							<li><a href="#">Department</a></li>
 											<li><a href="#">Purchase Date</a></li>
 	        							</ul>
 									</div><!-- btn-group -->
@@ -160,21 +159,6 @@
 					</div>
 				</div>
 
-				<div class="panel panel-default" style="overflow:visible">
-					<div class="panel-heading"><h4 class="panel-title">Search Users</h4></div>
-					<div class="panel-body">
-						<div class="row">
-		  					<div class="col-xs-5 form-inline">
-	      						<input id="fnamesearchinput" type="text" class="form-control" placeholder="First Name">
-	      						<input id="lnamesearchinput" type="text" class="form-control" placeholder="Last Name">
-	        					<button id="uexecutesearch" class="btn btn-primary" type="button">
-									<i class="fa fa-search"></i>
-								</button>
-							</div><!-- col-xs-5 -->
-						</div><!-- row -->
-					</div>
-				</div>
-
 			</div><!-- panel-body -->
 		</div><!-- #search_panel -->
 	</div><!-- panel -->
@@ -242,49 +226,63 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 <script>
 $( '#report_panel, #table_panel' ).parent().hide();
 
-$("#searchmenu>li>a").on( 'click', function(){
-	$( '#searchtype').html( $( this ).text() );
-});
-
-$( '#executesearch' ).on( 'click', function(){
-	var choice = $( '#searchtype' ).text();
-
-	if ( choice == 'Property Tag' )
-		list_equipment( $( '#searchinput' ).val(), "tag_num" );
-	if ( choice == 'Serial Number' )
-		list_equipment( $( '#searchinput' ).val(), "serial" );
-	if ( choice == 'Hostname' )
-		list_equipment( $( '#searchinput' ).val(), "hostname" );
-	if ( choice == 'IP Address' )
-		list_equipment( $( '#searchinput' ).val(), "ip" );
-	if ( choice == 'MAC Address' )
-		list_equipment( $( '#searchinput' ).val(), "mac" );
-	if ( choice == 'Users' )
-		list_users( $( '#searchinput' ).val() );
-	if ( choice == 'Purchase Order' )
-		list_purchases( $( '#searchinput' ).val(), "purchaseorder");
-	if ( choice == 'Purchase Date' )
-		list_purchases( $( '#searchinput' ).val(), "purchasedate" );
-	if ( choice == 'Software' )
-		list_software( $( '#searchinput' ).val() );
-});
-
-$( '#makemodelsearch' ).on( 'click', function(){
-	if ( $( '#makequerytype' ).text() != "Choose Make" && $( '#modelquerytype' ).text() != "Choose Model" )
-	{
-		var makemodel = $( '#makequerytype' ).text() + "/" + $( '#modelquerytype' ).text();
-		list_equipment( makemodel, "makemodel" );
-	}
-});
-
-
 $( '#search_panel, #report_panel' ).on( 'show.bs.collapse', function(){
 	$( this ).parent().show();
 });
 
-$( '#search_panel, #report_panel' ).on( 'hidden.bs.collapse', function(){
+$( '#report_panel' ).on( 'hidden.bs.collapse', function(){
 	$( this ).parent().hide();
 });
+
+$( '#search_panel' ).on( 'hidden.bs.collapse', function(){
+	$( this ).parent().hide();
+	$( '#search_panel' ).find( 'input' ).val( "" );
+	$( '#eqsearchtype' ).text( "Property Tag" );
+	$( '#makesearchtype' ).text( "Make" );
+	$( '#modelsearchtype' ).text( "Model" );
+	$( '#departmentsearchtype' ).text( "Department" );
+	$( '#locationsearchtype' ).text( "Location" );
+	$( '#psearchtype' ).text( "Purchase Order" );
+});
+
+
+// equipment primary search handler
+$( '#eqexecutesearch' ).on( 'click', function(){
+	var choice = $( '#eqsearchtype' ).text();
+
+	if ( choice == 'Property Tag' )
+		list_equipment( $( '#eqsearchinput' ).val(), "tag_num" );
+	if ( choice == 'Serial Number' )
+		list_equipment( $( '#eqsearchinput' ).val(), "serial" );
+	if ( choice == 'Hostname' )
+		list_equipment( $( '#eqsearchinput' ).val(), "hostname" );
+	if ( choice == 'IP Address' )
+		list_equipment( $( '#eqsearchinput' ).val(), "ip" );
+	if ( choice == 'MAC Address' )
+		list_equipment( $( '#eqsearchinput' ).val(), "mac" );
+	if ( choice == 'Purchase Date' )
+		list_equipment( $( '#eqsearchinput' ).val(), "purchasedate" );
+
+});
+
+// equipment primary search dropdown
+$("#eqsearchmenu>li>a").on( 'click', function(){
+	$( '#eqsearchtype').html( $( this ).text() );
+});
+
+
+// make and model search handler
+$( '#makemodelsearch' ).on( 'click', function(){
+	if ( $( '#makesearchtype' ).text() != "Make" && $( '#modelsearchtype' ).text() != "Model" )
+	{
+		var makemodel = $( '#makesearchtype' ).text() + "/" + $( '#modelsearchtype' ).text();
+		list_equipment( makemodel, "makemodel" );
+	}
+
+	else if ( $( '#makesearchtype' ).text() != "Make" && $( '#modelsearchtype' ).text() == "Model" )
+		list_equipment( $( '#makesearchtype' ).text(), "make" );
+});
+
 
 // make and model dropdowns
 $.ajax({
@@ -320,6 +318,14 @@ $.ajax({
 	}
 });
 
+// department search handler
+$( '#departmentsearch' ).on( 'click', function(){
+	if ( $( '#departmentsearchtype' ).text() != "Department" )
+	{
+		var department = $( '#departmentsearchtype' ).text();
+		list_equipment( department, "department" );
+	}
+});
 
 // department dropdown
 $.ajax({
@@ -337,4 +343,47 @@ $.ajax({
 		});
 	}
 });
+
+// location search handler
+$( '#locationsearch' ).on( 'click', function(){
+	if ( $( '#locationsearchtype' ).text() != "Location" )
+	{
+		var location = $( '#locationsearchtype' ).text();
+		if ( location == "Off Campus" )
+			location = "off";
+
+		else if ( location == "On Campus" )
+			location = "on";
+
+		list_equipment( location, "location" );
+	}
+});
+
+// location dropdown
+$("#locationsearchmenu>li>a").on( 'click', function(){
+	$( '#locationsearchtype').html( $( this ).text() );
+});
+
+// software search handler
+$( '#swexecutesearch' ).on( 'click', function(){
+	if ( $( '#swsearchinput' ).val() != "" )
+		list_software( $( '#swsearchinput' ).val() );
+});
+
+
+// purchases primary search handler
+$( '#pexecutesearch' ).on( 'click', function(){
+	var choice = $( '#psearchtype' ).text();
+
+	if ( choice == 'Purchase Order' )
+		list_purchases( $( '#psearchinput' ).val(), "purchaseorder");
+	if ( choice == 'Purchase Date' )
+		list_purchases( $( '#psearchinput' ).val(), "purchasedate" );
+});
+
+// purchase primary search dropdown
+$("#psearchmenu>li>a").on( 'click', function(){
+	$( '#psearchtype').html( $( this ).text() );
+});
+
 </script>

@@ -165,23 +165,34 @@ function list_purchases( query, type )
 		success: function( result ) {
 			var role = checkRole();
 
-			createHeaders( role, headers );
+			var results = $.parseJSON( result );
 
-			$('#results_table').trigger('filterReset');
+			if ( !results )
+			{
+				$('#processingModal').modal('toggle');
+				alert( "No records found!" );
+			}
 
-			$('#results_table>tbody').empty();
+			else
+			{
+				createHeaders( role, headers );
 
-			populateTable_purchases( $.parseJSON( result ) );
+				$('#results_table').trigger('filterReset');
 
-			setupTablesorter( 'purchases', role );
+				$('#results_table>tbody').empty();
 
-			$( '#pager>.row').show();
+				populateTable_purchases( $.parseJSON( result ) );
 
-			$('#processingModal').modal('toggle');
+				setupTablesorter( 'purchases', role );
+
+				$( '#pager>.row').show();
+
+				$('#processingModal').modal('toggle');
 		
-			$('#search_panel:visible, #report_panel:visible').collapse('hide');
+				$('#search_panel:visible, #report_panel:visible').collapse('hide');
 
-			$('#table_panel').collapse('show').parent().show();
+				$('#table_panel').collapse('show').parent().show();
+			}
 		}
 	});
 }
@@ -198,23 +209,34 @@ function list_software( query )
 		success: function( result ) {
 			var role = checkRole();
 
-			createHeaders( role, headers );
+			var results = $.parseJSON( result );
 
-			$('#results_table').trigger('filterReset');
+			if ( !results )
+			{
+				$('#processingModal').modal('toggle');
+				alert( "No records found!" );
+			}
 
-			$('#results_table>tbody').empty();
+			else
+			{
+				createHeaders( role, headers );
 
-			populateTable_software( $.parseJSON( result ) );
+				$('#results_table').trigger('filterReset');
 
-			setupTablesorter( 'software', role );
+				$('#results_table>tbody').empty();
 
-			$( '#pager>.row').show();
+				populateTable_software( $.parseJSON( result ) );
 
-			$('#processingModal').modal('toggle');
+				setupTablesorter( 'software', role );
+
+				$( '#pager>.row').show();
+
+				$('#processingModal').modal('toggle');
 		
-			$('#search_panel:visible, #report_panel:visible').collapse('hide');
+				$('#search_panel:visible, #report_panel:visible').collapse('hide');
 
-			$('#table_panel').collapse('show').parent().show();
+				$('#table_panel').collapse('show').parent().show();
+			}
 		}
 	});
 }
