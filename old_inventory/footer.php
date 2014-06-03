@@ -1,1 +1,0 @@
-<div id="footer">  <p>  &copy; College of Arts and Letters : Tech Support Group 2008  </p></div><!-- [footer] -->
