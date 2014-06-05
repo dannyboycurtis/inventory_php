@@ -509,7 +509,7 @@ $( '#equipmentreportsubmit' ).on( 'click', function(){
 		
 		var date = new Date();
 
-		var title = ["Equipment Report:", date.toDateString(), "( " + records.length + " items )"];
+		var title = "Equipment Report:  " + date.toDateString() + "  ( " + records.length + " items )";
 
 		doc.text( 25, 10, title );
 
