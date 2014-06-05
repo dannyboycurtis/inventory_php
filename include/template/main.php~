@@ -181,11 +181,13 @@
 									<input id='eqreportpurchase' type="checkbox"> Purchase Information &nbsp;&nbsp;
 								</label>
 							</div>
-							<div class="checkbox">
-								<label>
-									<input id='eqreportnetwork' type="checkbox"> Network Information &nbsp;&nbsp;
-								</label>
-							</div>
+							<?php if ( $_SESSION['role'] > 1 ) : ?>
+								<div class="checkbox">
+									<label>
+										<input id='eqreportnetwork' type="checkbox"> Network Information &nbsp;&nbsp;
+									</label>
+								</div>
+							<?php endif; ?>
 							<div class="checkbox">
 								<label>
 									<input id='eqreportsoftware' type="checkbox"> Software &nbsp;&nbsp;
@@ -486,13 +488,13 @@ $( '#equipmentreportsubmit' ).on( 'click', function(){
 	else
 	{
 		if ( $( '#eqreportpurchase' ).is( ':checked' ) )
-			var reportpurchase = true;
+			var getpurchase = true;
 
 		if ( $( '#eqreportnetwork' ).is( ':checked' ) )
-			var reportnetwork = true;
+			var getnetwork = true;
 
 		if ( $( '#eqreportsoftware' ).is( ':checked' ) )
-			var reportsoftware = true;
+			var getsoftware = true;
 
 		var records = new Array();
 
@@ -500,6 +502,24 @@ $( '#equipmentreportsubmit' ).on( 'click', function(){
 			var tag = $( this ).parent( '.select' ).children( 'span' ).html();
 			records.push( tag );
 		});
+
+		var results = new Array();
+
+		for ( var i = 0; i < records.length; i++ )
+		{
+			$.ajax({
+				type: "POST",
+				url: "include/get_equipment.php",
+				data: { query : records[i] },
+				async: false,
+				success: function( result ){
+					results.push( result );
+				}
+			});
+
+		}
+
+		console.log( results[0][1] );
 
 		var doc = new jsPDF();
 
