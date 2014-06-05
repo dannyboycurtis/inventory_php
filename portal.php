@@ -32,11 +32,12 @@ $_SESSION["query"] = "_portal";
   <!-- Javascript -->
   <script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
   <script type="text/javascript" src="js/bootstrap.js"></script>
-  <script type="text/javascript" src="js/typeahead-bundle.js"></script> 
   <script type="text/javascript" src="js/jquery.tablesorter.js"></script>
   <script type="text/javascript" src="js/jquery.tablesorter.pager.js"></script>
   <script type="text/javascript" src="js/jquery.tablesorter.widgets.js"></script>
   <script type="text/javascript" src="js/jquery.maskedinput.js"></script>
+  <script type="text/javascript" src="js/jspdf.js"></script>
+  <script type="text/javascript" src="js/filesaver.js"></script>
   <script type="text/JavaScript" src="js/sha512.js"></script> 
   <script type="text/JavaScript" src="js/main.js"></script>
 

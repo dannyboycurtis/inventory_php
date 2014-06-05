@@ -98,6 +98,9 @@ function list_equipment( query, type )
 
 				$( '#pager>.row').show();
 
+				$( '.reportform' ).hide();
+				$( '#equipmentreportform' ).show();
+
 				$('#processingModal').modal('toggle');	
 		
 				$('#search_panel:visible, #report_panel:visible').collapse('hide');
@@ -143,6 +146,9 @@ function list_users( query )
 
 				$( '#pager>.row').show();
 
+				$( '.reportform' ).hide();
+				$( '#usersreportform' ).show();
+
 				$('#processingModal').modal('toggle');
 		
 				$('#search_panel:visible, #report_panel:visible').collapse('hide');
@@ -187,6 +193,9 @@ function list_purchases( query, type )
 
 				$( '#pager>.row').show();
 
+				$( '.reportform' ).hide();
+				$( '#purchasesreportform' ).show();
+
 				$('#processingModal').modal('toggle');
 		
 				$('#search_panel:visible, #report_panel:visible').collapse('hide');
@@ -201,7 +210,7 @@ function list_software( query )
 {
 	headers = [ "Software Name", "License Number", "License Type", "License Quantity", "Purchase Date" ];
 
-	$('#processingModal').modal('toggle');
+	$( '#processingModal' ).modal( 'toggle' );
 	$.ajax({
 		type: "POST",
 		url: "include/list_software.php",
@@ -213,7 +222,7 @@ function list_software( query )
 
 			if ( !results )
 			{
-				$('#processingModal').modal('toggle');
+				$( '#processingModal' ).modal( 'toggle' );
 				alert( "No records found!" );
 			}
 
@@ -221,21 +230,24 @@ function list_software( query )
 			{
 				createHeaders( role, headers );
 
-				$('#results_table').trigger('filterReset');
+				$( '#results_table' ).trigger( 'filterReset' );
 
-				$('#results_table>tbody').empty();
+				$( '#results_table>tbody' ).empty();
 
 				populateTable_software( $.parseJSON( result ) );
 
 				setupTablesorter( 'software', role );
 
-				$( '#pager>.row').show();
+				$( '#pager>.row' ).show();
 
-				$('#processingModal').modal('toggle');
+				$( '.reportform' ).hide();
+				$( '#softwarereportform' ).show();
+
+				$( '#processingModal' ).modal( 'toggle' );
 		
-				$('#search_panel:visible, #report_panel:visible').collapse('hide');
+				$( '#search_panel:visible, #report_panel:visible' ).collapse( 'hide' );
 
-				$('#table_panel').collapse('show').parent().show();
+				$( '#table_panel' ).collapse( 'show' ).parent().show();
 			}
 		}
 	});
@@ -245,7 +257,7 @@ function list_software( query )
 
 function list_activity( query )
 {
-	$('#processingModal').modal('toggle');
+	$( '#processingModal' ).modal( 'toggle' );
 
 	$.ajax({
 		type: "POST",
@@ -380,7 +392,7 @@ function list_inventoryusers(){
 
 function setupTablesorter( record_type, role )
 {
-	$('#results_table').trigger("destroy");
+	$( '#results_table' ).trigger("destroy");
 	
 	$( '.parent_row>td' ).not('.select,.trash,.edit').on( 'click', function(){
 		$( this ).closest( 'tr' ).nextUntil( 'tr.tablesorter-hasChildRow' ).find( 'td' ).toggle();
@@ -388,7 +400,12 @@ function setupTablesorter( record_type, role )
 	
 	$( '.select>i').on( 'click', function(){
 		$(this).toggleClass( 'fa-check-square-o fa-square-o');
+
+		var numberselected = $( '#results_table' ).find( '.select > i.fa-check-square-o' ).size();
+		$( '.numberselected' ).html( numberselected );
 	});
+
+	$( '.numberselected' ).html( "0" );
 
 	$( '#select_all').on( 'click', function(){
 		$(this).toggleClass( 'checked unchecked');
@@ -410,6 +427,9 @@ function setupTablesorter( record_type, role )
 
 			$('#select_all').html( '<i class="fa fa-square-o"></i>');
 		}
+
+		var numberselected = $( '#results_table' ).find( '.select > i.fa-check-square-o' ).size();
+		$( '.numberselected' ).html( numberselected );
 	});
 
 	var options = {
@@ -443,12 +463,12 @@ function setupTablesorter( record_type, role )
 	};
 
 
-	$('#table_panel_head').html( '<div class="col-xs-3"><input class="form-control search" type="text" placeholder="Filter Results" data-column="all"></div><div class="col-xs-9"><button id="createReportBtn" class="pull-right btn btn-info collapse in" data-toggle="collapse" href="#report_panel"><i class="fa fa-file"></i>&nbsp;&nbsp;Create Report</button></div>' );
+	$( '#table_panel_head' ).html( '<div class="col-xs-3"><input class="form-control search" type="text" placeholder="Filter Results" data-column="all"></div><div class="col-xs-9"><button id="createReportBtn" class="pull-right btn btn-info collapse in" data-toggle="collapse" href="#report_panel"><i class="fa fa-file"></i>&nbsp;&nbsp;Create Report</button></div>' );
 
-	$('#results_table').tablesorter( options )
-		.tablesorterPager(pagerOptions)
+	$( '#results_table' ).tablesorter( options )
+		.tablesorterPager( pagerOptions )
 		.bind( 'sortStart', function(){
-			$(this).trigger('pageSet', 0 );
+			$( this ).trigger( 'pageSet', 0 );
 		})
 		.bind( 'pagerComplete', function(){
 			if ( $( '.select:visible' ).find( 'i' ).hasClass( 'fa-square-o' ) )
@@ -462,6 +482,9 @@ function setupTablesorter( record_type, role )
 				$( '#select_all>i' ).addClass( 'fa-check-square-o' ).removeClass( 'fa-square-o' );
 				$( '#select_all' ).addClass( 'checked' ).removeClass( 'unchecked' );
 			}
+
+			var numberselected = $( '#results_table' ).find( '.select > i.fa-check-square-o' ).size();
+			$( '.numberselected' ).html( numberselected );
 		});
 
 	$('.tablesorter-childRow td').hide();
@@ -1125,7 +1148,7 @@ function formhash( form, password )
     // Finally submit the form. 
     form.submit();
 }
- 
+
 function regformhash( form, uid, password, conf, role )
 {
     // Check each field has a value
@@ -1190,57 +1213,3 @@ function regformhash( form, uid, password, conf, role )
     return true;
 }
 
-function pwdformhash( form, password, conf )
-{
-    // Check each field has a value
-    if ( password.value == '' ||  conf.value == '' )
-	{ 
-        alert( 'You must provide all the requested details.' );
-        return false;
-    }
- 
-    // Check that the password is sufficiently long (min 6 chars)
-    // The check is duplicated below, but this is included to give more
-    // specific guidance to the user
-    if ( password.value.length < 6 )
-	{
-        alert( 'Passwords must be at least 6 characters long.  Please try again' );
-        form.password.focus();
-        return false;
-    }
- 
-    // At least one number, one lowercase and one uppercase letter 
-    // At least six characters 
- 
-    var re = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/; 
-    if ( !re.test( password.value ) )
-	{
-        alert( 'Passwords must contain at least one number, one lowercase and one uppercase letter.' );
-        return false;
-    }
- 
-    // Check password and confirmation are the same
-    if ( password.value != conf.value )
-	{
-        alert( 'Passwords do not match!' );
-        form.password.focus();
-        return false;
-    }
- 
-    // Create a new element input, this will be our hashed password field. 
-    var p = document.createElement( "input" );
- 
-    // Add the new element to our form. 
-    form.appendChild( p );
-    p.name = "p";
-    p.type = "hidden";
-    p.value = hex_sha512( password.value );
- 
-    // Make sure the plaintext password doesn't get sent. 
-    password.value = "";
-    conf.value = "";
- 
-    // Finally submit the form. 
-    form.submit();
-    return true;
-}

@@ -165,10 +165,99 @@
 	</div><!-- panel -->
 
 	<!-- report_panel -->
-	<div class="panel panel-default">
+	<div class="panel panel-default" style="overflow:visible">
 		<div id="report_panel" class="panel-collapse collapse">
 			<div class="panel-body">
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+
+				<div id="equipmentreportform" class="reportform">
+					<form class="form-inline" role="form">
+						<div class="form-group">
+    						<label><h4>Number of records selected: &nbsp;<span class="numberselected"></span></h4></label>
+						</div>
+  						<div class="form-group" style='margin-left:60px'>
+    						<label><h4>Include: &nbsp;&nbsp;</h4></label>
+							<div class="checkbox">
+								<label>
+									<input id='eqreportpurchase' type="checkbox"> Purchase Information &nbsp;&nbsp;
+								</label>
+							</div>
+							<div class="checkbox">
+								<label>
+									<input id='eqreportnetwork' type="checkbox"> Network Information &nbsp;&nbsp;
+								</label>
+							</div>
+							<div class="checkbox">
+								<label>
+									<input id='eqreportsoftware' type="checkbox"> Software &nbsp;&nbsp;
+								</label>
+							</div>
+							<button id="equipmentreportsubmit" type="submit" class="btn btn-primary">Generate Report</button>
+						</div>
+					</form>
+				</div>
+
+				<div id="usersreportform" class="reportform">
+					<form class="form-inline" role="form">
+						<div class="form-group">
+    						<label><h4>Number of records selected: &nbsp;<span class="numberselected"></span></h4></label>
+						</div>
+  						<div class="form-group" style='margin-left:60px'>
+    						<label><h4>Include: &nbsp;&nbsp;</h4></label>
+							<div class="checkbox">
+								<label>
+									<input id='ureportequipment' type="checkbox"> Equipment Used &nbsp;&nbsp;
+								</label>
+							</div>
+							<button id="usersreportsubmit" type="submit" class="btn btn-primary">Generate Report</button>
+						</div>
+					</form>
+				</div>
+
+				<div id="softwarereportform" class="reportform">
+					<form class="form-inline" role="form">
+						<div class="form-group">
+    						<label><h4>Number of records selected: &nbsp;<span class="numberselected"></span></h4></label>
+						</div>
+
+  						<div class="form-group" style='margin-left:60px'>
+    						<label><h4>Include: &nbsp;&nbsp;</h4></label>
+							<div class="checkbox">
+								<label>
+									<input id='swreportlicense' type="checkbox"> License Number &nbsp;&nbsp;
+								</label>
+							</div>
+							<div class="checkbox">
+								<label>
+									<input id='swreportequipment' type="checkbox"> Equipment Installed On &nbsp;&nbsp;
+								</label>
+							</div>
+							<button id="softwarereportsubmit" type="submit" class="btn btn-primary">Generate Report</button>
+						</div>
+					</form>
+				</div>
+
+				<div id="purchasesreportform" class="reportform">
+					<form class="form-inline" role="form">
+						<div class="form-group">
+    						<label><h4>Number of records selected: &nbsp;<span class="numberselected"></span></h4></label>
+						</div>
+  						<div class="form-group" style='margin-left:60px'>
+    						<label><h4>Include: &nbsp;&nbsp;</h4></label>
+							<div class="checkbox">
+								<label>
+									<input id='preportequipment' type="checkbox"> Equipment &nbsp;&nbsp;
+								</label>
+							</div>
+							<div class="checkbox">
+								<label>
+									<input id='preportsoftware' type="checkbox"> Software &nbsp;&nbsp;
+								</label>
+							</div>
+							<button id="purchasesreportsubmit" type="submit" class="btn btn-primary">Generate Report</button>
+						</div>
+					</form>
+				</div>
+
 			</div>
 		</div>
 	</div>
@@ -226,6 +315,8 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 
 <script>
 $( '#report_panel, #table_panel' ).parent().hide();
+
+$( '.reportform' ).hide();
 
 $( '#search_panel, #report_panel' ).on( 'show.bs.collapse', function(){
 	$( this ).parent().show();
@@ -383,8 +474,107 @@ $( '#pexecutesearch' ).on( 'click', function(){
 });
 
 // purchase primary search dropdown
-$("#psearchmenu>li>a").on( 'click', function(){
-	$( '#psearchtype').html( $( this ).text() );
+$( "#psearchmenu>li>a" ).on( 'click', function(){
+	$( '#psearchtype' ).html( $( this ).text() );
 });
 
+// equipment report handler
+$( '#equipmentreportsubmit' ).on( 'click', function(){
+	if ( $( '#equipmentreportform' ).find( '.numberselected' ).html() == "0" )
+		alert( "No records selected!" );
+
+	else
+	{
+		if ( $( '#eqreportpurchase' ).is( ':checked' ) )
+			var reportpurchase = true;
+
+		if ( $( '#eqreportnetwork' ).is( ':checked' ) )
+			var reportnetwork = true;
+
+		if ( $( '#eqreportsoftware' ).is( ':checked' ) )
+			var reportsoftware = true;
+
+		var records = new Array();
+
+		$( '#results_table' ).find( '.select > i.fa-check-square-o' ).each( function(){
+			var tag = $( this ).parent( '.select' ).children( 'span' ).html();
+			records.push( tag );
+		});
+
+		var doc = new jsPDF();
+
+		var k = 25;
+
+		doc.setFontSize(14);
+		
+		var date = new Date();
+
+		var title = "Equipment Report:  " + date.toDateString() + "  ( " + records.length + " items )";
+
+		doc.text( 25, 10, title );
+
+		doc.setFontSize(11);
+
+		for( var i = 0; i < records.length; i++ )
+		{
+			
+			k = k + 10;
+			if ( k >= 240 )
+			{
+				doc.addPage();
+				k = 25;
+			}
+
+			doc.text( 25, k, records[i] );
+		}
+
+		doc.output( 'save', "test.pdf" );
+
+	}
+});
+
+// users report handler
+$( '#usersreportsubmit' ).on( 'click', function(){
+	if ( $( '#usersreportform' ).find( '.numberselected' ).html() == "0" )
+		alert( "No records selected!" );
+
+	else
+	{
+
+
+
+
+	}
+
+});
+
+// purchases report handler
+$( '#purchasesreportsubmit' ).on( 'click', function(){
+	if ( $( '#purchasesreportform' ).find( '.numberselected' ).html() == "0" )
+		alert( "No records selected!" );
+
+	else
+	{
+
+
+
+
+	}
+
+});
+
+// software report handler
+$( '#softwarereportsubmit' ).on( 'click', function(){
+	if ( $( '#softwarereportform' ).find( '.numberselected' ).html() == "0" )
+		alert( "No records selected!" );
+
+	else
+	{
+
+
+
+
+	}
+
+});
 </script>
