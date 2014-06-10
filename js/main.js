@@ -114,7 +114,7 @@ function list_equipment( query, type )
 
 function list_users( query )
 {
-	headers = [ "First Name", "Last Name", "Email Address", "Campus Extension" ];
+	headers = [ "First Name", "Last Name", "Email Address", "Phone Number" ];
 
 	$('#processingModal').modal('toggle');
 

@@ -9,17 +9,17 @@ function checkRole()
 
 function returnToQuery( query, type )
 {
-	alert( query + " " + type );
+
 	if ( type == "tag_num" || type == "serial" || type == "makemodel" || type == "hostname" || type == "ip" || type == "mac" || type == "location" || type == "purchasedate" || type == "purchasedby" || query == "_computers" || query == "_labs" || query == "_printers" )
 		list_equipment( query, type );
 
-	if ( type == "software" )
+	else if ( type == "software" )
 		list_software( query );
 
-	if ( type == "purchases" )
+	else if ( type == "purchases" )
 		list_purchases( query );
 
-	if ( type == "users" )
+	else if ( type == "users" )
 		list_users( query );
 
 	else
