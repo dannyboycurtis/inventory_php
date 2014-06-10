@@ -300,7 +300,7 @@ while ( $stmt->fetch() )
 						"users" => $users, );
 }
 
-$_SESSION["querytype"] = $_POST["type"];
+$_SESSION["querytype"] = "equipment";
 $_SESSION["query"] = $_POST["query"];
 
 echo json_encode( $results );
