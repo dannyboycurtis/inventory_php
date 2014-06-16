@@ -176,11 +176,6 @@
 						</div>
   						<div class="form-group" style='margin-left:60px'>
     						<label><h4>Include: &nbsp;&nbsp;</h4></label>
-							<div class="checkbox">
-								<label>
-									<input id='eqreportpurchase' type="checkbox"> Purchase Information &nbsp;&nbsp;
-								</label>
-							</div>
 							<?php if ( $_SESSION['role'] > 1 ) : ?>
 								<div class="checkbox">
 									<label>
@@ -487,9 +482,6 @@ $( '#equipmentreportsubmit' ).on( 'click', function(){
 
 	else
 	{
-		if ( $( '#eqreportpurchase' ).is( ':checked' ) )
-			var getpurchase = true;
-
 		if ( $( '#eqreportnetwork' ).is( ':checked' ) )
 			var getnetwork = true;
 
@@ -513,13 +505,14 @@ $( '#equipmentreportsubmit' ).on( 'click', function(){
 				data: { query : records[i] },
 				async: false,
 				success: function( result ){
-					results.push( result );
+					
+					results.push( $.parseJSON( result ) );
 				}
 			});
 
 		}
 
-		console.log( results[0].tag );
+		console.log( results );
 
 		var doc = new jsPDF();
 
@@ -533,25 +526,87 @@ $( '#equipmentreportsubmit' ).on( 'click', function(){
 
 		doc.text( 25, 10, title );
 
-		doc.setFontSize(11);
 
-		for( var i = 0; i < records.length; i++ )
+
+		for( var i = 0; i < results.length; i++ )
 		{
 			
-			k = k + 10;
+
+			doc.setFontSize(12);
+			doc.setFontStyle("bold");
+			doc.text( 25, k, "Property Tag Number " + results[i][0].tag + "  [" + results[i][0].eqtype + "]" );
+
+			doc.setFontStyle("normal");
+			doc.setFontSize(11);
+
+			doc.text( 30, k + 5, "Serial:  " + results[i][0].serial );
+			doc.text( 30, k + 10, "Make & Model:  " + results[i][0].make + " " + results[i][0].model );
+			doc.text( 30, k + 15, "Department:  " + results[i][0].department );
+
+
+			if ( results[i][0].location == 'off' )
+				doc.text( 30, k + 20, "Location:  Off Campus" ); 
+
+			else
+				doc.text( 30, k + 20, "Location:  " + results[i][0].building + " " + results[i][0].room_num ); 
+
+			doc.text( 100, k + 5, "Purchase Date:  " + results[i][0].purchase_date );
+			doc.text( 100, k + 10, "Purchase Order:  " + results[i][0].purchase_order );
+			doc.text( 100, k + 15, "Purchased By:  " + results[i][0].purchased_by );
+
+			if ( results[i][0].eqtype == "computer" )
+			{
+				doc.text( 30, k + 25, "OS:  " + results[i][0].os );
+
+				if ( results[i][0].hostname )
+					doc.text( 100, k + 25, "Hostname:  " + results[i][0].hostname );
+			}
+
+			else if ( results[i][0].eqtype == "printer" )
+				doc.text( 30, k + 25, "Hostname:  " + results[i][0].hostname );
+
+			else
+				doc.text( 30, k + 25, "Description:  " + results[i][0].description );
+
+			if ( getnetwork )
+			{
+				if ( !( results[i][0].mac ) && !( results[i][0].wmac ) && !( results[i][0].ip ) )
+					doc.text( 30, k + 30, "No Network Information Available!" );
+
+				else
+				{
+					var j = 30;
+					if ( results[i][0].mac )
+					{
+						doc.text( j, k + 30, "MAC:  " + results[i][0].mac );
+						j = j + 60;
+					}
+
+					if ( results[i][0].wmac )
+					{
+						doc.text( j, k + 30, "WMAC:  " + results[i][0].wmac );
+						j = j + 60;
+					}
+
+					if ( results[i][0].ip )
+						doc.text( j, k + 30, "IP:  " + results[i][0].ip );
+				}
+			}
+
+
+			k = k + 50;
 			if ( k >= 240 )
 			{
 				doc.addPage();
 				k = 25;
 			}
-
-			doc.text( 25, k, records[i] );
 		}
 
 		doc.output( 'save', "test.pdf" );
 
 	}
 });
+
 
 // users report handler
 $( '#usersreportsubmit' ).on( 'click', function(){

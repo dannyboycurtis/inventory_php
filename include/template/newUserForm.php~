@@ -48,10 +48,10 @@
 		</div>
 
 		<div id='selectusers_input' class="form-group">
-			<label class="col-xs-2 control-label text-right">Users</label>
+			<label class="col-xs-2 control-label text-right">Users*</label>
 			<div class="col-xs-3">
 				<div class="btn-group">
-					<button id="selectusersbutton" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 						Choose Users <span class="caret"></span>
 					</button>
 					<ul id="usermenu" class="dropdown-menu" role="menu" style="height:auto;max-height: 200px;overflow-x:hidden"></ul>

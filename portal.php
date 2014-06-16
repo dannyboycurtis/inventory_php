@@ -12,6 +12,7 @@ if ( !( $logged ) )
 	header( 'Location: login.php' );
 
 $_SESSION["query"] = "_portal";
+$_SESSION["querytype"] = "_portal";
 
 ?>
 <!DOCTYPE html>

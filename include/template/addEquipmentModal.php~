@@ -678,7 +678,6 @@ else
 			{
 				$( '#newuser_error' ).hide();
 				$( '#newuser_input' ).removeClass( 'has-error' );
-				$( '#selectusersbutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
 
 				// set variables
 				var fname = $( '#newuserfname:visible' ).val();

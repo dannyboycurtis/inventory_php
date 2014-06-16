@@ -502,10 +502,6 @@ function setupTablesorter( record_type, role )
 		$( '#search_panel:visible, #report_panel:visible' ).collapse( 'hide' );
 	});
 
-	$( '#createReportBtn' ).on( 'click', function(){
-		$( '#search_panel:visible' ).collapse( 'hide' );
-	});
-
 	$( '#searchBtn' ).on( 'click', function(){
 		$( '#report_panel:visible' ).collapse( 'hide' );
 	});
@@ -823,6 +819,10 @@ function populateTable_equipment( results )
 		});
 
 		$( '#addEquipmentModal' ).modal( 'show' ).find( '.modal-title' ).text( "Edit Equipment Record" );
+	});
+
+	$( '#createReportBtn' ).on( 'click', function(){
+		$( '#search_panel:visible' ).collapse( 'hide' );
 	});
 
 

@@ -114,7 +114,7 @@ function list_equipment( query, type )
 
 function list_users( query )
 {
-	headers = [ "First Name", "Last Name", "Email Address", "Campus Extension" ];
+	headers = [ "First Name", "Last Name", "Email Address", "Phone Number" ];
 
 	$('#processingModal').modal('toggle');
 
@@ -464,7 +464,7 @@ function setupTablesorter( record_type, role )
 	};
 
 
-	$( '#table_panel_head' ).html( '<div class="col-xs-3"><input class="form-control search" type="text" placeholder="Filter Results" data-column="all"></div><div class="col-xs-9"><button id="createReportBtn" class="pull-right btn btn-info collapse in" data-toggle="collapse" href="#report_panel"><i class="fa fa-file"></i>&nbsp;&nbsp;Create Report</button></div>' );
+	$( '#table_panel_head' ).html( '<div class="col-xs-3"><input class="form-control search" type="text" placeholder="Filter Results" data-column="all"></div><div class="col-xs-9"><button id="createReportBtn" class="pull-right btn btn-info collapse in" data-toggle="collapse" href="#report_panel"><i class="fa fa-file"></i>&nbsp;&nbsp;Create Report</button><label class="pull-right"><h4>Number of records selected: &nbsp;<span class="numberselected">0</span>&nbsp;&nbsp;&nbsp;</h4></label></div>' );
 
 	$( '#results_table' ).tablesorter( options )
 		.tablesorterPager( pagerOptions )
@@ -500,10 +500,6 @@ function setupTablesorter( record_type, role )
 
 	$( '#table_panel_head>div>input' ).on( 'click', function(){
 		$( '#search_panel:visible, #report_panel:visible' ).collapse( 'hide' );
-	});
-
-	$( '#createReportBtn' ).on( 'click', function(){
-		$( '#search_panel:visible' ).collapse( 'hide' );
 	});
 
 	$( '#searchBtn' ).on( 'click', function(){
@@ -823,6 +819,10 @@ function populateTable_equipment( results )
 		});
 
 		$( '#addEquipmentModal' ).modal( 'show' ).find( '.modal-title' ).text( "Edit Equipment Record" );
+	});
+
+	$( '#createReportBtn' ).on( 'click', function(){
+		$( '#search_panel:visible' ).collapse( 'hide' );
 	});
 
 
