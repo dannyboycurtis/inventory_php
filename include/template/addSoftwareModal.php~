@@ -184,7 +184,7 @@ $( '#submitsoftware' ).on( 'click', function() {
 		}
 
 		else
-			var purchase_id = $( '#swPurchasemenu' ).find( '.selectedpurchaser' ).children( '.swpid' ).text();
+			var purchase_id = $( '#swPurchasemenu' ).find( '.selectedpurchaser' ).children( '.pid' ).text();
 
 		// purchase date
 		if ( $( '#swPurchasedate' ).val() == "" )

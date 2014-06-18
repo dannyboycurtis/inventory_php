@@ -171,11 +171,13 @@
 
 				<div id="equipmentreportform" class="reportform">
 					<form class="form-inline" role="form">
-						<div class="form-group">
-    						<label><h4>Number of records selected: &nbsp;<span class="numberselected"></span></h4></label>
-						</div>
-  						<div class="form-group" style='margin-left:60px'>
+  						<div class="form-group">
     						<label><h4>Include: &nbsp;&nbsp;</h4></label>
+							<div class="checkbox">
+								<label>
+									<input id='eqreportpurchase' type="checkbox"> Purchase Information &nbsp;&nbsp;
+								</label>
+							</div>
 							<?php if ( $_SESSION['role'] > 1 ) : ?>
 								<div class="checkbox">
 									<label>
@@ -183,6 +185,11 @@
 									</label>
 								</div>
 							<?php endif; ?>
+							<div class="checkbox">
+								<label>
+									<input id='eqreportuser' type="checkbox"> Users &nbsp;&nbsp;
+								</label>
+							</div>
 							<div class="checkbox">
 								<label>
 									<input id='eqreportsoftware' type="checkbox"> Software &nbsp;&nbsp;
@@ -477,7 +484,7 @@ $( "#psearchmenu>li>a" ).on( 'click', function(){
 
 // equipment report handler
 $( '#equipmentreportsubmit' ).on( 'click', function(){
-	if ( $( '#equipmentreportform' ).find( '.numberselected' ).html() == "0" )
+	if ( $( '#numberselected' ).html() == "0" )
 		alert( "No records selected!" );
 
 	else
@@ -524,77 +531,134 @@ $( '#equipmentreportsubmit' ).on( 'click', function(){
 
 		var title = "Equipment Report:  " + date.toDateString() + "  ( " + records.length + " items )";
 
-		doc.text( 25, 10, title );
+		doc.text( 20, 10, title );
 
 
 
 		for( var i = 0; i < results.length; i++ )
 		{
-			
+			if ( results[i][0].location == 'off' )
+				var location = "Off Campus"; 
 
+			else
+				var location = results[i][0].building + " " + results[i][0].room_num; 
+			
 			doc.setFontSize(12);
 			doc.setFontStyle("bold");
-			doc.text( 25, k, "Property Tag Number " + results[i][0].tag + "  [" + results[i][0].eqtype + "]" );
+			doc.text( 20, k, "Tag # " + results[i][0].tag + "  [" + results[i][0].eqtype + "]" );
 
 			doc.setFontStyle("normal");
 			doc.setFontSize(11);
 
-			doc.text( 30, k + 5, "Serial:  " + results[i][0].serial );
-			doc.text( 30, k + 10, "Make & Model:  " + results[i][0].make + " " + results[i][0].model );
-			doc.text( 30, k + 15, "Department:  " + results[i][0].department );
+			var j = 5;
+			doc.text( 25, k + j, "Serial:  " + results[i][0].serial );
+			doc.text( 100, k + j, "Department:  " + results[i][0].department );
+
+			j = j + 5;
+			doc.text( 25, k + j, "Location:  " + location );
+			doc.text( 100, k + j, "Make & Model:  " + results[i][0].make + " " + results[i][0].model );
 
 
-			if ( results[i][0].location == 'off' )
-				doc.text( 30, k + 20, "Location:  Off Campus" ); 
 
-			else
-				doc.text( 30, k + 20, "Location:  " + results[i][0].building + " " + results[i][0].room_num ); 
 
-			doc.text( 100, k + 5, "Purchase Date:  " + results[i][0].purchase_date );
-			doc.text( 100, k + 10, "Purchase Order:  " + results[i][0].purchase_order );
-			doc.text( 100, k + 15, "Purchased By:  " + results[i][0].purchased_by );
+			j = j + 5;
 
 			if ( results[i][0].eqtype == "computer" )
 			{
-				doc.text( 30, k + 25, "OS:  " + results[i][0].os );
+				doc.text( 25, k + j, "OS:  " + results[i][0].os );
 
 				if ( results[i][0].hostname )
-					doc.text( 100, k + 25, "Hostname:  " + results[i][0].hostname );
+					doc.text( 100, k + j, "Hostname:  " + results[i][0].hostname );
 			}
 
 			else if ( results[i][0].eqtype == "printer" )
-				doc.text( 30, k + 25, "Hostname:  " + results[i][0].hostname );
+				doc.text( 25, k + j, "Hostname:  " + results[i][0].hostname );
 
 			else
-				doc.text( 30, k + 25, "Description:  " + results[i][0].description );
+				doc.text( 25, k + j, "Description:  " + results[i][0].description );
 
-			if ( getnetwork )
+			if ( $( '#eqreportpurchase' ).is( ':checked' ) )
 			{
+				j = j + 5;
+				doc.text( 25, k + j, "Purchase Date:  " + results[i][0].purchase_date );
+				doc.text( 100, k + j, "Purchased By:  " + results[i][0].purchased_by );
+
+				if ( results[i][0].purchase_order )
+				{
+					j = j + 5;
+					doc.text( 25, k + j, "Purchase Order:  " + results[i][0].purchase_order );
+				}
+			}
+
+			if ( $( '#eqreportnetwork' ).is( ':checked' ) )
+			{
+				j = j + 5;
+
 				if ( !( results[i][0].mac ) && !( results[i][0].wmac ) && !( results[i][0].ip ) )
-					doc.text( 30, k + 30, "No Network Information Available!" );
+					doc.text( 25, k + j, "No Network Information Available!" );
 
 				else
 				{
-					var j = 30;
+					var l = 25;
 					if ( results[i][0].mac )
 					{
-						doc.text( j, k + 30, "MAC:  " + results[i][0].mac );
-						j = j + 60;
+						doc.text( l, k + j, "MAC:  " + results[i][0].mac );
+
+						if ( !results[i][0].ip )
+							l = l + 75;
+
+						else
+							l = l + 60;
 					}
 
 					if ( results[i][0].wmac )
 					{
-						doc.text( j, k + 30, "WMAC:  " + results[i][0].wmac );
-						j = j + 60;
+						doc.text( l, k + j, "WMAC:  " + results[i][0].wmac );
+						l = l + 60;
 					}
 
 					if ( results[i][0].ip )
-						doc.text( j, k + 30, "IP:  " + results[i][0].ip );
+						doc.text( l, k + j, "IP:  " + results[i][0].ip );
 				}
 			}
 
+			if ( $( '#eqreportuser' ).is( ':checked' ) && results[i][0].users )
+			{
+				var q = j;
 
-			k = k + 50;
+				q = q + 5;
+				doc.text( 25, k + q, "Users:" );
+
+				for( var f = 0; f < results[i][0].users.length; f++ )
+				{
+					q = q + 5;
+					doc.text( 30, k + q, results[i][0].users[f].firstname + " " + results[i][0].users[f].lastname );
+				}
+				var userlength = q - j;
+			}
+
+			if ( $( '#eqreportsoftware' ).is( ':checked' ) && results[i][0].software )
+			{
+				var q = j;
+
+				q = q + 5;
+				doc.text( 100, k + q, "Software:" );
+
+				for( var f = 0; f < results[i][0].software.length; f++ )
+				{
+					q = q + 5;
+					doc.text( 105, k + q, results[i][0].software[f].name );
+				}
+				var softwarelength = q - j;
+			}
+
+			if ( softwarelength >= userlength )
+				j = j + softwarelength;
+
+			else
+				j = j + userlength;
+
+			k = k + j + 10;
 			if ( k >= 240 )
 			{
 				doc.addPage();

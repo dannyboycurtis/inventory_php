@@ -119,8 +119,8 @@ $.ajax({
   			else
 			{
 				$( '#eqPurchaseId' ).val( $( this ).parents().children( '.eqpid' ).text() );
-				//$( '#purchasemenu>li' ).removeClass( 'selectedpurchaser' );
-				//$( this ).parent( "li" ).addClass( 'selectedpurchaser' );
+				$( '#purchasemenu>li' ).removeClass( 'selectedpurchaser' );
+				$( this ).parent( "li" ).addClass( 'selectedpurchaser' );
 
 				$( '#purchasedate').val( $( this ).parents().children( '.pdate').text() ).attr( 'disabled', true );
 				$( '#purchasertype' ).html( $( this ).parents().children( '.pby' ).text() ).parents().addClass( 'active' );

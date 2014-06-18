@@ -403,10 +403,10 @@ function setupTablesorter( record_type, role )
 		$(this).toggleClass( 'fa-check-square-o fa-square-o');
 
 		var numberselected = $( '#results_table' ).find( '.select > i.fa-check-square-o' ).size();
-		$( '.numberselected' ).html( numberselected );
+		$( '#numberselected' ).html( numberselected );
 	});
 
-	$( '.numberselected' ).html( "0" );
+	$( '#numberselected' ).html( "0" );
 
 	$( '#select_all').on( 'click', function(){
 		$(this).toggleClass( 'checked unchecked');
@@ -430,7 +430,7 @@ function setupTablesorter( record_type, role )
 		}
 
 		var numberselected = $( '#results_table' ).find( '.select > i.fa-check-square-o' ).size();
-		$( '.numberselected' ).html( numberselected );
+		$( '#numberselected' ).html( numberselected );
 	});
 
 	var options = {
@@ -464,7 +464,7 @@ function setupTablesorter( record_type, role )
 	};
 
 
-	$( '#table_panel_head' ).html( '<div class="col-xs-3"><input class="form-control search" type="text" placeholder="Filter Results" data-column="all"></div><div class="col-xs-9"><button id="createReportBtn" class="pull-right btn btn-info collapse in" data-toggle="collapse" href="#report_panel"><i class="fa fa-file"></i>&nbsp;&nbsp;Create Report</button></div>' );
+	$( '#table_panel_head' ).html( '<div class="col-xs-3"><input class="form-control search" type="text" placeholder="Filter Results" data-column="all"></div><div class="col-xs-9"><button id="createReportBtn" class="pull-right btn btn-info collapse in" data-toggle="collapse" href="#report_panel"><i class="fa fa-file"></i>&nbsp;&nbsp;Create Report</button><label class="pull-right"><h4>Number of records selected: <span id="numberselected">0</span>&nbsp;&nbsp;&nbsp;</h4></label></div>' );
 
 	$( '#results_table' ).tablesorter( options )
 		.tablesorterPager( pagerOptions )
@@ -485,7 +485,7 @@ function setupTablesorter( record_type, role )
 			}
 
 			var numberselected = $( '#results_table' ).find( '.select > i.fa-check-square-o' ).size();
-			$( '.numberselected' ).html( numberselected );
+			$( '#numberselected' ).html( numberselected );
 		});
 
 	$('.tablesorter-childRow td').hide();
@@ -691,7 +691,7 @@ function populateTable_equipment( results )
 			data: { query : tag },
 			success: function( result ){
 
-				console.log( result );
+				console.log( "get_equipment:\n" + result );
 				result = $.parseJSON( result );
 				$( '#tag_num' ).attr( 'disabled', true ).val( result[0].tag );
 				$( '#serial' ).val( result[0].serial );
@@ -740,11 +740,14 @@ function populateTable_equipment( results )
 					$( '#softwarenotavailable' ).show();	
 				}
 
-				$( '.pid' ).each( function(){
+
+				$( '#eqPurchaseId' ).val( result[0].purchase_id );
+/*
+				$( '.eqpid' ).each( function(){
 					if ( $( this ).text() == result[0].purchase_id )
 						$( this ).parent( 'li' ).addClass( 'selectedpurchaser' );
 				});
-
+*/
 				if ( result[0].purchase_order )
 					$( '#purchasetype' ).text( result[0].purchase_order );
 
@@ -1062,9 +1065,10 @@ function populateTable_software( results )
 				console.log( result );
 				result = $.parseJSON( result );
 
-				$( '.pid' ).each( function(){
+				$( '.swpid' ).each( function(){
 					if ( $( this ).text() == result[0].purchase_id )
 						$( this ).parent( 'li' ).addClass( 'selectedpurchaser' );
+
 				});
 
 				if ( result[0].purchase_order )

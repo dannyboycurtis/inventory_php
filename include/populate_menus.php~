@@ -113,6 +113,9 @@ else if ( $_POST['query'] == 'labs' )
 }
 
 
+
+
+
 else if ( $_POST['query'] == 'purchase_order' )
 {
 	$query_stmt = "SELECT purchase_id, purchase_order, purchase_date, purchased_by FROM purchase WHERE purchase_order IS NOT NULL";

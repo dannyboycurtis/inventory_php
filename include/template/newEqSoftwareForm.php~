@@ -38,13 +38,9 @@ $.ajax({
 	data: { query : "software" },
 	success: function( result ){
 		results = $.parseJSON( result );
-
-		if ( results )
-		{
-			$.each( results, function( i ){
-				$('#softwaremenu').append( "<li><span class='hidden sid'>" + results[i].softwareid + "</span><a href='#'>" + results[i].software_name + ", " + results[i].licensetype + " </a></li>" );
-			});
-		}
+		$.each( results, function( i ){
+			$('#softwaremenu').append( "<li><span class='hidden sid'>" + results[i].softwareid + "</span><a href='#'>" + results[i].software_name + ", " + results[i].licensetype + " </a></li>" );
+		});
 
 		$("#softwaremenu>li>a").on( 'click', function(){
 			var sid = $( this ).siblings( '.sid' ).text();

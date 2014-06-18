@@ -95,6 +95,8 @@ $( '#addEquipmentModal' ).on( 'hidden.bs.modal', function(){
 	// enable all inputs
 	$( this ).find( 'input' ).attr( 'disabled', false );
 
+	$( '#purchasemenu>li' ).removeClass( 'selectedpurchaser' );
+
 	// enable all dropdowns
 	$( this ).find( 'button' ).attr( 'data-toggle', 'dropdown').removeClass( 'active' );
 
@@ -367,13 +369,11 @@ $( '#submitequipment' ).on( 'click', function() {
 		if ( $( '#purchasetype' ).text() == "New Purchase Order" )
 		{
 			if ( $( '#newPurchase' ).val() != "" )
-			{		
 				var purchase_order = $( '#newPurchase' ).val();
-			}
 		}
 
 		else
-			var purchase_id = $( '#purchasemenu' ).find( '.selectedpurchaser' ).children( '.pid' ).text();
+			var purchase_id = $( '#eqPurchaseId' ).val();
 
 		// purchase date
 		if ( $( '#purchasedate' ).val() == "" )
@@ -678,6 +678,7 @@ else
 			{
 				$( '#newuser_error' ).hide();
 				$( '#newuser_input' ).removeClass( 'has-error' );
+				$( '#selectusers_input' ).removeClass( 'has-error' );
 				$( '#selectusersbutton' ).addClass( 'btn-default' ).removeClass( 'btn-danger' );
 
 				// set variables
@@ -766,9 +767,9 @@ else
 	else $( '#equipmenttab>a' ).removeAttr( 'style' );
 
 	if ( $( '#purchaseForm' ).find( '.form-group' ).hasClass( 'has-error' ) )
-		$( '#purchasetab>a').css({ "background-color" : "#c71c22", "border-color" : "#c71c22", "color" : "white"});
+		$( '#eqPurchasetab>a').css({ "background-color" : "#c71c22", "border-color" : "#c71c22", "color" : "white"});
 
-	else $( '#purchasetab>a' ).removeAttr( 'style' );
+	else $( '#eqPurchasetab>a' ).removeAttr( 'style' );
 
 	if ( $( '#locationForm' ).find( '.form-group' ).hasClass( 'has-error' ) )
 		$( '#locationtab>a').css({ "background-color" : "#c71c22", "border-color" : "#c71c22", "color" : "white"});
