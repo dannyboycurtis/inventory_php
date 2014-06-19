@@ -10,10 +10,10 @@ $logged = login_check( $mysqli );
 if ( !( $logged ) )
 	header( 'Location: login.php' );
 
-$error_msg = "";
-
-if ( isset( $_POST['user'], $_POST['p'], $_POST['role'] ) ) 
+else if ( isset( $_POST['user'], $_POST['p'], $_POST['role'] ) ) 
 {
+	$error_msg = "";
+
     // Sanitize and validate the data passed in
     $username = filter_input( INPUT_POST, 'user', FILTER_SANITIZE_STRING );
     $password = filter_input( INPUT_POST, 'p', FILTER_SANITIZE_STRING );
@@ -54,14 +54,11 @@ if ( isset( $_POST['user'], $_POST['p'], $_POST['role'] ) )
 
 			echo $stmt->affected_rows;
         }
-
-
     }
 
 	else
 		echo $error_msg;
 }
-
 ?>
 
 

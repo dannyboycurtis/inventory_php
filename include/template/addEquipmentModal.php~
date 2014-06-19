@@ -130,22 +130,16 @@ $( '#submitequipment' ).on( 'click', function() {
 				data: { tag : $( '#tag_num' ).val() },
 				async: false,
 				success: function( result ) {
-					if ( result.charAt( 0 ) == "<" )
-						window.location.reload();
+					if ( result == "0" )
+					{
+						$( '#tag_error' ).show().children().html( "This property tag is already in use!" );
+						$( '#tag_input' ).addClass( 'has-error' );
+					}
 
 					else
 					{
-						if ( result == "0" )
-						{
-							$( '#tag_error' ).show().children().html( "This property tag is already in use!" );
-							$( '#tag_input' ).addClass( 'has-error' );
-						}
-
-						else
-						{
-							$( '#tag_error' ).hide();
-							$( '#tag_input' ).removeClass( 'has-error' );
-						}
+						$( '#tag_error' ).hide();
+						$( '#tag_input' ).removeClass( 'has-error' );
 					}
 				}
 			});

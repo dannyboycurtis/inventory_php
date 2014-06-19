@@ -37,28 +37,23 @@ $.ajax({
 	url: "include/populate_menus.php",
 	data: { query : "software" },
 	success: function( result ){
-		if ( result.charAt( 0 ) == "<" )
-			window.location.reload();
+		results = $.parseJSON( result );
 
-		else
+		if ( results )
 		{
-			results = $.parseJSON( result );
-
-			if ( results )
-			{
-				$.each( results, function( i ){
-					$('#softwaremenu').append( "<li><span class='hidden sid'>" + results[i].softwareid + "</span><a href='#'>" + results[i].software_name + ", " + results[i].licensetype + " </a></li>" );
-				});
-			}
-
-			$("#softwaremenu>li>a").on( 'click', function(){
-				var sid = $( this ).siblings( '.sid' ).text();
-  				$( '#softwarelist').append( "<li><span class='hidden software_id'>" + sid + "</span><i class='fa fa-minus-square' style='cursor:pointer'></i> " + $(this).text() + "</li>");
-				$( '#softwarelist>li>i').on( 'click', function(){
-					$( this ).parents( 'li' ).remove();
-				});
+			$.each( results, function( i ){
+				$('#softwaremenu').append( "<li><span class='hidden sid'>" + results[i].softwareid + "</span><a href='#'>" + results[i].software_name + ", " + results[i].licensetype + " </a></li>" );
 			});
 		}
+
+		$("#softwaremenu>li>a").on( 'click', function(){
+			var sid = $( this ).siblings( '.sid' ).text();
+  			$( '#softwarelist').append( "<li><span class='hidden software_id'>" + sid + "</span><i class='fa fa-minus-square' style='cursor:pointer'></i> " + $(this).text() + "</li>");
+			$( '#softwarelist>li>i').on( 'click', function(){
+				$( this ).parents( 'li' ).remove();
+			});
+
+		});
 	} 
 });
 </script>

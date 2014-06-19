@@ -348,11 +348,14 @@ function list_inventoryusers(){
 
 			var list = new Array();
 
-			$.each( results, function(){
-				row = "<tr style='border-bottom: 1px solid blue'><td class='uname'>" + this.user + "</td><td>" + this.role + "</td>";
-				row += "<td> <button class='changepass btn btn-primary'>Change Password</button> <button class='deleteuser btn btn-primary'>Delete User</button></tr>";
-				list.push( row );		
-			});
+			if ( results )
+			{
+				$.each( results, function(){
+					row = "<tr style='border-bottom: 1px solid blue'><td class='uname'>" + this.user + "</td><td>" + this.role + "</td>";
+					row += "<td> <button class='changepass btn btn-primary'>Change Password</button> <button class='deleteuser btn btn-primary'>Delete User</button></tr>";
+					list.push( row );		
+				});
+			}
 
 			row = "<tr><td colspan=3><br><button id='adduser' class='btn btn-primary'>Create User</button></td></tr>";
 

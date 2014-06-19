@@ -417,20 +417,14 @@ $.ajax({
 	url: "include/populate_menus.php",
 	data: { query : "department" },
 	success: function( result ){
-		if ( result.charAt( 0 ) == "<" )
-			window.location.reload();
+		results = $.parseJSON( result );
+		$.each( results, function( i ){
+			$( '#departmentsearchmenu' ).append( "<li><a href='#'>" + results[i] + "</a></li>" );
+		});
 
-		else
-		{
-			results = $.parseJSON( result );
-			$.each( results, function( i ){
-				$( '#departmentsearchmenu' ).append( "<li><a href='#'>" + results[i] + "</a></li>" );
-			});
-
-			$("#departmentsearchmenu>li>a").on( 'click', function(){
-  				$( '#departmentsearchtype').html( $( this ).text() );
-			});
-		}
+		$("#departmentsearchmenu>li>a").on( 'click', function(){
+  			$( '#departmentsearchtype').html( $( this ).text() );
+		});
 	}
 });
 
@@ -500,16 +494,12 @@ $( '#equipmentreportsubmit' ).on( 'click', function(){
 				data: { query : records[i] },
 				async: false,
 				success: function( result ){
-					if ( result.charAt( 0 ) == "<" )
-						window.location.reload();
-
-					else
-						results.push( $.parseJSON( result ) );
+					results.push( $.parseJSON( result ) );
 				}
 			});
 		}
 
-		//console.log( results );
+		console.log( results );
 
 		var doc = new jsPDF();
 

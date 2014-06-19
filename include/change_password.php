@@ -9,11 +9,11 @@ $logged = login_check( $mysqli );
 
 if ( !( $logged ) )
 	header( 'Location: ../login.php' );
-
-$error_msg = "";
  
-if ( isset( $_POST['p'] ) ) 
+else if ( isset( $_POST['p'] ) ) 
 {
+	$error_msg = "";
+
 	if ( !isset( $_POST['user'] ) )
 		$username = $_SESSION['username'];
 
@@ -41,7 +41,7 @@ if ( isset( $_POST['p'] ) )
 			echo "0";
 
 	}
-}
 
-$mysqli->close();
+	$mysqli->close();
+}
 ?>

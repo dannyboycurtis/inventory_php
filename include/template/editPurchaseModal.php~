@@ -156,20 +156,14 @@ $( '#submitpurchase' ).on( 'click', function() {
 			url: "include/edit_purchase.php",
 			data: { data : user_input },
 			success: function( result ){
-				if ( result.charAt( 0 ) == "<" )
-					window.location.reload();
 
-				else
-				{
-					// update table
-					var results = $.parseJSON( result );
+				// update table
+				var results = $.parseJSON( result );
+				alert( results.message );
+				returnToQuery( results.query, results.querytype );
 
-					alert( results.message );
+				$( '#editPurchaseModal' ).modal( 'hide' );
 
-					returnToQuery( results.query, results.querytype );
-
-					$( '#editPurchaseModal' ).modal( 'hide' );
-				}
 			},
 			error: function(){
 				alert( "There was a problem in the database!" );

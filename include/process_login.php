@@ -23,8 +23,5 @@ if ( isset( $_POST['user'], $_POST['p'] ) )
 } 
 
 else 
-{
-	echo 'Invalid Request!!'; 
-}
-
+	echo 'Login Failure!'; 
 ?>

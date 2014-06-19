@@ -68,26 +68,20 @@ $.ajax({
 	url: "include/populate_menus.php",
 	data: { query : "purchased_by" },
 	success: function( result ){
-		if ( result.charAt( 0 ) == "<" )
-			window.location.reload();
+		results = $.parseJSON( result );
+		$.each( results, function( i ){
+			$('#swPurchasermenu').append( "<li><a href='#'>" + results[i] + "</a></li>" );
+		});
 
-		else
-		{
-			results = $.parseJSON( result );
-			$.each( results, function( i ){
-				$('#swPurchasermenu').append( "<li><a href='#'>" + results[i] + "</a></li>" );
-			});
+		$("#swPurchasermenu>li>a").on( 'click', function(){
+			if ( $( this ).text() == 'Other' )
+				$( '#swNewPurchaser' ).show();
 
-			$("#swPurchasermenu>li>a").on( 'click', function(){
-				if ( $( this ).text() == 'Other' )
-					$( '#swNewPurchaser' ).show();
+			else
+				$( '#swNewPurchaser' ).hide();
 
-				else
-					$( '#swNewPurchaser' ).hide();
-
-  				$( '#swPurchasertype').html( $( this ).text() );
-			});
-		}
+  			$( '#swPurchasertype').html( $( this ).text() );
+		});
 	}
 });
 
@@ -97,52 +91,46 @@ $.ajax({
 	url: "include/populate_menus.php",
 	data: { query : "purchase_order" },
 	success: function( result ){
-		if ( result.charAt( 0 ) == "<" )
-			window.location.reload();
+		results = $.parseJSON( result );
 
-		else
+		if ( results )
 		{
-			results = $.parseJSON( result );
+			$.each( results, function( i ){
+				var purchaseresults = "<li>";
+				purchaseresults += "<span style='display:none' class='swpid'>" + results[i].purchaseid + "</span>";
+				purchaseresults += "<span style='display:none' class='pdate'>" + results[i].purchasedate + "</span>";
+				purchaseresults += "<span style='display:none' class='pby'>" + results[i].purchasedby + "</span>";
+				purchaseresults += "<a href='#'>" + results[i].purchaseorder + "</a></li>";
 
-			if ( results )
-			{
-				$.each( results, function( i ){
-					var purchaseresults = "<li>";
-					purchaseresults += "<span style='display:none' class='swpid'>" + results[i].purchaseid + "</span>";
-					purchaseresults += "<span style='display:none' class='pdate'>" + results[i].purchasedate + "</span>";
-					purchaseresults += "<span style='display:none' class='pby'>" + results[i].purchasedby + "</span>";
-					purchaseresults += "<a href='#'>" + results[i].purchaseorder + "</a></li>";
-
-					$( '#swPurchasemenu' ).append( purchaseresults );
-				});
-			}
-
-			$( "#swPurchasemenu>li>a" ).on( 'click', function(){
-				if ( $( this ).text() == 'New Purchase Order' )
-				{
-					$( '#swNewPurchase, #swPurchasedate_input, #swPurchasedby_input' ).show();
-					$( '#swPurchasedate' ).attr( 'disabled', false ).val( '' );
-					$( '#swPurchasertype' ).html( "Choose Purchaser" )
-					$( '#swPurchaserbutton' ).attr( 'data-toggle', 'dropdown').removeClass( 'active' );
-					$( '#swNewPurchaser' ).hide();
-				}
-
-  				else
-				{
-					$( '#swPurchasemenu>li' ).removeClass( 'selectedpurchaser' );
-					$( this ).parent( "li" ).addClass( 'selectedpurchaser' );
-
-					$( '#swPurchasedate').val( $( this ).parents().children( '.pdate').text() ).attr( 'disabled', true );
-					$( '#swPurchasertype' ).html( $( this ).parents().children( '.pby' ).text() ).parents().addClass( 'active' );
-					$( '#swPurchasertype' ).parents().removeAttr('data-toggle');
-
-					$( '#swNewPurchaser, #swNewPurchase' ).hide();
-					$( '#swPurchasedate_input, #swPurchasedby_input' ).show();
-				}
-
-				$( '#swPurchasetype').html( $( this ).text() );
+				$( '#swPurchasemenu' ).append( purchaseresults );
 			});
 		}
+
+		$( "#swPurchasemenu>li>a" ).on( 'click', function(){
+			if ( $( this ).text() == 'New Purchase Order' )
+			{
+				$( '#swNewPurchase, #swPurchasedate_input, #swPurchasedby_input' ).show();
+				$( '#swPurchasedate' ).attr( 'disabled', false ).val( '' );
+				$( '#swPurchasertype' ).html( "Choose Purchaser" )
+				$( '#swPurchaserbutton' ).attr( 'data-toggle', 'dropdown').removeClass( 'active' );
+				$( '#swNewPurchaser' ).hide();
+			}
+
+  			else
+			{
+				$( '#swPurchasemenu>li' ).removeClass( 'selectedpurchaser' );
+				$( this ).parent( "li" ).addClass( 'selectedpurchaser' );
+
+				$( '#swPurchasedate').val( $( this ).parents().children( '.pdate').text() ).attr( 'disabled', true );
+				$( '#swPurchasertype' ).html( $( this ).parents().children( '.pby' ).text() ).parents().addClass( 'active' );
+				$( '#swPurchasertype' ).parents().removeAttr('data-toggle');
+
+				$( '#swNewPurchaser, #swNewPurchase' ).hide();
+				$( '#swPurchasedate_input, #swPurchasedby_input' ).show();
+			}
+
+			$( '#swPurchasetype').html( $( this ).text() );
+		});
 	}
 });
 </script>

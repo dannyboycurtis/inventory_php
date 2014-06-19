@@ -215,21 +215,15 @@ $( '#submitregistration' ).on( 'click', function(){
 			url: "include/register_user.php",
 			data: { p: p, user: user, role: role },
 			success: function( result ){
-				if ( result.charAt( 0 ) == "<" )
-					window.location.reload();
+				if ( result == 1 )
+					alert( "User successfully registered." );
 
 				else
-				{
-					if ( result == 1 )
-						alert( "User successfully registered." );
+					alert( "Error: " + result );
 
-					else
-						alert( "Error: " + result );
+				$( '#registerUserModal' ).modal( 'hide' );
 
-					$( '#registerUserModal' ).modal( 'hide' );
-
-					list_inventoryusers();
-				}
+				list_inventoryusers();
 			}
 		});
 	}

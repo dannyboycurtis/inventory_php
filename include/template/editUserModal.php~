@@ -162,20 +162,14 @@ $( '#submituser' ).on( 'click', function() {
 			url: "include/edit_user.php",
 			data: { data : user_input },
 			success: function( result ){
-				if ( result.charAt( 0 ) == "<" )
-					window.location.reload();
 
-				else
-				{
-					// update table
-					var results = $.parseJSON( result );
-	
-					alert( results.message );
+				// update table
+				var results = $.parseJSON( result );
+				alert( results.message );
+				returnToQuery( results.query, results.querytype );
 
-					returnToQuery( results.query, results.querytype );
+				$( '#editUserModal' ).modal( 'hide' );
 
-					$( '#editUserModal' ).modal( 'hide' );
-				}
 			},
 			error: function(){
 				alert( "There was a problem in the database!" );
