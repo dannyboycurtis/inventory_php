@@ -418,8 +418,6 @@ if ( $user_input["eqtype"] == "computer" )
 
 	}
 
-	else
-		$error .= "printerinsert;";
 }
 
 
