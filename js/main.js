@@ -464,7 +464,10 @@ function setupTablesorter( record_type, role )
 	};
 
 
-	$( '#table_panel_head' ).html( '<div class="col-xs-3"><input class="form-control search" type="text" placeholder="Filter Results" data-column="all"></div><div class="col-xs-9"><button id="createReportBtn" class="pull-right btn btn-info collapse in" data-toggle="collapse" href="#report_panel"><i class="fa fa-file"></i>&nbsp;&nbsp;Create Report</button><label class="pull-right"><h4>Number of records selected: <span id="numberselected">0</span>&nbsp;&nbsp;&nbsp;</h4></label></div>' );
+	$( '#table_panel_head' ).html( '<div class="col-xs-3"><input class="form-control search" type="text" placeholder="Filter Results" data-column="all"></div><div id="reportbuttonspace" class="col-xs-9"></div>' );
+
+	if ( record_type == 'equipment' )
+		$( '#reportbuttonspace' ).html( '<button id="createReportBtn" class="pull-right btn btn-info collapse in" data-toggle="collapse" href="#report_panel"><i class="fa fa-file"></i>&nbsp;&nbsp;Create Report</button><label class="pull-right"><h4>Number of records selected: <span id="numberselected">0</span>&nbsp;&nbsp;&nbsp;</h4></label>' );
 
 	$( '#results_table' ).tablesorter( options )
 		.tablesorterPager( pagerOptions )
@@ -843,9 +846,12 @@ function populateTable_users( results )
 	$.each( results, function(){
 		row = "";
 		row += "<tr class='parent_row'>";
-		row += "<td class='select' rowspan='2'><span style='display:none'>" + this.userid + "</span>";
-		row += "<i class='fa fa-square-o'></i></td>";
-	
+		//row += "<td class='select' rowspan='2'><span style='display:none'>" + this.userid + "</span>";
+		//row += "<i class='fa fa-square-o'></i></td>";
+
+		// hides select check boxes for user listing
+		$( '#select_all' ).hide();
+
 		if ( role > 1 )
 			row += "<td class='edit' rowspan='2'><i class='fa fa-cog'></i></td>";
 
@@ -916,9 +922,12 @@ function populateTable_purchases( results )
 	$.each( results, function(){
 		row = "";
 		row += "<tr class='parent_row'>";
-		row += "<td class='select' rowspan='2'><span style='display:none'>" + this.purchaseid + "</span>";
-		row += "<i class='fa fa-square-o'></i></td>";
+		//row += "<td class='select' rowspan='2'><span style='display:none'>" + this.purchaseid + "</span>";
+		//row += "<i class='fa fa-square-o'></i></td>";
 	
+		// hides select check boxes for user listing
+		$( '#select_all' ).hide();
+
 		if ( role > 1 )
 			row += "<td class='edit' rowspan='2'><i class='fa fa-cog'></i></td>";
 
@@ -934,13 +943,13 @@ function populateTable_purchases( results )
 		if ( this.equipment )
 		{
 			$.each( this.equipment, function( i ){
-				row += "<div class='panel panel-default' style='padding: 5px'>";
+				row += "<div class='purchase_eq panel panel-default' style='padding: 5px'>";
 				row += "&nbsp;&nbsp;&nbsp;<b>Tag: </b>";
 				row += "<span class='view_equipment' style='cursor: pointer' title='View this equipment record'>" + this.tag;
-				row += "</span><b> / Serial: </b>" + this.serial;
-				row += "<b> / Make & Model: </b>" + this.makemodel;
-				row += "<b> / Location: </b>" + this.location;
-				row += "<b> / Department: </b>" + this.department;
+				row += "</span><b> / Serial: </b><span class='serial'>" + this.serial;
+				row += "</span><b> / Make & Model: </b><span class='makemodel'>" + this.makemodel;
+				row += "</span><b> / Location: </b><span class='location'>" + this.location;
+				row += "</span><b> / Department: </b>" + this.department;
 				row += "</div>";
 				if ( this.count >= i )
 					row += "<br>";
@@ -950,26 +959,22 @@ function populateTable_purchases( results )
 		else if ( this.software )
 		{
 			$.each( this.software, function( i ){
-				row += "<div class='panel panel-default' style='padding: 5px'>";
-				row += "&nbsp;&nbsp;&nbsp;<b>Software Name: </b>" + this.s_name;
-				row += "<b> / License Type: </b>" + this.type;
-				row += "<b> / License Quantity: </b>" + this.quantity;
-				row += "</div>";
+				row += "<div class='purchase_sw panel panel-default' style='padding: 5px'>";
+				row += "&nbsp;&nbsp;&nbsp;<b>Software Name: </b><span class='softwarename'>" + this.s_name;
+				row += "</span><b> / License Type: </b><span class='licensetype'>" + this.type;
+				row += "</span><b> / License Quantity: </b><span class='licensequantity'>" + this.quantity;
+				row += "</span></div>";
 				if ( this.count >= i )
 					row += "<br>";
 			});
 		}
 
 		else
-		{
 			row += "&nbsp;&nbsp;<b>No items in this purchase order!</b>";
-
-		}
 
 		row += '</div></td></tr>';
 
 		tableRows.push( row );		
-
 	});
 		
 	$( '#results_table>tbody' ).html( tableRows.join( "" ) );
@@ -1003,9 +1008,12 @@ function populateTable_software( results )
 	$.each( results, function(){
 		row = "";
 		row += "<tr class='parent_row'>";
-		row += "<td class='select' rowspan='2'><span style='display:none'>" + this.softwareid + "</span>";
-		row += "<i class='fa fa-square-o'></i></td>";
-	
+		//row += "<td class='select' rowspan='2'><span style='display:none'>" + this.softwareid + "</span>";
+		//row += "<i class='fa fa-square-o'></i></td>";
+
+		// hides select check boxes for user listing
+		$( '#select_all' ).hide();
+
 		if ( role > 1 )
 			row += "<td class='edit' rowspan='2'><i class='fa fa-cog'></i></td>";
 

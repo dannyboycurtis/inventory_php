@@ -15,7 +15,7 @@ $mysqli = inventory_db_connect();
 if ( $_POST['query'] == "_all" )
 	$query = "SELECT s.software_id,
 					 s.software_name,
-					 AES_DECRYPT( s.license_num, ? ),
+											AES_DECRYPT( s.license_num, ? ),
 											s.license_type,
 											s.number_of_licenses,
 											s.notes,

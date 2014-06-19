@@ -26,7 +26,7 @@
 			<div class="col-xs-3">
 				<input type="text" class="form-control" id="swPurchasedate" placeholder="YYYY-MM-DD" maxlength="10">
 			</div>
-		</div>1
+		</div>
 
 		<div id="swPurchasedate_error" class="input_error form-group" style="margin-bottom:20px;color:red">
 			<div class="col-xs-offset-2 col-xs-4"></div>

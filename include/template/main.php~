@@ -171,7 +171,7 @@
 
 				<div id="equipmentreportform" class="reportform">
 					<form class="form-inline" role="form">
-  						<div class="form-group">
+  						<div class="form-group" style="margin-left: 60px">
     						<label><h4>Include: &nbsp;&nbsp;</h4></label>
 							<div class="checkbox">
 								<label>
@@ -200,29 +200,8 @@
 					</form>
 				</div>
 
-				<div id="usersreportform" class="reportform">
-					<form class="form-inline" role="form">
-						<div class="form-group">
-    						<label><h4>Number of records selected: &nbsp;<span class="numberselected"></span></h4></label>
-						</div>
-  						<div class="form-group" style='margin-left:60px'>
-    						<label><h4>Include: &nbsp;&nbsp;</h4></label>
-							<div class="checkbox">
-								<label>
-									<input id='ureportequipment' type="checkbox"> Equipment Used &nbsp;&nbsp;
-								</label>
-							</div>
-							<button id="usersreportsubmit" type="submit" class="btn btn-primary">Generate Report</button>
-						</div>
-					</form>
-				</div>
-
 				<div id="softwarereportform" class="reportform">
 					<form class="form-inline" role="form">
-						<div class="form-group">
-    						<label><h4>Number of records selected: &nbsp;<span class="numberselected"></span></h4></label>
-						</div>
-
   						<div class="form-group" style='margin-left:60px'>
     						<label><h4>Include: &nbsp;&nbsp;</h4></label>
 							<div class="checkbox">
@@ -242,19 +221,16 @@
 
 				<div id="purchasesreportform" class="reportform">
 					<form class="form-inline" role="form">
-						<div class="form-group">
-    						<label><h4>Number of records selected: &nbsp;<span class="numberselected"></span></h4></label>
-						</div>
   						<div class="form-group" style='margin-left:60px'>
     						<label><h4>Include: &nbsp;&nbsp;</h4></label>
 							<div class="checkbox">
 								<label>
-									<input id='preportequipment' type="checkbox"> Equipment &nbsp;&nbsp;
+									<input id='preportequipment' type="checkbox" checked> Equipment &nbsp;&nbsp;
 								</label>
 							</div>
 							<div class="checkbox">
 								<label>
-									<input id='preportsoftware' type="checkbox"> Software &nbsp;&nbsp;
+									<input id='preportsoftware' type="checkbox" checked> Software &nbsp;&nbsp;
 								</label>
 							</div>
 							<button id="purchasesreportsubmit" type="submit" class="btn btn-primary">Generate Report</button>
@@ -489,12 +465,6 @@ $( '#equipmentreportsubmit' ).on( 'click', function(){
 
 	else
 	{
-		if ( $( '#eqreportnetwork' ).is( ':checked' ) )
-			var getnetwork = true;
-
-		if ( $( '#eqreportsoftware' ).is( ':checked' ) )
-			var getsoftware = true;
-
 		var records = new Array();
 
 		$( '#results_table' ).find( '.select > i.fa-check-square-o' ).each( function(){
@@ -512,11 +482,9 @@ $( '#equipmentreportsubmit' ).on( 'click', function(){
 				data: { query : records[i] },
 				async: false,
 				success: function( result ){
-					
 					results.push( $.parseJSON( result ) );
 				}
 			});
-
 		}
 
 		console.log( results );
@@ -532,8 +500,6 @@ $( '#equipmentreportsubmit' ).on( 'click', function(){
 		var title = "Equipment Report:  " + date.toDateString() + "  ( " + records.length + " items )";
 
 		doc.text( 20, 10, title );
-
-
 
 		for( var i = 0; i < results.length; i++ )
 		{
@@ -557,9 +523,6 @@ $( '#equipmentreportsubmit' ).on( 'click', function(){
 			j = j + 5;
 			doc.text( 25, k + j, "Location:  " + location );
 			doc.text( 100, k + j, "Make & Model:  " + results[i][0].make + " " + results[i][0].model );
-
-
-
 
 			j = j + 5;
 
@@ -632,7 +595,7 @@ $( '#equipmentreportsubmit' ).on( 'click', function(){
 				for( var f = 0; f < results[i][0].users.length; f++ )
 				{
 					q = q + 5;
-					doc.text( 45, k + q, results[i][0].users[f].firstname + " " + results[i][0].users[f].lastname );
+					doc.text( 30, k + q, results[i][0].users[f].firstname + " " + results[i][0].users[f].lastname );
 				}
 				var userlength = q - j;
 			}
@@ -644,10 +607,10 @@ $( '#equipmentreportsubmit' ).on( 'click', function(){
 				q = q + 5;
 				doc.text( 100, k + q, "Software:" );
 
-				for( var f = 0; f < results[i][0].users.length; f++ )
+				for( var f = 0; f < results[i][0].software.length; f++ )
 				{
 					q = q + 5;
-					doc.text( 105, k + q, results[i][0].users[f].firstname + " " + results[i][0].users[f].lastname );
+					doc.text( 105, k + q, results[i][0].software[f].name );
 				}
 				var softwarelength = q - j;
 			}
@@ -658,7 +621,7 @@ $( '#equipmentreportsubmit' ).on( 'click', function(){
 			else
 				j = j + userlength;
 
-			k = k + j + 5;
+			k = k + j + 10;
 			if ( k >= 240 )
 			{
 				doc.addPage();
@@ -666,26 +629,12 @@ $( '#equipmentreportsubmit' ).on( 'click', function(){
 			}
 		}
 
-		doc.output( 'save', "test.pdf" );
+		doc.output( 'save', "equipment_report.pdf" );
 
 	}
 });
 
 
-// users report handler
-$( '#usersreportsubmit' ).on( 'click', function(){
-	if ( $( '#usersreportform' ).find( '.numberselected' ).html() == "0" )
-		alert( "No records selected!" );
-
-	else
-	{
-
-
-
-
-	}
-
-});
 
 // purchases report handler
 $( '#purchasesreportsubmit' ).on( 'click', function(){
@@ -694,12 +643,97 @@ $( '#purchasesreportsubmit' ).on( 'click', function(){
 
 	else
 	{
+		var purchases = new Array();
+
+		$( '#results_table' ).find( '.select > i.fa-check-square-o' ).each( function(){
+			var purchase = { "purchase_order" : $( this ).parent( '.select' ).siblings( '.porder' ).text(),
+								"purchase_date" : $( this ).parent( '.select' ).siblings( '.pdate' ).text(),
+								"purchased_by" : $( this ).parent( '.select' ).siblings( '.pby' ).text() };
+
+			var equipment = new Array();
+
+			$( this ).closest( 'tr' ).next( 'tr' ).find( '.purchase_eq' ).each( function(){
+				var eq = { "tag" : $( this ).children( '.view_equipment' ).text(),
+							"serial" : $( this ).children( '.serial' ).text(),
+							"makemodel" : $( this ).children( '.makemodel' ).text(),
+							"location" : $( this ).children( '.location' ).text() };
+
+				equipment.push( eq );
+			});
 
 
+			var software = new Array();
 
+			$( this ).closest( 'tr' ).next( 'tr' ).find( '.purchase_sw' ).each( function(){
+				var sw = { "name" : $( this ).children( '.softwarename' ).text(),
+							"type" : $( this ).children( '.licensetype' ).text(),
+							"quantity" : $( this ).children( '.licensequantity' ).text() };
 
+				software.push( sw );
+			});
+
+			purchase.eq = equipment;
+			purchase.sw = software;
+
+			purchases.push( purchase );
+		});
+
+		console.log( "purchasereport\n" + purchases );
+		var doc = new jsPDF();
+
+		var k = 25;
+
+		doc.setFontSize(14);
+		
+		var date = new Date();
+
+		var title = "Purchase Report:  " + date.toDateString() + "  ( " + purchases.length + " items )";
+
+		doc.text( 20, 10, title );
+
+		for( var i = 0; i < purchases.length; i++ )
+		{
+			var j = 5;
+			doc.setFontSize( 12 );
+			doc.setFontStyle( 'bold' );
+			doc.text( 20, k, "Purchase Order:  " + purchases[i].purchase_order );
+
+			doc.setFontSize( 11 );
+			doc.setFontStyle( 'normal' );
+			doc.text( 25, k + j, "Purchase Date:  " + purchases[i].purchase_date );
+			doc.text( 100, k + j, "Purchased by:  " + purchases[i].purchased_by );
+
+			j = j + 5;
+			doc.text( 25, k + j, "Equipment: " );
+
+			for ( var l = 0; l < purchases[i].eq.length; l++ )
+			{
+					j = j + 5;
+					doc.text( 30, k + j, "Tag # " + purchases[i].eq[l].tag + ":  " + purchases[i].eq[l].makemodel );
+					j = j + 5;
+					doc.text( 35, k + j, "Serial: " + purchases[i].eq[l].serial );
+					doc.text( 100, k + j, "Location:  " + purchases[i].eq[l].location );
+			}
+
+			for ( var l = 0; l < purchases[i].sw.length; l++ )
+			{
+					j = j + 5;
+					doc.text( 30, k + j, "Software Name:  " + purchases[i].sw[l].name );
+					j = j + 5;
+					doc.text( 35, k + j, "License Type:  " + purchases[i].sw[l].type );
+					doc.text( 100, k + j, "License Quantity:  " + purchases[i].sw[l].quantity );
+			}
+
+			k = k + j + 10;
+			if ( k >= 240 )
+			{
+				doc.addPage();
+				k = 25;
+			}
+		}
+
+		doc.output( 'save', "purchases_report.pdf" );
 	}
-
 });
 
 // software report handler
@@ -714,6 +748,5 @@ $( '#softwarereportsubmit' ).on( 'click', function(){
 
 
 	}
-
 });
 </script>

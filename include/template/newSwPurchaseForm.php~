@@ -97,7 +97,7 @@ $.ajax({
 		{
 			$.each( results, function( i ){
 				var purchaseresults = "<li>";
-				purchaseresults += "<span style='display:none' class='pid'>" + results[i].purchaseid + "</span>";
+				purchaseresults += "<span style='display:none' class='swpid'>" + results[i].purchaseid + "</span>";
 				purchaseresults += "<span style='display:none' class='pdate'>" + results[i].purchasedate + "</span>";
 				purchaseresults += "<span style='display:none' class='pby'>" + results[i].purchasedby + "</span>";
 				purchaseresults += "<a href='#'>" + results[i].purchaseorder + "</a></li>";
