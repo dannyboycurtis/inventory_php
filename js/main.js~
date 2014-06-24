@@ -36,7 +36,6 @@ function delete_record( record_id, type, record_row )
 			url: "include/delete_record.php",
 			data: { record_id : record_id, type : type },
 			success: function( result ) {
-				alert( result );
 				$( record_row ).next( '.tablesorter-childRow' ).addBack().remove();
 				$( '#results_table' ).trigger( 'update' );
 			}
@@ -850,11 +849,11 @@ function populateTable_users( results )
 	$.each( results, function(){
 		row = "";
 		row += "<tr class='parent_row'>";
-		row += "<td class='select' rowspan='2'><span style='display:none'>" + this.userid + "</span>";
-		row += "<i class='fa fa-square-o'></i></td>";
+		//row += "<td class='select' rowspan='2'><span style='display:none'>" + this.userid + "</span>";
+		//row += "<i class='fa fa-square-o'></i></td>";
 
 		// hides select check boxes for user listing
-		//$( '#select_all' ).hide();
+		$( '#select_all' ).hide();
 
 		if ( role > 1 )
 			row += "<td class='edit' rowspan='2'><i class='fa fa-cog'></i></td>";
@@ -1012,11 +1011,11 @@ function populateTable_software( results )
 	$.each( results, function(){
 		row = "";
 		row += "<tr class='parent_row'>";
-		row += "<td class='select' rowspan='2'><span style='display:none'>" + this.softwareid + "</span>";
-		row += "<i class='fa fa-square-o'></i></td>";
+		//row += "<td class='select' rowspan='2'><span style='display:none'>" + this.softwareid + "</span>";
+		//row += "<i class='fa fa-square-o'></i></td>";
 
 		// hides select check boxes for user listing
-		//$( '#select_all' ).hide();
+		$( '#select_all' ).hide();
 
 		if ( role > 1 )
 			row += "<td class='edit' rowspan='2'><i class='fa fa-cog'></i></td>";

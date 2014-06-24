@@ -50,7 +50,6 @@ else if ( isset( $_POST['record_id'] ) and isset( $_POST['type'] ) )
 		{
 			$stmt2->bind_param( 's', $record_id );
 			$stmt2->execute();
-			$stmt2->store_result();
 			$stmt2->bind_result( $name );
 			$stmt2->fetch();
 			$record = $name;
